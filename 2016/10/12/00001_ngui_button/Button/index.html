@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>FelixWee的博客</title>
+  <title>NGUI插件 - Button | FelixWee的博客</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -92,8 +92,6 @@
     <div class="row">
       <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
           
-  
-    
 <article class="post">
   
     
@@ -101,250 +99,53 @@
   <div class="post-content">
       
   
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2017/01/17/00015_unity_mysql/unity_op_mysql/">Unity操作MySQL数据库（增删改查)</a></span>
+    <span class="article_title"><i class="fa fa-file-text"></i>  NGUI插件 - Button</span>
   
 
-<span class="fr"><span style="height:30px; line-height=30px">2017-01-17</span></span>
+<span class="fr"><span style="height:30px; line-height=30px">2016-10-12</span></span>
 
     <div class="articlebody">
 
       
-        <p>好久没有更新博客了，今天和大家一起分享一下数据库相关的知识。<br>&#160;&#160;&#160;&#160;最近，学习了一下SQL的常用增删改查语句，但大多是直接在navicat上直接进行，没有把实际的操作转移到Unity中，那么今天就详细的给大家讲讲，怎么在Unity中操作数据库。</p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>如果想在Unity中连接MySQL数据库，需要大家提前做好准备</p>
+        <h2 id="按钮介绍"><a href="#按钮介绍" class="headerlink" title="按钮介绍"></a>按钮介绍</h2><p>按钮是制作UI过程中最核心、最重要的控件之一。在游戏中，按钮是用户操作最依赖的控件，无处不在。<br>广泛地说，按钮的核心在于接收事件，任何可以接收事件的，都可以称作按钮.<br>下面的按钮可以说是我们经常见到。<br><a id="more"></a><br><img src="/2016/10/12/00001_ngui_button/Button/20160918155921.png" alt=""> <img src="/2016/10/12/00001_ngui_button/Button/20160918155922.png" alt="">  <img src="/2016/10/12/00001_ngui_button/Button/20160918155923.png" alt=""></p>
+<p><img src="/2016/10/12/00001_ngui_button/Button/20160918155924.png" alt=""></p>
+<h2 id="按钮的创建"><a href="#按钮的创建" class="headerlink" title="按钮的创建"></a>按钮的创建</h2><p>运用NGUI制作一个能够响应用户操作的按钮，需要具备的条件有哪些？</p>
 <ul>
-<li>mysql.data.dll 数据库连接类（点击<a href="./res/mysql.data.dll"> <strong>此处</strong></a>下载)</li>
-<li><p>调整Unity工程的发布设置中Player Settings里的参数</p>
-<p><img src="/2017/01/17/00015_unity_mysql/unity_op_mysql/20170117133403.jpg" alt=""></p>
-<p>将API Compatibility Level调整为 .Net 2.0</p></li></ul>
-      
-    </div>
-
-    <div class="articletag">
-      
-         <span class="label label-info">Unity</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2017/01/04/00014_ngui_twhp/TextEmotion/">NGUI图文聊天中的图文混排</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2017-01-04</span></span>
-
-    <div class="articlebody">
-
-      
-        <h2 id="图文混排介绍"><a href="#图文混排介绍" class="headerlink" title="图文混排介绍"></a>图文混排介绍</h2><p>图文混排通常用于聊天模块，在文字中夹杂表情图片。</p>
-<p><img src="/2017/01/04/00014_ngui_twhp/TextEmotion/20160921085229.jpg" alt=""></p>
-<h2 id="位图字体制作"><a href="#位图字体制作" class="headerlink" title="位图字体制作"></a>位图字体制作</h2><p>1）图文混排的制作，首先要制作位图字体。<br>首先得下载一个位图制作工具Bitmap font generator,可以点击<a href="./assets/bmfont_1.13.exe">这里</a>下载<br>2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。</p>
-      
-    </div>
-
-    <div class="articletag">
-      
-         <span class="label label-info">NGUI</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2016/11/03/00011_vr_ui_ugui/htc_vive_ui/">如何在HTC Vive中创建UI界面</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2016-11-03</span></span>
-
-    <div class="articlebody">
-
-      
-        <p>无论是游戏，还是虚拟现实等，都不可能缺少UI界面的制作，对于界面我们可以分为两种UI界面，一种是能够跟随VR头盔移动的UI,另一种为不跟随头盔移动的UI,也就是将UI看作三给空间中的游戏对象。下面将带领大家通过UGUI来制作界面.</p>
-<p>UGUI的Canvas画布的RenderMode具有三种模式:</p>
-<p><img src="/2016/11/03/00011_vr_ui_ugui/htc_vive_ui/20161101215551.jpg" alt=""></p>
-      
-    </div>
-
-    <div class="articletag">
-      
-         <span class="label label-info">NGUI</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2016/11/03/00011_vr_device_intro/vrdevice_intro/">虚拟现实设备介绍</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2016-11-03</span></span>
-
-    <div class="articlebody">
-
-      
-        <p>随着虚拟现实在其他行业越来越深入的应用与推广，虚拟现实VR必将受到大众亲睐。那么，如果针对那些专业人士或者搞机党，现实里的三大VR巨头，到底谁的产品更值呢？</p>
-<p>接下来我们主要来聊聊三大桌面虚拟现实平台的差异及竞争力，分别是Oculus Rift、HTC Vive以及索尼PlayStation VR。这三款产品不论是硬件性能、平台规模还是资源，都拥有极高的水准。当然，它们各自的使用条件、未来发展前景也不完全相同，如果你想在第一时间体验虚拟现实的魅力，不妨先了解一下哪一款才是最适合你的。</p>
-      
-    </div>
-
-    <div class="articletag">
-      
-         <span class="label label-info">HTC Vive</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2016/11/01/00013_htcvive_controller_dev/htcvive_controller_dev/">HTC Vive虚拟现实设备手柄交互教程</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2016-11-01</span></span>
-
-    <div class="articlebody">
-
-      
-        <h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p>在使用Unity中针对HTC Vive设备进行开发，需要使用到Steam平台为我们提供的插件包 <a href="https://www.assetstore.unity3d.com/cn/#!/content/32647" target="_blank" rel="noopener">SteamVR Plugin.unitypackage</a>.</p>
-<p>这个插件中已经封装了与HTC Vive硬件进行通信的相关类，也是我们在做HTC Vive开发过程中经常使用的类，下面讲带领大家一起来了解一下。</p>
-<ul>
-<li><p>SteamVR_TrackedObject<br>此类用于根据硬件设备，并为硬件设备分配相应的索引</p>
-</li>
-<li><p>SteamVR_Controller.Device<br>最重要的类，封装了跟踪设备的全部信息,例如手柄的各种交互相应勾动扳机等。</p>
-</li>
-<li><p>SteamVR_Controller.ButtonMask<br>手柄各按键的名称</p>
-</li>
-<li><p>SteamVR_Controller<br>此类通常使用静态方法Input根据设备索引值获取对应的设备(Device)对象</p>
-</li>
+<li>1.按钮的外貌—–使用UISprite来呈现。</li>
+<li>2.用于处理鼠标交互的碰撞器——Collider.</li>
+<li>3.用于展现按钮的组件-UIButton（此组件并不是必须的）</li>
 </ul>
-      
-    </div>
+<h2 id="按钮的属性"><a href="#按钮的属性" class="headerlink" title="按钮的属性"></a>按钮的属性</h2><p>按钮的属性基本分三部分</p>
+<ul>
+<li>按钮交互四种颜色过度控制</li>
+<li>按钮交互过程中精灵控制</li>
+<li>按钮常用Click事件调用处理</li>
+</ul>
+<p><img src="/2016/10/12/00001_ngui_button/Button/20160918160740.png" alt=""></p>
+<h2 id="按钮交互方式"><a href="#按钮交互方式" class="headerlink" title="按钮交互方式"></a>按钮交互方式</h2><p>对于按钮的交互处理，有很多种方式，下面给大家一一做说明。</p>
+<h3 id="第1种方式"><a href="#第1种方式" class="headerlink" title="第1种方式"></a>第1种方式</h3><p>通过Inspector 面板的On Click组进行制定。<br>在脚本中定义Public 方法，然后将脚本挂载到某个游戏对象上，并将此对象拖拽到OnClick面板中，从Method险种选择相应类中的方法。</p>
+<p><img src="/2016/10/12/00001_ngui_button/Button/20160918161427.png" alt=""></p>
+<h3 id="第2中方法"><a href="#第2中方法" class="headerlink" title="第2中方法"></a>第2中方法</h3><p>此方法与第1种方法类似，为按钮添加EventTrigger组件，每组事件都和第一种方法中的OnClick一样，然后采用第一种方法，为相应的事件添加方法调用。</p>
+<ul>
+<li>OnHoverOver</li>
+<li>OnHoverOut</li>
+<li>OnPress  鼠标左键按下</li>
+<li>OnRelease  鼠标左键松开</li>
+<li>OnSelect  </li>
+<li>OnDeselect</li>
+<li>OnClick/Tap  鼠标点击或触屏点击</li>
+<li>OnDouble-Click/Tap  鼠标双击或触屏双击</li>
+<li>OnDragOver   按下鼠标拖动到按钮上</li>
+<li>OnDragOut  按下鼠标拖动到按钮外</li>
+</ul>
+<p><img src="/2016/10/12/00001_ngui_button/Button/20160918162404.png" alt=""></p>
+<h3 id="第3种"><a href="#第3种" class="headerlink" title="第3种"></a>第3种</h3><p>这种方式是再脚本中编写固定的方法签名，然后将脚本挂在到按钮对象上。<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ButtonDemo</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDrag</span>(<span class="params">Vector2 delta</span>)</span>&#123;</span><br><span class="line">        print(<span class="string">"拖动"</span>+delta);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnHover</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        print(<span class="string">"鼠标移上"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnClick</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        print(<span class="string">"点击"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDoubleClick</span> (<span class="params"></span>)	</span>&#123;</span><br><span class="line">        print(<span class="string">"鼠标双击"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="第4种方法"><a href="#第4种方法" class="headerlink" title="第4种方法"></a>第4种方法</h3><p>通过定义添加VoidDelegate的形式添加交互操作(仅限处理OnClick事件)<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ButtonDemo</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">//获取按钮组件</span></span><br><span class="line">        UIButton btn = <span class="keyword">this</span>.GetComponent&lt;UIButton&gt;();</span><br><span class="line">        <span class="comment">//创建委托</span></span><br><span class="line">        EventDelegate dele1 = <span class="keyword">new</span> EventDelegate(onBtnClickA);</span><br><span class="line">        <span class="comment">//将委托添加给按钮的Click</span></span><br><span class="line">        btn.onClick.Add(dele1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onBtnClickA</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        print(<span class="string">"按钮被点击了"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="第5中方法"><a href="#第5中方法" class="headerlink" title="第5中方法"></a>第5中方法</h3><p>通过交互对象添加UIEventListener组件方法处理按钮多种相关事件.</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ButtonDemo</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">      <span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="comment">//为按钮添加UIEventListener组件,并处理点击事件</span></span><br><span class="line">          UIEventListener ue = <span class="keyword">this</span>.gameObject.AddComponent&lt;UIEventListener&gt;();</span><br><span class="line">          <span class="comment">//处理点击事件</span></span><br><span class="line">          ue.onClick = onBtnClickA;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onBtnClickA</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line"><span class="function">      </span>&#123;</span><br><span class="line">          print(<span class="string">"按钮被点击了  onBtnClickA"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="comment">//直接使用简写方式处理</span></span><br><span class="line">        UIEventListener.Get(<span class="keyword">this</span>.gameObject).onClick = onBtnClickB;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于Start中的方法，可以采用下面的简写方式。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UIEventListener.Get(<span class="keyword">this</span>.gameObject).onClick = onBtnClickA;</span><br></pre></td></tr></table></figure>
 
-    <div class="articletag">
-      
-         <span class="label label-info">VR</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2016/10/26/00012_unity_layermask/unity_layermask/">Unity3D中Layers和LayerMask解析</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2016-10-26</span></span>
-
-    <div class="articlebody">
-
-      
-        <p>在Unity中每个GameObject都有Layer属性，默认的Layer都是Default。在Unity中可编辑的Layer共有24个（8—31层），官方已使用的是0—7层，默认不可编辑！</p>
-<p>LayerMask实际上是一个位码操作，在Unity3D中一共有32个Layer层，并且不可增加。</p>
-      
-    </div>
-
-    <div class="articletag">
-      
-         <span class="label label-info">Unity</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2016/10/25/00010_bat_mapdrive/map_system_drive/">利用Bat命令将文件夹映射为系统磁盘</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2016-10-25</span></span>
-
-    <div class="articlebody">
-
-      
-        <p>在之前的工作中，记得有一个比较小的工具，能够将本地的文件夹映射为本地的一个系统盘，但早已不记得叫什么名字了，索性自己写一个这样的工具，通过网络搜索，找到一个BAT批处理指令 subst 能够做这样的事情，自己就倒腾了一下，结果还是挺让人满意的。这个指令能够映射盘符，也可以取消映射。</p>
-      
-    </div>
-
-    <div class="articletag">
-      
-         <span class="label label-info">BAT</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2016/10/24/00009_ngui_tuwenhunpai/TextEmotion/">NGUI实战技术之位图字体及图文混排</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2016-10-24</span></span>
-
-    <div class="articlebody">
-
-      
-        <p>%</p>
-<p>图文混排通常用于聊天模块，在文字中夹杂表情图片。</p>
-<p><img src="/2016/10/24/00009_ngui_tuwenhunpai/TextEmotion/20160921085229.jpg" alt=""></p>
       
     </div>
 
@@ -356,76 +157,6 @@
 
   </div>
 </article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2016/10/20/00008_ngui_tabview/TabView/">NGUI组件之页签(TabView)</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2016-10-20</span></span>
-
-    <div class="articlebody">
-
-      
-        <p>页签实际上是再Toggle的基础上延伸出来的一种组合型组件，无论是在游戏中还是应用软件中，都有他的身影。下面的图及时他们的体现。<br></p>
-      
-    </div>
-
-    <div class="articletag">
-      
-         <span class="label label-info">NGUI</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-    
-<article class="post">
-  
-    
-  
-  <div class="post-content">
-      
-  
-    <span class="article_title"><i class="fa fa-file-text"></i>  <a href="/2016/10/18/00007_htc_vive_teleporter/htc_vive_teleporter/">利用Vive Telport 插件实现HTC Vive瞬移系统</a></span>
-  
-
-<span class="fr"><span style="height:30px; line-height=30px">2016-10-18</span></span>
-
-    <div class="articlebody">
-
-      
-        <h2 id="Vive-Teleporter-简介"><a href="#Vive-Teleporter-简介" class="headerlink" title="Vive Teleporter 简介"></a>Vive Teleporter 简介</h2><p>这个是针对HTC Vive和引擎简单易用的瞬移系统。这个系统是模仿Valve的Vive游戏“The Lab”而作，即玩家可以穿过比游戏区域大的VR环境。</p>
-<p>插件里提供了两个简单场景：一个直接集成了SteamVR，另一个适用于没有HTC Vive的小伙伴来演示系统功能。资源代码已经做了文档和注释，或者可以跟随MIT Licence（参照LICENSE.txt）使用.</p>
-      
-    </div>
-
-    <div class="articletag">
-      
-         <span class="label label-info">VR</span>
-          
-    </div>
-
-  </div>
-</article>
-
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
-  </nav>
-
 
       </div>
       <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
