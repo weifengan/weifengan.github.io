@@ -1,0 +1,75 @@
+/*********** 公共图标 ***********/
+.icon {
+  display: inline-block;
+  width: 24px;
+  height: 20px;
+  margin-right: 2px;
+  background-image: url(../images/menu_bg.png);
+  background-repeat: no-repeat;
+}
+.icon.icon-home {
+  background-position: 0 0;
+}
+.icon.icon-public-class {
+  background-position: -24px 0;
+}
+.icon.icon-question {
+  background-position: -48px 0;
+}
+.icon.icon-join-list {
+  background-position: -72px 0;
+}
+.icon.icon-send {
+  background-position: -96px 0;
+}
+.icon.icon-manage {
+  background-position: -120px 0;
+}
+.icon.icon-invite-code {
+  background-position: -144px 0;
+}
+.icon.icon-course {
+  background-position: -168px 0;
+}
+.icon.icon-task-list {
+  background-position: -192px 0;
+}
+.icon.icon-exam {
+  background-position: -216px 0;
+}
+.icon.icon-join-class {
+  background-position: 0 -30px;
+}
+.icon.icon-tobe-teacher {
+  background-position: -24px -30px;
+}
+.icon.icon-token {
+  background-position: -48px -30px;
+}
+.icon.icon-create-class {
+  background-position: -72px -30px;
+}
+.icon.icon-create-task {
+  background-position: -96px -30px;
+}
+.icon.icon-bars {
+  background-position: -120px -30px;
+}
+.icon.icon-my-question {
+  background-position: -48px 0;
+}
+.icon.icon-my-answer {
+  background-position: -48px 0;
+}
+.icon.icon-record {
+  background-position: -143px -28px;
+}
+.icon.icon-school {
+  background-position: -167px -28px;
+}
+/*********** 整体布局 ***********/
+.testabc{
+  border:1px solid #f00;
+  position: relative;
+  display:inline-block;
+}
