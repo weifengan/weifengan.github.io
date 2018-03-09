@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>利用Vive Telport 插件实现HTC Vive瞬移系统 | 吾爱CODE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta name="description" content="Vive Teleporter 简介这个是针对HTC Vive和引擎简单易用的瞬移系统。这个系统是模仿Valve的Vive游戏“The Lab”而作，即玩家可以穿过比游戏区域大的VR环境。 插件里提供了两个简单场景：一个直接集成了SteamVR，另一个适用于没有HTC Vive的小伙伴来演示系统功能。资源代码已经做了文档和注释，或者可以跟随MIT Licence（参照LICENSE.txt）使用.">
+<meta name="keywords" content="VR,Vive Teleporter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Vive Telport 插件实现HTC Vive瞬移系统">
+<meta property="og:url" content="http://www.felixwee.com/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/index.html">
+<meta property="og:site_name" content="吾爱CODE">
+<meta property="og:description" content="Vive Teleporter 简介这个是针对HTC Vive和引擎简单易用的瞬移系统。这个系统是模仿Valve的Vive游戏“The Lab”而作，即玩家可以穿过比游戏区域大的VR环境。 插件里提供了两个简单场景：一个直接集成了SteamVR，另一个适用于没有HTC Vive的小伙伴来演示系统功能。资源代码已经做了文档和注释，或者可以跟随MIT Licence（参照LICENSE.txt）使用.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.felixwee.com/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/htc_vive_telport_movesystem.gif">
+<meta property="og:image" content="http://www.felixwee.com/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021130742.png">
+<meta property="og:image" content="http://www.felixwee.com/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021130950.png">
+<meta property="og:image" content="http://www.felixwee.com/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021131110.png">
+<meta property="og:image" content="http://www.felixwee.com/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021131145.png">
+<meta property="og:image" content="http://www.felixwee.com/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021131426.png">
+<meta property="og:updated_time" content="2018-02-05T18:48:58.921Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用Vive Telport 插件实现HTC Vive瞬移系统">
+<meta name="twitter:description" content="Vive Teleporter 简介这个是针对HTC Vive和引擎简单易用的瞬移系统。这个系统是模仿Valve的Vive游戏“The Lab”而作，即玩家可以穿过比游戏区域大的VR环境。 插件里提供了两个简单场景：一个直接集成了SteamVR，另一个适用于没有HTC Vive的小伙伴来演示系统功能。资源代码已经做了文档和注释，或者可以跟随MIT Licence（参照LICENSE.txt）使用.">
+<meta name="twitter:image" content="http://www.felixwee.com/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/htc_vive_telport_movesystem.gif">
+  
+  
+    <link rel="icon" href="/img/logo.jpg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Chrome on Android -->
+    <link rel="icon" sizes="192x192" href="/img/logo.jpg">
+    <!-- Add to homescreen for Safari on iOS -->
+    <link rel="apple-touch-icon-precomposed" href="/img/logo.jpg">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/img/logo.jpg">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="layout">
+     <div class="app_menu">
+        
+     </div>
+     <div class="main_wrapper">
+      <!--网页主体 -->
+      <div id="container">
+        <div id="wrap">
+          <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">吾爱CODE</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个执着的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon">aa</a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/categories/Unity3D/">Unity3D</a>
+        
+          <a class="main-nav-link" href="/">服务器</a>
+        
+          <a class="main-nav-link" href="/categories/VR/">VR</a>
+        
+          <a class="main-nav-link" href="/">嵌入式</a>
+        
+      </nav>
+
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="www.felixwee.com">
+        </form>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+          <div class="outer">
+            <section id="main"><article id="post-vr/00007_htc_vive_teleporter/htc_vive_teleporter" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/" class="article-date">
+  <time datetime="2016-10-18T12:37:51.000Z" itemprop="datePublished">2016-10-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/VR/">VR</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 class="article-title" itemprop="name">
+      利用Vive Telport 插件实现HTC Vive瞬移系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h2 id="Vive-Teleporter-简介"><a href="#Vive-Teleporter-简介" class="headerlink" title="Vive Teleporter 简介"></a>Vive Teleporter 简介</h2><p>这个是针对HTC Vive和引擎简单易用的瞬移系统。这个系统是模仿Valve的Vive游戏“The Lab”而作，即玩家可以穿过比游戏区域大的VR环境。</p>
+<p>插件里提供了两个简单场景：一个直接集成了SteamVR，另一个适用于没有HTC Vive的小伙伴来演示系统功能。资源代码已经做了文档和注释，或者可以跟随MIT Licence（参照LICENSE.txt）使用.</p>
+<a id="more"></a>
+<p>下图是插件作者给出的系演示效果：</p>
+<p><img src="/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/htc_vive_telport_movesystem.gif" alt=""></p>
+<h2 id="使用本系统能够解决的问题"><a href="#使用本系统能够解决的问题" class="headerlink" title="使用本系统能够解决的问题"></a>使用本系统能够解决的问题</h2><h3 id="1-计算可导航空间"><a href="#1-计算可导航空间" class="headerlink" title="1.计算可导航空间"></a>1.计算可导航空间</h3><p>我们显然不希望玩家可以传送出边界，或者在不透明物体内部。为了解决这个问题，这个系统使用了Unity生成的导航网格作为玩家可以传送的边界。因为这个过程包括了Unity的工作，所以它很稳定并且可以放心的应用到大多数工程中。为了预加载这个数据，只需要在场景的任何位置添加一个”Vive Nav Mesh”组件，并且在检视面板点击”UpdateNavmesh Data”按钮。这样无论什么时候更新场景都可以用新的NavMesh烘焙来更新Vive Nav Mesh。上边的过程说明如下图：</p>
+<h3 id="2-选择瞬移目的地"><a href="#2-选择瞬移目的地" class="headerlink" title="2.选择瞬移目的地"></a>2.选择瞬移目的地</h3><p>这个系统通过简单的运动学方程使用了直观的抛物线选择机制。再次说明，这是受到了Valve的“The Lab”启发。用户将控制器举到更高的角度时，选择点会生成的更远一些。如果用户将控制器举过45度（抛物线的最大距离），角度将会锁定在那个距离。</p>
+<h3 id="3-表现游戏区域"><a href="#3-表现游戏区域" class="headerlink" title="3.表现游戏区域"></a>3.表现游戏区域</h3><p>很有必要知道传送后防护边界在哪里。因此系统围绕防护边界划定了一个盒子。</p>
+<h3 id="4-减少不适感"><a href="#4-减少不适感" class="headerlink" title="4.减少不适感"></a>4.减少不适感</h3><p>瞬移（显示为“眨眼”）时屏幕的淡入淡出可降低用户的疲劳和眩晕感。</p>
+<h2 id="瞬移系统使用到的三个组件"><a href="#瞬移系统使用到的三个组件" class="headerlink" title="瞬移系统使用到的三个组件"></a>瞬移系统使用到的三个组件</h2><p>在整个制作过程中，需要使用到三个组件：</p>
+<h3 id="1-Vive-Nav-Mesh组件"><a href="#1-Vive-Nav-Mesh组件" class="headerlink" title="1) Vive Nav Mesh组件"></a>1) Vive Nav Mesh组件</h3><p>控制Unity的NavMesh系统到可渲染网格的转换。它还会计算NavMesh的边界，所以当玩家选择传送位置时可以被显示出来。</p>
+<h3 id="2-Parabolic-Pointer组件"><a href="#2-Parabolic-Pointer组件" class="headerlink" title="2) Parabolic Pointer组件"></a>2) Parabolic Pointer组件</h3><p>生成/显示一个指示网格并从Vive Nav Mesh进行采样。</p>
+<h3 id="3-Vive-Teleporter组件"><a href="#3-Vive-Teleporter组件" class="headerlink" title="3)Vive Teleporter组件"></a>3)Vive Teleporter组件</h3><p>控制实际传送机制。它从Parabolic Pointer找出指示数据这样就知道要传送到哪里。当用户决定传送时它还会平稳的淡入淡出屏幕防止带来的不适感。它还可以和SteamVR配合来控制按钮点击事件、控制器管理、触觉反馈，当选择传送位置后还可以显示传送区域边界。</p>
+<p>注：Teleport Vive和Parabolic Pointer组件都会自动添加一个Border Renderer组件。Border Renderer仅仅生成并渲染出显示 ViveNav Mesh边界的网格和SteamVR游戏区域。</p>
+<h2 id="实现瞬移系统"><a href="#实现瞬移系统" class="headerlink" title="实现瞬移系统"></a>实现瞬移系统</h2><h3 id="第一步：配置Vive-NavMesh"><a href="#第一步：配置Vive-NavMesh" class="headerlink" title="第一步：配置Vive NavMesh"></a>第一步：配置Vive NavMesh</h3><p>从添加Vive Nav Mesh对象开始，可以在Assets文件夹中的Vive-Teleporter/Prefabs/Navmesh.prefab路径下找到一个预配置的Vive NavMesh。可以将这个对象放在场景层级面板的任何地方和场景中的任何位置。<br>接下来需要在Unity中烘焙一个导航网格(“Navmesh”)。这个可以在Navigation窗口中完成(Window &gt; Navigation)。</p>
+<p><img src="/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021130742.png" alt=""></p>
+<p>这里有几点需要考虑:  </p>
+<ul>
+<li><p>系统自动剔除斜坡导航网格三角形。这意味着任何没有直接面向上的部分的导航网格都会被传送系统忽略。这个在VR中是合理的，因为玩家不能走上斜坡！</p>
+</li>
+<li><p>必须在所以可传送表面使用物理碰撞器。抛物线的点（见下边第二步）使用物理射线来确定玩家指向。因此所有可传送表面必须有碰撞器（包括像墙这种不可传送的表面并且要阻止指示）。</p>
+</li>
+<li><p>为不可传送区域分配不同的导航区域也是个不错的主意。这个对于优化（因此当玩家选择传送位置时系统不需要渲染巨大的预览网格）和游戏平衡（这样玩家就不会传送到地图以外了）很有帮助。</p>
+</li>
+</ul>
+<p>烘焙完导航网格之后（使用Navigation窗口底部的“Bake”按钮），回到之前创建的Vive Nav Mesh 对象。如果决定专用的导航区域（见上方），可以通过Area Mask属性选择那些区域是可传送的。然后点击检视面板中的“Update Navmesh Data”按钮，就会看到导航网格显示在场景视图中。</p>
+<p><img src="/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021130950.png" alt=""><br>Vive NavMesh效果</p>
+<h3 id="第二步：配置ParabolicPointer"><a href="#第二步：配置ParabolicPointer" class="headerlink" title="第二步：配置ParabolicPointer"></a>第二步：配置ParabolicPointer</h3><p>接下来添加Parabolic Pointer 对象。可以在Assets文件夹中 Vive-Teleporter/Prefabs/Pointer.prefab路径下找到一个预配置的指针。可以将它放在场景层级面板的任何地方和场景中的任何位置。<br>你当然可以修改Parabolic Pointer脚本中的任何设置了，不过只允许设置其中的一个：配置从第一步的ViveNav Mesh对象到指针的“Nav Mesh”。</p>
+<p><img src="/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021131110.png" alt=""></p>
+<h3 id="第三步：配置Vive-Teleporter"><a href="#第三步：配置Vive-Teleporter" class="headerlink" title="第三步：配置Vive Teleporter"></a>第三步：配置Vive Teleporter</h3><p>最后需要为SteamVR Camera添加一个Vive Teleporter （Component &gt; Vive Teleporter &gt; Vive Teleporter）组件。这是用来渲染Vive显示的摄像机。如果是使用了SteamVR 插件中的[CameraRig]预制件则应该将Vive Teleporter 添加给那个预制件中的Camera (eye) 对象。</p>
+<p>接下来为组件属性配置以下值：</p>
+<ul>
+<li>Pointer：将这个设置为第二步创建的Parabolic Pointer 对象。</li>
+<li>OriginTransform：将这个设置为追踪空间的起点。如果使用了SteamVR插件，这个就是[CameraRig] 游戏对象。当玩家传送时这个对象是实际移动的。</li>
+<li>HeadTransform：将这个设置为玩家的头部。这个应该是Origin Transform的子集。如果使用了SteamVR插件，这个是Camera (head) 游戏对象。</li>
+<li>Navmesh Animator：将这个设置为第一步创建的Vive Nav Mesh 对象的动画。</li>
+<li>Fade Material：将这个设置为Vive-Teleporter/Art/Materials/FadeBlack.mat中的材质</li>
+<li>Controllers：将SteamVR控制器对象填到这里。如果使用了SteamVR的 [CameraRig] 预制件，则应该将Controller(left) 和 Controller(right) 两个对象填到这里。</li>
+</ul>
+<p><img src="/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021131145.png" alt=""></p>
+<h3 id="第四步-运行测试"><a href="#第四步-运行测试" class="headerlink" title="第四步 运行测试"></a>第四步 运行测试</h3><p>运行后，通过按下手柄上的TouchPad进行瞬移操作。<br><img src="/2016/10/18/vr/00007_htc_vive_teleporter/htc_vive_teleporter/20161021131426.png" alt=""></p>
+<h2 id="插件下载地址"><a href="#插件下载地址" class="headerlink" title="插件下载地址:"></a>插件下载地址:</h2><p>下载 <a href="https://github.com/Flafla2/Vive-Teleporter" target="_blank">Vive-Teleporter</a></p>
+
+      
+      
+  <div class="article-statement">
+    <hr>
+    
+              
+      
+    <hr>
+    1.如果本文帮到了您，不妨点一下右下角的 <a>分享到</a> 按钮。<br>
+    2.除非注明，本博文章均为原创，转载请以链接形式标明本文地址。<br>
+  </div>
+
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VR/">VR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+    
+<nav>
+   <div class="navlink_article_wrap">
+      <div class="nav_previous left">
+
+           <span style="color:#999;display:block;">PREVIOUS</span>
+             
+               <a href="/2016/10/20/ngui/00008_ngui_tabview/TabView/" class="article-nav-title">
+
+              NGUI组件之页签(TabView)
+              </a>
+            
+
+      </div>
+
+
+      <div class="nav_next right">
+        <span style="color:#999;display:block;">NEXT</span>
+          
+            <a href="/2016/10/17/ngui/00006_ngui_toggle/Toggle/" class="article-nav-title">
+            NGUI组件之单选和复选框(CheckBox)</a>
+          
+      </div>
+   </div>
+</nav>
+
+
+  
+
+	<!-- 首页不显示评论 -->
+	 
+	 <div>
+	   <!--PC和WAP自适应版-->
+		<div id="SOHUCS" sid="利用Vive Telport 插件实现HTC Vive瞬移系统" ></div>
+		<script type="text/javascript">
+		(function(){
+		var appid = 'cytvbtj5E';
+		var conf = 'prod_de8c7b4109591c2c30018260c933fc91';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+	  </div>
+    
+
+  </div>
+
+</article>
+</section>
+            
+              <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">网站公告</h3>
+  <div class="widget">
+  
+      感谢各位博友的支持，如果觉得本博客帮到你，可以分享给你身边的朋友！ 
+       
+	   <span class="right">Felixwee</span>
+  
+      </br></br>
+	  
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">来关注我</h3>
+  <div class="widget">
+    <ul>
+	   <div style="text-align: center;">
+            <img src="http://www.felixwee.com/img/avatar.jpg" style="width: 100%; max-width: 160px;">
+       </div>
+	   <div style="text-align: center;">FELIXWEE(魏凤安)</div>
+	   
+      
+      
+        
+        
+        
+        <li>
+		  <span>QQ: 1327707237</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>E-mail: felixwee@163.com</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>GitHub: https://github.com/weifengan</span>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">推荐文章</h3>
+  <div class="widget">
+    <ul>
+      
+      
+        
+        <li>
+          <a href="/2016/10/24/00009_ngui_tuwenhunpai/TextEmotion/" target="_blank">1. 《NGUI实战之图文混排》</a>
+        </li>
+      
+        
+        <li>
+          <a href="/2015/09/02/dsoframer-introduction-resources/" target="_blank">2. DSOframer的简单介绍和资源整理</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AR/">AR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/BAT/">BAT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NGUI/">NGUI</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity3D/">Unity3D</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VR/">VR</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AR/" style="font-size: 10px;">AR</a> <a href="/tags/BAT/" style="font-size: 10px;">BAT</a> <a href="/tags/CheckBox/" style="font-size: 10px;">CheckBox</a> <a href="/tags/HTC-Vive/" style="font-size: 13.33px;">HTC Vive</a> <a href="/tags/HTC-Vive-手柄/" style="font-size: 10px;">HTC Vive 手柄</a> <a href="/tags/Label/" style="font-size: 10px;">Label</a> <a href="/tags/LayerMask/" style="font-size: 10px;">LayerMask</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/NGUI/" style="font-size: 20px;">NGUI</a> <a href="/tags/Oculus/" style="font-size: 10px;">Oculus</a> <a href="/tags/PlayStation-VR/" style="font-size: 10px;">PlayStation VR</a> <a href="/tags/ScrollBar/" style="font-size: 10px;">ScrollBar</a> <a href="/tags/Slider/" style="font-size: 10px;">Slider</a> <a href="/tags/TabView/" style="font-size: 10px;">TabView</a> <a href="/tags/TextList/" style="font-size: 10px;">TextList</a> <a href="/tags/Toggle/" style="font-size: 10px;">Toggle</a> <a href="/tags/UGUI/" style="font-size: 10px;">UGUI</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIInput/" style="font-size: 13.33px;">UIInput</a> <a href="/tags/Unity/" style="font-size: 13.33px;">Unity</a> <a href="/tags/Unity层/" style="font-size: 10px;">Unity层</a> <a href="/tags/VR/" style="font-size: 16.67px;">VR</a> <a href="/tags/VR-UI/" style="font-size: 10px;">VR UI</a> <a href="/tags/Vive-Teleporter/" style="font-size: 10px;">Vive Teleporter</a> <a href="/tags/Vuforia/" style="font-size: 10px;">Vuforia</a> <a href="/tags/cmd/" style="font-size: 10px;">cmd</a> <a href="/tags/progressBar/" style="font-size: 10px;">progressBar</a> <a href="/tags/subst/" style="font-size: 10px;">subst</a> <a href="/tags/交互/" style="font-size: 10px;">交互</a> <a href="/tags/位图字体/" style="font-size: 10px;">位图字体</a> <a href="/tags/单选按钮/" style="font-size: 10px;">单选按钮</a> <a href="/tags/图文混排/" style="font-size: 13.33px;">图文混排</a> <a href="/tags/多选按钮/" style="font-size: 10px;">多选按钮</a> <a href="/tags/批处理/" style="font-size: 10px;">批处理</a> <a href="/tags/按钮/" style="font-size: 10px;">按钮</a> <a href="/tags/控制器/" style="font-size: 10px;">控制器</a> <a href="/tags/文本列表/" style="font-size: 10px;">文本列表</a> <a href="/tags/映射磁盘/" style="font-size: 10px;">映射磁盘</a> <a href="/tags/标签/" style="font-size: 10px;">标签</a> <a href="/tags/滑块/" style="font-size: 10px;">滑块</a> <a href="/tags/滚动文本/" style="font-size: 10px;">滚动文本</a> <a href="/tags/滚动条/" style="font-size: 10px;">滚动条</a> <a href="/tags/聊天/" style="font-size: 10px;">聊天</a> <a href="/tags/聊天内容/" style="font-size: 10px;">聊天内容</a> <a href="/tags/聊天表情/" style="font-size: 10px;">聊天表情</a> <a href="/tags/虚拟现实/" style="font-size: 10px;">虚拟现实</a> <a href="/tags/触摸盘/" style="font-size: 10px;">触摸盘</a> <a href="/tags/输入本文/" style="font-size: 13.33px;">输入本文</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/页签/" style="font-size: 10px;">页签</a> <a href="/tags/高通/" style="font-size: 10px;">高通</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">2017年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最近评论</h3>
+    <div class="widget">
+      
+	  
+	  
+	  
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://segmentfault.com/" target="_blank">SegmentFault</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/09/ar/vuforia-intro/vuforia_intro/">AR体验之Vuforia学习</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/17/database/00015_unity_mysql/unity_op_mysql/">Unity操作MySQL数据库（增删改查)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/">NGUI图文聊天中的图文混排</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/vr/00011_vr_ui_ugui/htc_vive_ui/">如何在HTC Vive中创建UI界面</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/vr/00011_vr_device_intro/vrdevice_intro/">虚拟现实设备介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AR/">AR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BAT/">BAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CheckBox/">CheckBox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Label/">Label</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayerMask/">LayerMask</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGUI/">NGUI</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oculus/">Oculus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ScrollBar/">ScrollBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slider/">Slider</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TabView/">TabView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextList/">TextList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toggle/">Toggle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UGUI/">UGUI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/">UIButton</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIInput/">UIInput</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity层/">Unity层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR/">VR</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR-UI/">VR UI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vuforia/">Vuforia</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmd/">cmd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/progressBar/">progressBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/subst/">subst</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/交互/">交互</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/位图字体/">位图字体</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单选按钮/">单选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图文混排/">图文混排</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多选按钮/">多选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/批处理/">批处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/按钮/">按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/控制器/">控制器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本列表/">文本列表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/映射磁盘/">映射磁盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标签/">标签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑块/">滑块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动文本/">滚动文本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动条/">滚动条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天/">聊天</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天内容/">聊天内容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天表情/">聊天表情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟现实/">虚拟现实</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/触摸盘/">触摸盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/输入本文/">输入本文</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进度条/">进度条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页签/">页签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高通/">高通</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+          </div>
+          <footer id="footer">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      Copyright &copy; 2012 - 2018 <a href="/" target="_blank">felixwee</a>.
+      &nbsp;
+      <span id="busuanzi_container_site_pv">
+        总访问量 <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_pv"></span></a> 次
+      </span>
+      <span id="busuanzi_container_site_uv">
+        <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_uv"></span></a> 人.
+      </span>
+      
+    </div>
+  </div>
+</footer>
+
+        </div>
+        <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/categories/Unity3D/" class="mobile-nav-link">Unity3D</a>
+  
+    <a href="/" class="mobile-nav-link">服务器</a>
+  
+    <a href="/categories/VR/" class="mobile-nav-link">VR</a>
+  
+    <a href="/" class="mobile-nav-link">嵌入式</a>
+  
+</nav>
+        <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+      </div>
+  </div>
+</div>
+
+</body>
+</html>

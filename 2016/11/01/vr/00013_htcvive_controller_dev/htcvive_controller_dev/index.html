@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HTC Vive虚拟现实设备手柄交互教程 | 吾爱CODE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta name="description" content="预备知识在使用Unity中针对HTC Vive设备进行开发，需要使用到Steam平台为我们提供的插件包 SteamVR Plugin.unitypackage. 这个插件中已经封装了与HTC Vive硬件进行通信的相关类，也是我们在做HTC Vive开发过程中经常使用的类，下面讲带领大家一起来了解一下。  SteamVR_TrackedObject此类用于根据硬件设备，并为硬件设备分配相应的索引">
+<meta name="keywords" content="VR,HTC Vive,虚拟现实,HTC Vive 手柄,控制器,触摸盘,交互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTC Vive虚拟现实设备手柄交互教程">
+<meta property="og:url" content="http://www.felixwee.com/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/index.html">
+<meta property="og:site_name" content="吾爱CODE">
+<meta property="og:description" content="预备知识在使用Unity中针对HTC Vive设备进行开发，需要使用到Steam平台为我们提供的插件包 SteamVR Plugin.unitypackage. 这个插件中已经封装了与HTC Vive硬件进行通信的相关类，也是我们在做HTC Vive开发过程中经常使用的类，下面讲带领大家一起来了解一下。  SteamVR_TrackedObject此类用于根据硬件设备，并为硬件设备分配相应的索引">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.felixwee.com/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/htc_shoubing.png">
+<meta property="og:image" content="http://www.felixwee.com/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/20161020180033.png">
+<meta property="og:updated_time" content="2018-02-05T18:50:54.477Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTC Vive虚拟现实设备手柄交互教程">
+<meta name="twitter:description" content="预备知识在使用Unity中针对HTC Vive设备进行开发，需要使用到Steam平台为我们提供的插件包 SteamVR Plugin.unitypackage. 这个插件中已经封装了与HTC Vive硬件进行通信的相关类，也是我们在做HTC Vive开发过程中经常使用的类，下面讲带领大家一起来了解一下。  SteamVR_TrackedObject此类用于根据硬件设备，并为硬件设备分配相应的索引">
+<meta name="twitter:image" content="http://www.felixwee.com/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/htc_shoubing.png">
+  
+  
+    <link rel="icon" href="/img/logo.jpg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Chrome on Android -->
+    <link rel="icon" sizes="192x192" href="/img/logo.jpg">
+    <!-- Add to homescreen for Safari on iOS -->
+    <link rel="apple-touch-icon-precomposed" href="/img/logo.jpg">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/img/logo.jpg">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="layout">
+     <div class="app_menu">
+        
+     </div>
+     <div class="main_wrapper">
+      <!--网页主体 -->
+      <div id="container">
+        <div id="wrap">
+          <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">吾爱CODE</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个执着的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon">aa</a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/categories/Unity3D/">Unity3D</a>
+        
+          <a class="main-nav-link" href="/">服务器</a>
+        
+          <a class="main-nav-link" href="/categories/VR/">VR</a>
+        
+          <a class="main-nav-link" href="/">嵌入式</a>
+        
+      </nav>
+
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="www.felixwee.com">
+        </form>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+          <div class="outer">
+            <section id="main"><article id="post-vr/00013_htcvive_controller_dev/htcvive_controller_dev" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/" class="article-date">
+  <time datetime="2016-11-01T10:20:00.000Z" itemprop="datePublished">2016-11-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/VR/">VR</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 class="article-title" itemprop="name">
+      HTC Vive虚拟现实设备手柄交互教程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p>在使用Unity中针对HTC Vive设备进行开发，需要使用到Steam平台为我们提供的插件包 <a href="https://www.assetstore.unity3d.com/cn/#!/content/32647" target="_blank" rel="noopener">SteamVR Plugin.unitypackage</a>.</p>
+<p>这个插件中已经封装了与HTC Vive硬件进行通信的相关类，也是我们在做HTC Vive开发过程中经常使用的类，下面讲带领大家一起来了解一下。</p>
+<ul>
+<li><p>SteamVR_TrackedObject<br>此类用于根据硬件设备，并为硬件设备分配相应的索引</p>
+</li>
+<li><p>SteamVR_Controller.Device<br>最重要的类，封装了跟踪设备的全部信息,例如手柄的各种交互相应勾动扳机等。</p>
+</li>
+<li><p>SteamVR_Controller.ButtonMask<br>手柄各按键的名称</p>
+</li>
+<li><p>SteamVR_Controller<br>此类通常使用静态方法Input根据设备索引值获取对应的设备(Device)对象</p>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="HTC-手柄按键介绍"><a href="#HTC-手柄按键介绍" class="headerlink" title="HTC 手柄按键介绍"></a>HTC 手柄按键介绍</h2><p>在学习手柄操作之前，我们先来了解一下手柄上的按钮到底有那些？</p>
+<p><img src="/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/htc_shoubing.png" alt=""></p>
+<p>每个按钮的名称都已经在ButtonMask中定义好。</p>
+<p><img src="/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/20161020180033.png" alt=""></p>
+<h2 id="手柄的交互编程"><a href="#手柄的交互编程" class="headerlink" title="手柄的交互编程"></a>手柄的交互编程</h2><p>想要操作手柄的前提是先要获取到设备唯一标识也就是设备的索引,然后通过这个索引来获取的设备,也就是Device对象,然后利用Device对象的相应函数进行交互。</p>
+<h4 id="1-通过手柄游戏对象上的SteamVR-TrackedObject组件进行获取。"><a href="#1-通过手柄游戏对象上的SteamVR-TrackedObject组件进行获取。" class="headerlink" title="1.通过手柄游戏对象上的SteamVR_TrackedObject组件进行获取。"></a>1.通过手柄游戏对象上的SteamVR_TrackedObject组件进行获取。</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取跟踪对象</span></span><br><span class="line">SteamVR_TrackedObject trackObj = <span class="keyword">this</span>.GetComponent&lt;SteamVR_TrackedObject&gt;();</span><br><span class="line"><span class="comment">//输出设备Index</span></span><br><span class="line">print(trackObj.index);</span><br><span class="line"></span><br><span class="line">-----输出结果----</span><br><span class="line">Device1</span><br></pre></td></tr></table></figure>
+<p>实际上在SteamVR_TrackedObject类枚举类型EIndex中，已经预先定义了16个设备索引。<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> EIndex</span><br><span class="line">	&#123;</span><br><span class="line">		None = <span class="number">-1</span>,</span><br><span class="line">		Hmd = (<span class="keyword">int</span>)OpenVR.k_unTrackedDeviceIndex_Hmd,</span><br><span class="line">		Device1,</span><br><span class="line">		Device2,</span><br><span class="line">		Device3,</span><br><span class="line">		Device4,</span><br><span class="line">		Device5,</span><br><span class="line">		Device6,</span><br><span class="line">		Device7,</span><br><span class="line">		Device8,</span><br><span class="line">		Device9,</span><br><span class="line">		Device10,</span><br><span class="line">		Device11,</span><br><span class="line">		Device12,</span><br><span class="line">		Device13,</span><br><span class="line">		Device14,</span><br><span class="line">		Device15</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-通过找到的索引获取到Device对象。"><a href="#2-通过找到的索引获取到Device对象。" class="headerlink" title="2.通过找到的索引获取到Device对象。"></a>2.通过找到的索引获取到Device对象。</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过设备索引获取到相应设备对象Device</span></span><br><span class="line">SteamVR_Controller.Device device= SteamVR_Controller.Input((<span class="keyword">int</span>)trackObj.index);</span><br></pre></td></tr></table></figure>
+<h4 id="3-调用Device中相应函数，来捕获手柄的操作。"><a href="#3-调用Device中相应函数，来捕获手柄的操作。" class="headerlink" title="3.调用Device中相应函数，来捕获手柄的操作。"></a>3.调用Device中相应函数，来捕获手柄的操作。</h4><p>通过Device.GetPressDown / GetPressUp / GetPress/Device.GetTouchDown / GetTouchUp / GetTouch进行操作</p>
+<p>（1）手柄按键(以Trigger键为参考，其它键不再罗列)</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//按键被按下</span></span><br><span class="line"><span class="keyword">bool</span> triggerPressDown=device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger);</span><br><span class="line"><span class="keyword">if</span>(triggerPressDown)&#123;</span><br><span class="line">  print(<span class="string">"扳机键Trigger被按下"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//按键被松开</span></span><br><span class="line"><span class="keyword">if</span>(device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))&#123;</span><br><span class="line">  print(<span class="string">"扳机键Trigger被松开"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//按键被按下并保持不松开</span></span><br><span class="line"><span class="keyword">if</span>(device.GetPress(SteamVR_Controller.ButtonMask.Trigger))&#123;</span><br><span class="line">  print(<span class="string">"扳机键Trigger被按下并保持"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>( 2 ) 触摸板<br>触摸板具有两种方式</p>
+<ul>
+<li>触摸圆盘时，通过当前的状态获取触摸量</li>
+<li>直接通过GetAxis获取触摸值</li>
+</ul>
+<p>通过获取用户触摸操作<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取设备</span></span><br><span class="line"> SteamVR_Controller.Device device=SteamVR_Controller.Input((<span class="keyword">int</span>)GetComponent&lt;SteamVR_TrackedObject&gt;().index);</span><br><span class="line"><span class="comment">//第一种方法</span></span><br><span class="line"><span class="keyword">if</span>(device.GetTouchDown(SteamVR_Controller.ButtonMask.touchpad))&#123;</span><br><span class="line">   <span class="comment">//获取当前状态信息</span></span><br><span class="line">  VRControllerState_t curState=device.GetState();</span><br><span class="line">  <span class="comment">//当前状态信息中的轴输入值</span></span><br><span class="line">   print(curState.rAxis0.x+<span class="string">","</span>+curState.rAxis0.y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//第二种方法(比较偏底层)</span></span><br><span class="line">Vector2 v2=device.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0);</span><br><span class="line"><span class="comment">//输出轴输入值，分为x轴和y轴</span></span><br><span class="line">print(v2);</span><br></pre></td></tr></table></figure></p>
+<p>( 3 ) 手柄的震动<br>手柄的震动通过TriggerHapicPulse方法,参数可以理解为震动的强度，最大值为3000,超出3000将不会震动<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SteamVR_Controller.Device device=SteamVR_Controller.Input((<span class="keyword">int</span>)GetComponent&lt;SteamVR_TrackedObject&gt;().index);</span><br><span class="line">TriggerHapticPulse(<span class="number">2000</span>);</span><br></pre></td></tr></table></figure></p>
+
+      
+      
+  <div class="article-statement">
+    <hr>
+    
+              
+      
+    <hr>
+    1.如果本文帮到了您，不妨点一下右下角的 <a>分享到</a> 按钮。<br>
+    2.除非注明，本博文章均为原创，转载请以链接形式标明本文地址。<br>
+  </div>
+
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VR/">VR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/交互/">交互</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/控制器/">控制器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/虚拟现实/">虚拟现实</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/触摸盘/">触摸盘</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+    
+<nav>
+   <div class="navlink_article_wrap">
+      <div class="nav_previous left">
+
+           <span style="color:#999;display:block;">PREVIOUS</span>
+             
+               <a href="/2016/11/03/vr/00011_vr_device_intro/vrdevice_intro/" class="article-nav-title">
+
+              虚拟现实设备介绍
+              </a>
+            
+
+      </div>
+
+
+      <div class="nav_next right">
+        <span style="color:#999;display:block;">NEXT</span>
+          
+            <a href="/2016/10/26/unity/00012_unity_layermask/unity_layermask/" class="article-nav-title">
+            Unity3D中Layers和LayerMask解析</a>
+          
+      </div>
+   </div>
+</nav>
+
+
+  
+
+	<!-- 首页不显示评论 -->
+	 
+	 <div>
+	   <!--PC和WAP自适应版-->
+		<div id="SOHUCS" sid="HTC Vive虚拟现实设备手柄交互教程" ></div>
+		<script type="text/javascript">
+		(function(){
+		var appid = 'cytvbtj5E';
+		var conf = 'prod_de8c7b4109591c2c30018260c933fc91';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+	  </div>
+    
+
+  </div>
+
+</article>
+</section>
+            
+              <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">网站公告</h3>
+  <div class="widget">
+  
+      感谢各位博友的支持，如果觉得本博客帮到你，可以分享给你身边的朋友！ 
+       
+	   <span class="right">Felixwee</span>
+  
+      </br></br>
+	  
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">来关注我</h3>
+  <div class="widget">
+    <ul>
+	   <div style="text-align: center;">
+            <img src="http://www.felixwee.com/img/avatar.jpg" style="width: 100%; max-width: 160px;">
+       </div>
+	   <div style="text-align: center;">FELIXWEE(魏凤安)</div>
+	   
+      
+      
+        
+        
+        
+        <li>
+		  <span>QQ: 1327707237</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>E-mail: felixwee@163.com</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>GitHub: https://github.com/weifengan</span>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">推荐文章</h3>
+  <div class="widget">
+    <ul>
+      
+      
+        
+        <li>
+          <a href="/2016/10/24/00009_ngui_tuwenhunpai/TextEmotion/" target="_blank">1. 《NGUI实战之图文混排》</a>
+        </li>
+      
+        
+        <li>
+          <a href="/2015/09/02/dsoframer-introduction-resources/" target="_blank">2. DSOframer的简单介绍和资源整理</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AR/">AR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/BAT/">BAT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NGUI/">NGUI</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity3D/">Unity3D</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VR/">VR</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AR/" style="font-size: 10px;">AR</a> <a href="/tags/BAT/" style="font-size: 10px;">BAT</a> <a href="/tags/CheckBox/" style="font-size: 10px;">CheckBox</a> <a href="/tags/HTC-Vive/" style="font-size: 13.33px;">HTC Vive</a> <a href="/tags/HTC-Vive-手柄/" style="font-size: 10px;">HTC Vive 手柄</a> <a href="/tags/Label/" style="font-size: 10px;">Label</a> <a href="/tags/LayerMask/" style="font-size: 10px;">LayerMask</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/NGUI/" style="font-size: 20px;">NGUI</a> <a href="/tags/Oculus/" style="font-size: 10px;">Oculus</a> <a href="/tags/PlayStation-VR/" style="font-size: 10px;">PlayStation VR</a> <a href="/tags/ScrollBar/" style="font-size: 10px;">ScrollBar</a> <a href="/tags/Slider/" style="font-size: 10px;">Slider</a> <a href="/tags/TabView/" style="font-size: 10px;">TabView</a> <a href="/tags/TextList/" style="font-size: 10px;">TextList</a> <a href="/tags/Toggle/" style="font-size: 10px;">Toggle</a> <a href="/tags/UGUI/" style="font-size: 10px;">UGUI</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIInput/" style="font-size: 13.33px;">UIInput</a> <a href="/tags/Unity/" style="font-size: 13.33px;">Unity</a> <a href="/tags/Unity层/" style="font-size: 10px;">Unity层</a> <a href="/tags/VR/" style="font-size: 16.67px;">VR</a> <a href="/tags/VR-UI/" style="font-size: 10px;">VR UI</a> <a href="/tags/Vive-Teleporter/" style="font-size: 10px;">Vive Teleporter</a> <a href="/tags/Vuforia/" style="font-size: 10px;">Vuforia</a> <a href="/tags/cmd/" style="font-size: 10px;">cmd</a> <a href="/tags/progressBar/" style="font-size: 10px;">progressBar</a> <a href="/tags/subst/" style="font-size: 10px;">subst</a> <a href="/tags/交互/" style="font-size: 10px;">交互</a> <a href="/tags/位图字体/" style="font-size: 10px;">位图字体</a> <a href="/tags/单选按钮/" style="font-size: 10px;">单选按钮</a> <a href="/tags/图文混排/" style="font-size: 13.33px;">图文混排</a> <a href="/tags/多选按钮/" style="font-size: 10px;">多选按钮</a> <a href="/tags/批处理/" style="font-size: 10px;">批处理</a> <a href="/tags/按钮/" style="font-size: 10px;">按钮</a> <a href="/tags/控制器/" style="font-size: 10px;">控制器</a> <a href="/tags/文本列表/" style="font-size: 10px;">文本列表</a> <a href="/tags/映射磁盘/" style="font-size: 10px;">映射磁盘</a> <a href="/tags/标签/" style="font-size: 10px;">标签</a> <a href="/tags/滑块/" style="font-size: 10px;">滑块</a> <a href="/tags/滚动文本/" style="font-size: 10px;">滚动文本</a> <a href="/tags/滚动条/" style="font-size: 10px;">滚动条</a> <a href="/tags/聊天/" style="font-size: 10px;">聊天</a> <a href="/tags/聊天内容/" style="font-size: 10px;">聊天内容</a> <a href="/tags/聊天表情/" style="font-size: 10px;">聊天表情</a> <a href="/tags/虚拟现实/" style="font-size: 10px;">虚拟现实</a> <a href="/tags/触摸盘/" style="font-size: 10px;">触摸盘</a> <a href="/tags/输入本文/" style="font-size: 13.33px;">输入本文</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/页签/" style="font-size: 10px;">页签</a> <a href="/tags/高通/" style="font-size: 10px;">高通</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">2017年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最近评论</h3>
+    <div class="widget">
+      
+	  
+	  
+	  
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://segmentfault.com/" target="_blank">SegmentFault</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/09/ar/vuforia-intro/vuforia_intro/">AR体验之Vuforia学习</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/17/database/00015_unity_mysql/unity_op_mysql/">Unity操作MySQL数据库（增删改查)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/">NGUI图文聊天中的图文混排</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/vr/00011_vr_ui_ugui/htc_vive_ui/">如何在HTC Vive中创建UI界面</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/vr/00011_vr_device_intro/vrdevice_intro/">虚拟现实设备介绍</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AR/">AR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BAT/">BAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CheckBox/">CheckBox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Label/">Label</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayerMask/">LayerMask</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGUI/">NGUI</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oculus/">Oculus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ScrollBar/">ScrollBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slider/">Slider</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TabView/">TabView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextList/">TextList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toggle/">Toggle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UGUI/">UGUI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/">UIButton</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIInput/">UIInput</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity层/">Unity层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR/">VR</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR-UI/">VR UI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vuforia/">Vuforia</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmd/">cmd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/progressBar/">progressBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/subst/">subst</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/交互/">交互</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/位图字体/">位图字体</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单选按钮/">单选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图文混排/">图文混排</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多选按钮/">多选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/批处理/">批处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/按钮/">按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/控制器/">控制器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本列表/">文本列表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/映射磁盘/">映射磁盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标签/">标签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑块/">滑块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动文本/">滚动文本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动条/">滚动条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天/">聊天</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天内容/">聊天内容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天表情/">聊天表情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟现实/">虚拟现实</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/触摸盘/">触摸盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/输入本文/">输入本文</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进度条/">进度条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页签/">页签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高通/">高通</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+          </div>
+          <footer id="footer">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      Copyright &copy; 2012 - 2018 <a href="/" target="_blank">felixwee</a>.
+      &nbsp;
+      <span id="busuanzi_container_site_pv">
+        总访问量 <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_pv"></span></a> 次
+      </span>
+      <span id="busuanzi_container_site_uv">
+        <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_uv"></span></a> 人.
+      </span>
+      
+    </div>
+  </div>
+</footer>
+
+        </div>
+        <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/categories/Unity3D/" class="mobile-nav-link">Unity3D</a>
+  
+    <a href="/" class="mobile-nav-link">服务器</a>
+  
+    <a href="/categories/VR/" class="mobile-nav-link">VR</a>
+  
+    <a href="/" class="mobile-nav-link">嵌入式</a>
+  
+</nav>
+        <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+      </div>
+  </div>
+</div>
+
+</body>
+</html>

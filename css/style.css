@@ -10,6 +10,37 @@ body:after {
 body:after {
   clear: both;
 }
+.navlink_article_wrap {
+  padding-top: 20px;
+  height: 80px;
+}
+.navlink_article_wrap a:link {
+  color: #999;
+  text-decoration: none;
+}
+.navlink_article_wrap a:hover {
+  color: #f00;
+  text-decoration: none;
+}
+.navlink_article_wrap a:visited {
+  color: #999;
+  text-decoration: none;
+}
+.nav_previous {
+  padding-left: 40px;
+  height: 45px;
+  background-image: url("./images/icon_article_prev.png");
+  background-repeat: no-repeat;
+  background-position: 0px 5px;
+}
+.nav_next {
+  text-align: right;
+  padding-right: 40px;
+  height: 45px;
+  background-image: url("./images/icon_article_next.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
 html,
 body,
 div,
