@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Unity调用AndroidStudio导出的Jar包 | 吾爱CODE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta name="description" content="课程内容 制作步骤介绍 创建AndroidStudio工程及Jar包导出 Unity中调用Jar包函数  制作步骤大致步骤如下：  创建新的 Android Studio 工程 为此 Android Studio 工程创建 Android Library 类库（也就是一个 Module）（后面就是用它生成 jar） 生成 Jar 将 jar 导入 Unity 工程中的 Assets/Plugins">
+<meta name="keywords" content="Unity,SDK接入,Android Studio,Jar包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity调用AndroidStudio导出的Jar包">
+<meta property="og:url" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/index.html">
+<meta property="og:site_name" content="吾爱CODE">
+<meta property="og:description" content="课程内容 制作步骤介绍 创建AndroidStudio工程及Jar包导出 Unity中调用Jar包函数  制作步骤大致步骤如下：  创建新的 Android Studio 工程 为此 Android Studio 工程创建 Android Library 类库（也就是一个 Module）（后面就是用它生成 jar） 生成 Jar 将 jar 导入 Unity 工程中的 Assets/Plugins">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-a8a272c77e65fac1.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-01dff0ff3f06ba08.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-cdc87b3ef67e72dc.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-aaa693d0ae3f81ed.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-2be33ab0444b96b1.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-4fd0fd7a392fcbeb.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-a42b0cbb4a8685d5.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-e67658c514e06467.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-346cf1f218345413.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-9b7171a4887fc019.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-2313fe7fc1b69636.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-3ae6bd3cb4fe1d99.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-6dbbf9d6fa1fad42.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-4d7d75884390ddf2.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-0e4b00bdd4170065.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-6bf70ce14827681b.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-a264b15f665ecc26.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-58ca22bf42de42b3.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-47b9a4fef3c2818e.png">
+<meta property="og:updated_time" content="2018-03-10T17:11:08.231Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity调用AndroidStudio导出的Jar包">
+<meta name="twitter:description" content="课程内容 制作步骤介绍 创建AndroidStudio工程及Jar包导出 Unity中调用Jar包函数  制作步骤大致步骤如下：  创建新的 Android Studio 工程 为此 Android Studio 工程创建 Android Library 类库（也就是一个 Module）（后面就是用它生成 jar） 生成 Jar 将 jar 导入 Unity 工程中的 Assets/Plugins">
+<meta name="twitter:image" content="http://www.felixwee.com/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-a8a272c77e65fac1.png">
+  
+  
+    <link rel="icon" href="/img/logo.jpg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Chrome on Android -->
+    <link rel="icon" sizes="192x192" href="/img/logo.jpg">
+    <!-- Add to homescreen for Safari on iOS -->
+    <link rel="apple-touch-icon-precomposed" href="/img/logo.jpg">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/img/logo.jpg">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+
+  <script src="/js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="layout">
+     <div class="app_menu">
+          
+     </div>
+     <div class="content_overlay"></div>
+     <div class="main_wrapper">
+      <!--网页主体 -->
+      <div id="container">
+        <div id="wrap">
+          <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">吾爱CODE</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个执着的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <div class="app_menu_button"><span class="main-nav-link" href=""><i class="icon icon-menu"></i></span></div>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/categories/Unity3D/">U3D</a>
+        
+          <a class="main-nav-link" href="/categories/VR/">VR</a>
+        
+          <a class="main-nav-link" href="/">树莓派</a>
+        
+      </nav>
+
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="www.felixwee.com">
+        </form>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+          <div class="outer">
+            <section id="main"><article id="post-unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/" class="article-date">
+  <time datetime="2018-03-11T02:01:00.000Z" itemprop="datePublished">2018-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Unity3D/">Unity3D</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 class="article-title" itemprop="name">
+      Unity调用AndroidStudio导出的Jar包
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h2 id="课程内容"><a href="#课程内容" class="headerlink" title="课程内容"></a>课程内容</h2><ul>
+<li>制作步骤介绍</li>
+<li>创建AndroidStudio工程及Jar包导出</li>
+<li>Unity中调用Jar包函数</li>
+</ul>
+<h2 id="制作步骤"><a href="#制作步骤" class="headerlink" title="制作步骤"></a>制作步骤</h2><p>大致步骤如下：</p>
+<ol>
+<li>创建新的 Android Studio 工程</li>
+<li>为此 Android Studio 工程创建 Android Library 类库（也就是一个 Module）（后面就是用它生成 jar）</li>
+<li>生成 Jar</li>
+<li>将 jar 导入 Unity 工程中的 Assets/Plugins/Android/</li>
+<li>使用 AndroidJavaObject.Call 等方式调用</li>
+</ol>
+<a id="more"></a>
+<h2 id="创建新Android-Studio-工程"><a href="#创建新Android-Studio-工程" class="headerlink" title="创建新Android Studio 工程"></a>创建新Android Studio 工程</h2><h4 id="1-设置好-名称-、-路径-、-包名"><a href="#1-设置好-名称-、-路径-、-包名" class="headerlink" title="1.设置好 名称 、 路径 、 包名"></a>1.设置好 名称 、 路径 、 包名</h4><p>这里的 Package name 只是这个 Android Studio 工程的包名，而我们需要的并不是这个工程，我们后面会在这个工程内新建一个 Android Library 类库，这个类库才是我们要导出 Jar 的对象。所以，这个 Android Studio 工程的 Application name 、Company Domain 、Package name 这三个参数可以随意填写，并不需要与正式工程相同。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-a8a272c77e65fac1.png" alt=""></p>
+<h4 id="2-选择-SDK-版本"><a href="#2-选择-SDK-版本" class="headerlink" title="2.选择 SDK 版本"></a>2.选择 SDK 版本</h4><p>这里的意思是选择一个可兼容的最低的 Android 系统版本。自行选择，随意。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-01dff0ff3f06ba08.png" alt=""></p>
+<h4 id="3-选择-Empty-Activity"><a href="#3-选择-Empty-Activity" class="headerlink" title="3.选择 Empty Activity"></a>3.选择 Empty Activity</h4><p>直接选择空的 Activity 就可以了，因为这个是本工程的 Activity，并不是我们要导出的 Jar 的 Activity。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-cdc87b3ef67e72dc.png" alt=""></p>
+<h4 id="4-给此-Activity-定义参数"><a href="#4-给此-Activity-定义参数" class="headerlink" title="4.给此 Activity 定义参数"></a>4.给此 Activity 定义参数</h4><p>同样，因为这个是本工程的 Activity，并不是我们要导出的 Jar 的 Activity。所以随意填写，和要导出的 Jar 无关。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-aaa693d0ae3f81ed.png" alt=""></p>
+<h4 id="5-新建-Module"><a href="#5-新建-Module" class="headerlink" title="5.新建 Module"></a>5.新建 Module</h4><p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-2be33ab0444b96b1.png" alt=""></p>
+<h4 id="6-选择-Android-Library"><a href="#6-选择-Android-Library" class="headerlink" title="6.选择 Android Library"></a>6.选择 Android Library</h4><p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-4fd0fd7a392fcbeb.png" alt=""></p>
+<h4 id="7-输入-Module-的参数"><a href="#7-输入-Module-的参数" class="headerlink" title="7.输入 Module 的参数"></a>7.输入 Module 的参数</h4><p>这里的参数就是要导出 jar 的 Android Library 类库参数。Package name 与正式工程一致。 Application/Library name 就是就填你要导出的 jar 插件的名称。Module name 自动填写就不用管了。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-a42b0cbb4a8685d5.png" alt=""></p>
+<h4 id="8-导入Unity的classes-jar"><a href="#8-导入Unity的classes-jar" class="headerlink" title="8.导入Unity的classes.jar"></a>8.导入Unity的classes.jar</h4><p>找到 Unity 中的 classes.jar 导入到这个 Module 的 libs 中。classes.jar 在安装路径的相对路径如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\Editor\Data\PlaybackEngines\AndroidPlayer\Variations\mono\Release\Classes\classes.jar</span><br></pre></td></tr></table></figure>
+<p><strong>（Project 视图下可以看到 libs 文件夹）</strong></p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-e67658c514e06467.png" alt=""></p>
+<h4 id="9-把-classes-jar-加入依赖。点击-File-gt-Project-Structure"><a href="#9-把-classes-jar-加入依赖。点击-File-gt-Project-Structure" class="headerlink" title="9.把 classes.jar 加入依赖。点击 File-&gt;Project Structure"></a>9.把 classes.jar 加入依赖。点击 File-&gt;Project Structure</h4><p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-346cf1f218345413.png" alt=""></p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-9b7171a4887fc019.png" alt=""></p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-2313fe7fc1b69636.png" alt=""></p>
+<p>Modules 选择自己新建的 Android Library，中间栏点 Dependencies 标签，然后点击右侧加号+，选择 File Dependency，(新版本Android Studio中为:jar Dependency) 然后找到自己拷贝进来的在 libs 目录下的 classes.jar 点击OK</p>
+<h4 id="10-给-Module-添加-Activity-Class"><a href="#10-给-Module-添加-Activity-Class" class="headerlink" title="10.给 Module 添加 Activity Class"></a>10.给 Module 添加 Activity Class</h4><p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-3ae6bd3cb4fe1d99.png" alt=""></p>
+<p>给新建的 Class 命名。输入 Name 然后点击 OK。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-6dbbf9d6fa1fad42.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.myjar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Intent;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.unity3d.player.UnityPlayerActivity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span>  <span class="keyword">extends</span> <span class="title">UnityPlayerActivity</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle bundle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(bundle);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShareText</span><span class="params">(String message, String body)</span> </span>&#123;</span><br><span class="line">        Intent sharingIntent = <span class="keyword">new</span> Intent(android.content.Intent.ACTION_SEND);</span><br><span class="line">        sharingIntent.setType(<span class="string">"text/plain"</span>);</span><br><span class="line">        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, message);</span><br><span class="line">        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);</span><br><span class="line">        startActivity(Intent.createChooser(sharingIntent, <span class="string">"Share via"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="10-修改-build-gradle"><a href="#10-修改-build-gradle" class="headerlink" title="10.修改 build.gradle"></a>10.修改 build.gradle</h4><p>双击 build.gradle，修改代码，注意修改的是自己新建的 Library 的build.gradle，不是整个 project 的 build.gradle</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-4d7d75884390ddf2.png" alt=""></p>
+<p>在 build.gradle 末尾添加以下代码，表示添加了一个 Task 任务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//task to export contents as jar</span></span><br><span class="line"><span class="function">task <span class="title">ExportJar</span><span class="params">(type: Copy)</span> </span>&#123;</span><br><span class="line">   <span class="comment">//用来删除之前导出的jar文件</span></span><br><span class="line">    delete <span class="string">'release/AndroidPlugin.jar'</span></span><br><span class="line">    <span class="comment">//指定将什么内容打包到jar包中，此处为bundles/release文件内容打包进jar文件.</span></span><br><span class="line">    <span class="comment">//请确认此目录是否存在(没有relase 可选择其它，如default)</span></span><br><span class="line">    from(<span class="string">'build/intermediates/bundles/release/'</span>)</span><br><span class="line">    <span class="comment">//打包好的文件存储在Build目录下什么地方</span></span><br><span class="line">    into(<span class="string">'release/'</span>)</span><br><span class="line">    <span class="comment">//打包时要包含哪些包</span></span><br><span class="line">    include(<span class="string">'classes.jar'</span>)</span><br><span class="line">    <span class="comment">//生成生进行重命名</span></span><br><span class="line">    rename(<span class="string">'classes.jar'</span>, <span class="string">'AndroidPlugin.jar'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行此任务</span></span><br><span class="line">ExportJar.dependsOn(build)</span><br></pre></td></tr></table></figure>
+<h4 id="11-刷新-gradle"><a href="#11-刷新-gradle" class="headerlink" title="11.刷新 gradle"></a>11.刷新 gradle</h4><p>一般情况下修改了 build.gradle 后，系统上方会让你 SyncNow，还可以手动刷新一下，右侧点击 Gradle 标签，选中自己的 Library，右击选择Refresh external project</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-0e4b00bdd4170065.png" alt=""></p>
+<h4 id="12-生成-Jar"><a href="#12-生成-Jar" class="headerlink" title="12.生成 Jar"></a>12.生成 Jar</h4><p>在上一步的窗口中（Gradle projects窗口）往下翻，可以在自己的 Library 展开项的 other 的展开项中找到 exportJar ，双击，然后等待完成。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-6bf70ce14827681b.png" alt=""></p>
+<p>然后就可以在 release 目录下面找到生成好的 jar 包了，右击这个 jar 包选择 Show in Explorer 就可以拿到这个 jar 包了。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-a264b15f665ecc26.png" alt=""></p>
+<h2 id="Unity调用Jar包"><a href="#Unity调用Jar包" class="headerlink" title="Unity调用Jar包"></a>Unity调用Jar包</h2><h4 id="1-导入-Unity"><a href="#1-导入-Unity" class="headerlink" title="1.导入 Unity"></a>1.导入 Unity</h4><p>将拿到的 jar 放到 unity 工程的 Asset/Plugins/Android/ 目录下。没有的话就手动创建目录。</p>
+<p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-58ca22bf42de42b3.png" alt=""></p>
+<h4 id="2-修改或添加-AndroidManifest-xml"><a href="#2-修改或添加-AndroidManifest-xml" class="headerlink" title="2.修改或添加 AndroidManifest.xml"></a>2.修改或添加 AndroidManifest.xml</h4><p>(重要，请仔细阅读，真正理解 AndroidManifest 才是最快的方式)</p>
+<p>如果你是新工程，没有使用过其他 android 的 sdk（指的是 unity 的插件），应该是没有AndroidManifest.xml文件的，这样可以在 Asset/Plugins/Android/ 目录下新建一个 AndroidManifest.xml。</p>
+<p>先介绍新加一个 AndroidManifest.xml</p>
+<p><strong>需要注意:</strong><br>的就是主 activity 的 android:name 需要为 用于导出 jar 的 Library 的包名 + 我们导出的 jar 的主类名,就像下方第4行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.example.myjar.MyActivity</span><br></pre></td></tr></table></figure>
+<p>（这个包名，其实也就是 unity 工程 Player Settings 中填写的包名，因为他们需要一致）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.VIBRATE"</span>&gt;</span><span class="tag">&lt;/<span class="name">uses-permission</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">application</span> <span class="attr">android:icon</span>=<span class="string">"@drawable/app_icon"</span> <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">"com.example.myjar.MyActivity"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:configChanges</span>=<span class="string">"fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>修改 AndroidManifest.xml</p>
+<p>如果你之前的工程有使用过其他的 Android 的 SDK（指的是 unity 的插件），那么在 Asset/Plugins/Android/ 目录下应该已经有一个 AndroidManifest.xml，那么你就需要将这次导出的 jar 的 activity 添加到这个 AndroidManifest.xml 中进行注册。</p>
+<p>一个 AndroidManifest.xml 只有一个主 activity （直接的观察就是这个 activity 标签中包含了下面这段标签）。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>（这里需要强调一下，本文是基于 unity 的 Android 平台的）<br>而 unity 工程，需要将继承了 UnityPlayerActivity 或者 UnityNativePlayerActivity 的 Activity （见上面第9步）为启动 Activity ，才可以在 Android 平台（说白了就是手机等等）启动你的 unity 工程。而这个 “设置为启动 Activity ” 的步骤，就是在 AndroidManifest.xml 中完成的，也就是在 AndroidManifest.xml 中将这个 Activity 注册为主 Activity 。</p>
+<p>还有，你在 unity 中做的所有东西，发布到 Android 上，就只有一个 Activity，你如果在 unity 中唤起了其他的 Activity，就会像手机后台切应用一样的切换到你唤起的这个 Activity。所以，进行 unity 的 android 插件开发，只有一个入口，也就是继承 UnityPlayerActivity 或者 UnityNativePlayerActivity （UnityNativePlayerActivity 其实就是继承UnityPlayerActivity 的一个类，并没有进行任何操作）。</p>
+<p>理解了这些之后，就能理解为什么一般的 unity 插件，并不会将自己的 Activity 注册成主 Activity，所以你只需要将他们的 Activity 标签复制粘贴到你的 AndroidManifest.xml（Asset/Plugins/Android/ 目录下，一个工程只需要一个 AndroidManifest.xml（多个的用法本文不涉及，你只需要知道，Asset/Plugins/Android/ 目录下仅有一个 AndroidManifest.xml 文件））中就可以了（如果他们的 Activity 标签有上面提到的 “intent-filter” 标签 也就是被标记成主 Activity，你就要考虑，他们的功能是需要在 unity 的这个主 Activity 启动就响应的，还是切换另外一个 Activity 才进行操作的）。</p>
+<p>所以，综上，如果是你自行开发的多个 unity Android 插件（jar），就需要尽量先在 Android 层合并成一个 jar 插件包，以保证只有一个入口，一个主 Activity 。不光是自行开发的，使用其他 sdk 的时候，也要想，如果可以直接在 Android 层进行合并操作（统一一个 Activity 入口，然后所有调用其他 sdk 功能的接口全部放在这个 Activity 中）的，就尽量在 Android 层进行。</p>
+<p>多个 unity Android 插件（jar）合并的时候，难的部分其实也不难，就是理解他们的功能，然后合并 AndroidManifest.xml 的操作。</p>
+<h4 id="3-调用-jar-插件中的接口"><a href="#3-调用-jar-插件中的接口" class="headerlink" title="3.调用 jar 插件中的接口"></a>3.调用 jar 插件中的接口</h4><p>unity 中调用 android 层的接口基本都是通过 AndroidJavaClass 、AndroidJavaObject 的方式。<br>比如，上面我导出的 jar 插件中，在 MyActivity 类中我写了一个 ShareText(String , String ) 的接口（第9步），那么我在 unity 中就可以通过以下代码调用这个接口。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AndroidJavaClass jc = <span class="keyword">new</span> AndroidJavaClass(<span class="string">"com.unity3d.player.UnityPlayer"</span>);</span><br><span class="line">AndroidJavaObject jo = jc.GetStatic&lt;AndroidJavaObject&gt;(<span class="string">"currentActivity"</span>);</span><br><span class="line"><span class="keyword">string</span> message = <span class="string">"this is my title"</span>;</span><br><span class="line"><span class="keyword">string</span> body = <span class="string">"this is my content"</span>;</span><br><span class="line">jo.Call(<span class="string">"ShareText"</span>, message, body);</span><br></pre></td></tr></table></figure>
+<p>如果你需要唤起其他的 Activity，就在上方第二行，将 “currentActivity” 改成你在 AndroidManifest.xml 中注册的 Activity 名字，然后就可以通过 AndroidJavaObject.Call 的方式调用那个 Activity 类里的接口。如果这个接口在这个 Activity 类里被标记成了 static，还可以通过AndroidJavaObject.CallStatic 的方式调用。</p>
+<p>第一行的 “com.unity3d.player.UnityPlayer” 是需要调用的接口所在的 Activity 所在的包名，如果是 unity 主 Activity ，就可以直接使用 “com.unity3d.player.UnityPlayer”，如果是其他插件包，就使用那个包的包名。</p>
+<h4 id="4-效果"><a href="#4-效果" class="headerlink" title="4.效果"></a>4.效果</h4><p><img src="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/5319538-47b9a4fef3c2818e.png" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在以前eclipse是作为android开发胡主流工具，从Android Studio退出后由于功能左强大被广泛使用。本文以AndroidStudio为例，导出jar包，供Unity进行调用，这也是接入SDK的重要基础.</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1.<a href="http://blog.csdn.net/u014230923/article/details/51363556" target="_blank" rel="noopener">Android Studio 2.1 和 Unity3D 5.3.4 交互</a></p>
+
+      
+      
+  <div class="article-statement">
+    <hr>
+    
+              
+      
+    <hr>
+    1.如果本文帮到了您，不妨点一下右下角的 <a>分享到</a> 按钮。<br>
+    2.除非注明，本博文章均为原创，转载请以链接形式标明本文地址。<br>
+  </div>
+
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jar包/">Jar包</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDK接入/">SDK接入</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/">Unity</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+    
+<nav>
+   <div class="navlink_article_wrap">
+      <div class="nav_previous left">
+
+           <span style="color:#999;display:block;">PREVIOUS</span>
+             
+              <span class="article-nav-title"><span style="color:#999">已经是最旧的文章了</span></span>
+            
+
+      </div>
+
+
+      <div class="nav_next right">
+        <span style="color:#999;display:block;">NEXT</span>
+          
+            <a href="/2017/12/09/ar/vuforia-intro/vuforia_intro/" class="article-nav-title">
+            AR体验之Vuforia学习</a>
+          
+      </div>
+   </div>
+</nav>
+
+
+  
+
+	<!-- 首页不显示评论 -->
+	 
+	 <div>
+	   <!--PC和WAP自适应版-->
+		<div id="SOHUCS" sid="Unity调用AndroidStudio导出的Jar包" ></div>
+		<script type="text/javascript">
+		(function(){
+		var appid = 'cytvbtj5E';
+		var conf = 'prod_de8c7b4109591c2c30018260c933fc91';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+	  </div>
+    
+
+  </div>
+
+</article>
+</section>
+            
+              <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">网站公告</h3>
+  <div class="widget">
+  
+      感谢各位博友的支持，如果觉得本博客帮到你，可以分享给你身边的朋友！ 
+       
+	   <span class="right">Felixwee</span>
+  
+      </br></br>
+	  
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">来关注我</h3>
+  <div class="widget">
+    <ul>
+	   <div style="text-align: center;">
+            <img src="/img/avatar.jpg" style="width: 100%; max-width: 160px;">
+       </div>
+	   <div style="text-align: center;">FELIXWEE(魏凤安)</div>
+
+      
+      
+        
+        
+        
+        <li>
+		  <span>QQ: 1327707237</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>E-mail: felixwee@163.com</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>GitHub: https://github.com/weifengan</span>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">推荐文章</h3>
+  <div class="widget">
+    <ul>
+      
+      
+        
+        <li>
+          <a href="/2016/10/24/00009_ngui_tuwenhunpai/TextEmotion/" target="_blank">1. 《NGUI实战之图文混排》</a>
+        </li>
+      
+        
+        <li>
+          <a href="/2015/09/02/dsoframer-introduction-resources/" target="_blank">2. DSOframer的简单介绍和资源整理</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AR/">AR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/BAT/">BAT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NGUI/">NGUI</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity3D/">Unity3D</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VR/">VR</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AR/" style="font-size: 10px;">AR</a> <a href="/tags/Android-Studio/" style="font-size: 10px;">Android Studio</a> <a href="/tags/BAT/" style="font-size: 10px;">BAT</a> <a href="/tags/CheckBox/" style="font-size: 10px;">CheckBox</a> <a href="/tags/HTC-Vive/" style="font-size: 13.33px;">HTC Vive</a> <a href="/tags/HTC-Vive-手柄/" style="font-size: 10px;">HTC Vive 手柄</a> <a href="/tags/Jar包/" style="font-size: 10px;">Jar包</a> <a href="/tags/Label/" style="font-size: 10px;">Label</a> <a href="/tags/LayerMask/" style="font-size: 10px;">LayerMask</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/NGUI/" style="font-size: 20px;">NGUI</a> <a href="/tags/Oculus/" style="font-size: 10px;">Oculus</a> <a href="/tags/PlayStation-VR/" style="font-size: 10px;">PlayStation VR</a> <a href="/tags/SDK接入/" style="font-size: 10px;">SDK接入</a> <a href="/tags/ScrollBar/" style="font-size: 10px;">ScrollBar</a> <a href="/tags/Slider/" style="font-size: 10px;">Slider</a> <a href="/tags/TabView/" style="font-size: 10px;">TabView</a> <a href="/tags/TextList/" style="font-size: 10px;">TextList</a> <a href="/tags/Toggle/" style="font-size: 10px;">Toggle</a> <a href="/tags/UGUI/" style="font-size: 10px;">UGUI</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIInput/" style="font-size: 13.33px;">UIInput</a> <a href="/tags/Unity/" style="font-size: 16.67px;">Unity</a> <a href="/tags/Unity层/" style="font-size: 10px;">Unity层</a> <a href="/tags/VR/" style="font-size: 16.67px;">VR</a> <a href="/tags/VR-UI/" style="font-size: 10px;">VR UI</a> <a href="/tags/Vive-Teleporter/" style="font-size: 10px;">Vive Teleporter</a> <a href="/tags/Vuforia/" style="font-size: 10px;">Vuforia</a> <a href="/tags/cmd/" style="font-size: 10px;">cmd</a> <a href="/tags/progressBar/" style="font-size: 10px;">progressBar</a> <a href="/tags/subst/" style="font-size: 10px;">subst</a> <a href="/tags/交互/" style="font-size: 10px;">交互</a> <a href="/tags/位图字体/" style="font-size: 10px;">位图字体</a> <a href="/tags/单选按钮/" style="font-size: 10px;">单选按钮</a> <a href="/tags/图文混排/" style="font-size: 13.33px;">图文混排</a> <a href="/tags/多选按钮/" style="font-size: 10px;">多选按钮</a> <a href="/tags/批处理/" style="font-size: 10px;">批处理</a> <a href="/tags/按钮/" style="font-size: 10px;">按钮</a> <a href="/tags/控制器/" style="font-size: 10px;">控制器</a> <a href="/tags/文本列表/" style="font-size: 10px;">文本列表</a> <a href="/tags/映射磁盘/" style="font-size: 10px;">映射磁盘</a> <a href="/tags/标签/" style="font-size: 10px;">标签</a> <a href="/tags/滑块/" style="font-size: 10px;">滑块</a> <a href="/tags/滚动文本/" style="font-size: 10px;">滚动文本</a> <a href="/tags/滚动条/" style="font-size: 10px;">滚动条</a> <a href="/tags/聊天/" style="font-size: 10px;">聊天</a> <a href="/tags/聊天内容/" style="font-size: 10px;">聊天内容</a> <a href="/tags/聊天表情/" style="font-size: 10px;">聊天表情</a> <a href="/tags/虚拟现实/" style="font-size: 10px;">虚拟现实</a> <a href="/tags/触摸盘/" style="font-size: 10px;">触摸盘</a> <a href="/tags/输入本文/" style="font-size: 13.33px;">输入本文</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/页签/" style="font-size: 10px;">页签</a> <a href="/tags/高通/" style="font-size: 10px;">高通</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">2018年 03月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">2017年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最近评论</h3>
+    <div class="widget">
+      
+	  
+	  
+	  
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://segmentfault.com/" target="_blank">SegmentFault</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/">Unity调用AndroidStudio导出的Jar包</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/09/ar/vuforia-intro/vuforia_intro/">AR体验之Vuforia学习</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/17/database/00015_unity_mysql/unity_op_mysql/">Unity操作MySQL数据库（增删改查)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/">NGUI图文聊天中的图文混排</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/03/vr/00011_vr_ui_ugui/htc_vive_ui/">如何在HTC Vive中创建UI界面</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AR/">AR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BAT/">BAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CheckBox/">CheckBox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jar包/">Jar包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Label/">Label</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayerMask/">LayerMask</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGUI/">NGUI</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oculus/">Oculus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK接入/">SDK接入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ScrollBar/">ScrollBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slider/">Slider</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TabView/">TabView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextList/">TextList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toggle/">Toggle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UGUI/">UGUI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/">UIButton</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIInput/">UIInput</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity层/">Unity层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR/">VR</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR-UI/">VR UI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vuforia/">Vuforia</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmd/">cmd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/progressBar/">progressBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/subst/">subst</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/交互/">交互</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/位图字体/">位图字体</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单选按钮/">单选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图文混排/">图文混排</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多选按钮/">多选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/批处理/">批处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/按钮/">按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/控制器/">控制器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本列表/">文本列表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/映射磁盘/">映射磁盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标签/">标签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑块/">滑块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动文本/">滚动文本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动条/">滚动条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天/">聊天</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天内容/">聊天内容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天表情/">聊天表情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟现实/">虚拟现实</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/触摸盘/">触摸盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/输入本文/">输入本文</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进度条/">进度条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页签/">页签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高通/">高通</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+          </div>
+          <footer id="footer">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      Copyright &copy; 2012 - 2018 <a href="/" target="_blank">felixwee</a>.
+      &nbsp;
+      <span id="busuanzi_container_site_pv">
+        总访问量 <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_pv"></span></a> 次
+      </span>
+      <span id="busuanzi_container_site_uv">
+        <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_uv"></span></a> 人.
+      </span>
+      
+    </div>
+  </div>
+</footer>
+
+        </div>
+        <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/categories/Unity3D/" class="mobile-nav-link">U3D</a>
+  
+    <a href="/categories/VR/" class="mobile-nav-link">VR</a>
+  
+    <a href="/" class="mobile-nav-link">树莓派</a>
+  
+</nav>
+        <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+
+<script src="/js/script.js"></script>
+
+      </div>
+  </div>
+</div>
+
+</body>
+</html>
