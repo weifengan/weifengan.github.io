@@ -57,4 +57,12 @@
     stopSearchAnim();
   });
 
+  $('button').on('click', function() {
+ 		 $('.layout').addClass('menu_open');
+
+
+     });
+ 	$('.content_overlay').on('click', function () {
+         $('.layout').removeClass('menu_open');
+    });
 })(jQuery);
