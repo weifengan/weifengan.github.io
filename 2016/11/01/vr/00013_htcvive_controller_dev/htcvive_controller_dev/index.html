@@ -11,7 +11,7 @@
   <!-- No Baidu Siteapp-->
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
   <meta name="description" content="预备知识在使用Unity中针对HTC Vive设备进行开发，需要使用到Steam平台为我们提供的插件包 SteamVR Plugin.unitypackage. 这个插件中已经封装了与HTC Vive硬件进行通信的相关类，也是我们在做HTC Vive开发过程中经常使用的类，下面讲带领大家一起来了解一下。  SteamVR_TrackedObject此类用于根据硬件设备，并为硬件设备分配相应的索引">
-<meta name="keywords" content="VR,虚拟现实,HTC Vive,HTC Vive 手柄,控制器,触摸盘,交互">
+<meta name="keywords" content="HTC Vive,VR,虚拟现实,HTC Vive 手柄,控制器,触摸盘,交互">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HTC Vive虚拟现实设备手柄交互教程">
 <meta property="og:url" content="http://www.felixwee.com/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/index.html">
@@ -40,19 +40,20 @@
   <link rel="stylesheet" href="/css/style.css">
   <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
   
+
+  <script src="/js/jquery.min.js"></script>
 </head>
 
 <body>
   <div class="layout">
      <div class="app_menu">
-         Menu
+          
      </div>
      <div class="content_overlay"></div>
      <div class="main_wrapper">
       <!--网页主体 -->
       <div id="container">
         <div id="wrap">
-           <button>点我</button>
           <header id="header">
   <div id="banner"></div>
   <div id="header-outer" class="outer">
@@ -68,17 +69,15 @@
     </div>
     <div id="header-inner" class="inner">
       <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon">aa</a>
+        <div class="app_menu_button"><span class="main-nav-link" href=""><i class="icon icon-menu"></i></span></div>
         
           <a class="main-nav-link" href="/">首页</a>
         
-          <a class="main-nav-link" href="/categories/Unity3D/">Unity3D</a>
-        
-          <a class="main-nav-link" href="/">服务器</a>
+          <a class="main-nav-link" href="/categories/Unity3D/">U3D</a>
         
           <a class="main-nav-link" href="/categories/VR/">VR</a>
         
-          <a class="main-nav-link" href="/">嵌入式</a>
+          <a class="main-nav-link" href="/">树莓派</a>
         
       </nav>
 
@@ -273,10 +272,10 @@
   <div class="widget">
     <ul>
 	   <div style="text-align: center;">
-            <img src="http://www.felixwee.com/img/avatar.jpg" style="width: 100%; max-width: 160px;">
+            <img src="/img/avatar.jpg" style="width: 100%; max-width: 160px;">
        </div>
 	   <div style="text-align: center;">FELIXWEE(魏凤安)</div>
-	   
+
       
       
         
@@ -444,13 +443,11 @@
   
     <a href="/" class="mobile-nav-link">首页</a>
   
-    <a href="/categories/Unity3D/" class="mobile-nav-link">Unity3D</a>
-  
-    <a href="/" class="mobile-nav-link">服务器</a>
+    <a href="/categories/Unity3D/" class="mobile-nav-link">U3D</a>
   
     <a href="/categories/VR/" class="mobile-nav-link">VR</a>
   
-    <a href="/" class="mobile-nav-link">嵌入式</a>
+    <a href="/" class="mobile-nav-link">树莓派</a>
   
 </nav>
         <!-- totop start -->
@@ -459,11 +456,6 @@
 </div>
 
 <!-- totop end -->
-
-<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="https://nts.newbieol.com/assets/javascripts/bootstrap.min.js"></script> 
-
-
 
 
 

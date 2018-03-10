@@ -35,19 +35,20 @@
   <link rel="stylesheet" href="/css/style.css">
   <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
   
+
+  <script src="/js/jquery.min.js"></script>
 </head>
 
 <body>
   <div class="layout">
      <div class="app_menu">
-         Menu
+          
      </div>
      <div class="content_overlay"></div>
      <div class="main_wrapper">
       <!--网页主体 -->
       <div id="container">
         <div id="wrap">
-           <button>点我</button>
           <header id="header">
   <div id="banner"></div>
   <div id="header-outer" class="outer">
@@ -63,17 +64,15 @@
     </div>
     <div id="header-inner" class="inner">
       <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon">aa</a>
+        <div class="app_menu_button"><span class="main-nav-link" href=""><i class="icon icon-menu"></i></span></div>
         
           <a class="main-nav-link" href="/">首页</a>
         
-          <a class="main-nav-link" href="/categories/Unity3D/">Unity3D</a>
-        
-          <a class="main-nav-link" href="/">服务器</a>
+          <a class="main-nav-link" href="/categories/Unity3D/">U3D</a>
         
           <a class="main-nav-link" href="/categories/VR/">VR</a>
         
-          <a class="main-nav-link" href="/">嵌入式</a>
+          <a class="main-nav-link" href="/">树莓派</a>
         
       </nav>
 
@@ -456,77 +455,6 @@
 </article>
 
   
-    <article id="post-ngui/00003_Input/Input" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/13/ngui/00003_Input/Input/" class="article-date">
-  <time datetime="2016-10-13T12:37:51.000Z" itemprop="datePublished">2016-10-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/NGUI/">NGUI</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-		
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/13/ngui/00003_Input/Input/">NGUI组件之输入文本(UIInput)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="输入框介绍"><a href="#输入框介绍" class="headerlink" title="输入框介绍"></a>输入框介绍</h2><p>输入框是再Label的基础上扩展出来的一种组件，主要的用途是接收用户的输入文本,可以输入单行或者多行文本，常用于注册界面的数据校验。</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/10/13/ngui/00003_Input/Input/#more">阅读全文</a>
-          </p>
-        
-      
-      
-
-    </div>
-
-    <footer class="article-footer">
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NGUI/">NGUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIInput/">UIInput</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/输入本文/">输入本文</a></li></ul>
-
-
-	  <!--bShare分享-->
-		<div class="right">
-		   <div class="bshare-custom">
-		   <a title="分享到微信" class="bshare-weixin"></a>
-		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
-		   </a><a title="分享到人人网" class="bshare-renren"></a>
-		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
-		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
-		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
-		   <span class="BSHARE_COUNT bshare-share-count">0</span>
-		</div>
-		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
-
-
-    </footer>
-    <div>
-	</div>
-
-  <!--上下篇文章连接-->
-  
-
-	<!-- 首页不显示评论 -->
-	 
-
-  </div>
-
-</article>
-
-  
     <article id="post-ngui/00002_ngui_label/Label" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/10/13/ngui/00002_ngui_label/Label/" class="article-date">
@@ -567,6 +495,77 @@
     <footer class="article-footer">
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Label/">Label</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NGUI/">NGUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/标签/">标签</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+
+	<!-- 首页不显示评论 -->
+	 
+
+  </div>
+
+</article>
+
+  
+    <article id="post-ngui/00003_Input/Input" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/13/ngui/00003_Input/Input/" class="article-date">
+  <time datetime="2016-10-13T12:37:51.000Z" itemprop="datePublished">2016-10-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/NGUI/">NGUI</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/13/ngui/00003_Input/Input/">NGUI组件之输入文本(UIInput)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="输入框介绍"><a href="#输入框介绍" class="headerlink" title="输入框介绍"></a>输入框介绍</h2><p>输入框是再Label的基础上扩展出来的一种组件，主要的用途是接收用户的输入文本,可以输入单行或者多行文本，常用于注册界面的数据校验。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/10/13/ngui/00003_Input/Input/#more">阅读全文</a>
+          </p>
+        
+      
+      
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NGUI/">NGUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIInput/">UIInput</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/输入本文/">输入本文</a></li></ul>
 
 
 	  <!--bShare分享-->
@@ -697,10 +696,10 @@
   <div class="widget">
     <ul>
 	   <div style="text-align: center;">
-            <img src="http://www.felixwee.com/img/avatar.jpg" style="width: 100%; max-width: 160px;">
+            <img src="/img/avatar.jpg" style="width: 100%; max-width: 160px;">
        </div>
 	   <div style="text-align: center;">FELIXWEE(魏凤安)</div>
-	   
+
       
       
         
@@ -868,13 +867,11 @@
   
     <a href="/" class="mobile-nav-link">首页</a>
   
-    <a href="/categories/Unity3D/" class="mobile-nav-link">Unity3D</a>
-  
-    <a href="/" class="mobile-nav-link">服务器</a>
+    <a href="/categories/Unity3D/" class="mobile-nav-link">U3D</a>
   
     <a href="/categories/VR/" class="mobile-nav-link">VR</a>
   
-    <a href="/" class="mobile-nav-link">嵌入式</a>
+    <a href="/" class="mobile-nav-link">树莓派</a>
   
 </nav>
         <!-- totop start -->
@@ -883,11 +880,6 @@
 </div>
 
 <!-- totop end -->
-
-<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="https://nts.newbieol.com/assets/javascripts/bootstrap.min.js"></script> 
-
-
 
 
 

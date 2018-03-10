@@ -57,13 +57,10 @@
     stopSearchAnim();
   });
 
-  alert("ok");
   //左侧菜单打开按钮
-  $('button').on('click', function() {
+  $('.app_menu_button').on('click', function() {
  		 $('.layout').addClass('menu_open');
-
-
-     });
+  });
  	$('.content_overlay').on('click', function () {
          $('.layout').removeClass('menu_open');
     });
