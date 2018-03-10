@@ -57,6 +57,8 @@
     stopSearchAnim();
   });
 
+  alert("ok");
+  //左侧菜单打开按钮
   $('button').on('click', function() {
  		 $('.layout').addClass('menu_open');
 
