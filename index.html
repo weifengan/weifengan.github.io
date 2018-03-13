@@ -124,29 +124,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <!-- Table of Contents -->
-        
         <p>大家好，我是felixwee,今天从新安装了一个树莓派系统，安装了中文支持和输入法，但是接上音箱后，想来一个放松，放首音乐听听，结果，插上耳机去没有声音，经过度娘的帮助 ，找到了答案。在些做一记录。</p>
 <p>实际上raspberry pi内置了两种音频输出模式，分别是:</p>
 <ul>
 <li>HDMI</li>
 <li>耳机接口。</li>
 </ul>
-<p>耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。</p>
-<p>这里有两种方式进行修改：</p>
-<h3 id="1-通过命令行修改"><a href="#1-通过命令行修改" class="headerlink" title="1.通过命令行修改"></a>1.通过命令行修改</h3><p>amixer，是alsamixer的文本模式,即命令行模式，需要用amixer命令的形式去配置你的声卡的各个选项。</p>
-<p>打开终端,输入下面命令将会切换到耳机孔输出模式<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">amixer cset numid=<span class="number">3</span> <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
-<p>这里将输出设置为2，也就是HDMI。<br>将输出设置为1将切换到模拟信号（也就是耳机接口）。<br>默认的设置为0，代表自动选择。  </p>
-<h3 id="2-通过raspi设置"><a href="#2-通过raspi设置" class="headerlink" title="2.通过raspi设置"></a>2.通过raspi设置</h3><p>在命令行中输入raspi-config打开raspi-config工具:</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
-<p>在打开界面中，选中【Advanced Options】按回车：</p>
-<p><img src="/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/20180313220435569.jpg" alt=""></p>
-<p>进入后，选择【Audio】</p>
-<p><img src="/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/20180313221101302.jpg" alt=""></p>
-<p>进入Audio后有3个选项，选择响应的项按回车就OK了。</p>
-<p><img src="/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/20180313221254152.jpg" alt=""></p>
-<p>经过上面的折腾，总处可以播放音乐了。</p>
-
+<p>耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。<br></p>
+        
+          <p class="article-more-link">
+            <a href="/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/#more">阅读全文</a>
+          </p>
+        
       
       
 

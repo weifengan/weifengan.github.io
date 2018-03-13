@@ -10,21 +10,21 @@
   <meta name="renderer" content="webkit">
   <!-- No Baidu Siteapp-->
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
-  <meta name="description" content="大家好，我是felixwee,今天从新安装了一个树莓派系统，安装了中文支持和输入法，但是接上音箱后，想来一个放松，放首音乐听听，结果，插上耳机去没有声音，经过度娘的帮助 ，找到了答案。在些做一记录。 实际上raspberry pi内置了两种音频输出模式，分别是:  HDMI 耳机接口。  耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。 这里有两种方式进行修改：">
+  <meta name="description" content="大家好，我是felixwee,今天从新安装了一个树莓派系统，安装了中文支持和输入法，但是接上音箱后，想来一个放松，放首音乐听听，结果，插上耳机去没有声音，经过度娘的帮助 ，找到了答案。在些做一记录。 实际上raspberry pi内置了两种音频输出模式，分别是:  HDMI 耳机接口。  耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。">
 <meta name="keywords" content="Raspberry,嵌入式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Raspberry Pi无法输出声音">
 <meta property="og:url" content="http://www.felixwee.com/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/index.html">
 <meta property="og:site_name" content="吾爱CODE">
-<meta property="og:description" content="大家好，我是felixwee,今天从新安装了一个树莓派系统，安装了中文支持和输入法，但是接上音箱后，想来一个放松，放首音乐听听，结果，插上耳机去没有声音，经过度娘的帮助 ，找到了答案。在些做一记录。 实际上raspberry pi内置了两种音频输出模式，分别是:  HDMI 耳机接口。  耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。 这里有两种方式进行修改：">
+<meta property="og:description" content="大家好，我是felixwee,今天从新安装了一个树莓派系统，安装了中文支持和输入法，但是接上音箱后，想来一个放松，放首音乐听听，结果，插上耳机去没有声音，经过度娘的帮助 ，找到了答案。在些做一记录。 实际上raspberry pi内置了两种音频输出模式，分别是:  HDMI 耳机接口。  耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.felixwee.com/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/20180313220435569.jpg">
 <meta property="og:image" content="http://www.felixwee.com/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/20180313221101302.jpg">
 <meta property="og:image" content="http://www.felixwee.com/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/20180313221254152.jpg">
-<meta property="og:updated_time" content="2018-03-13T14:14:37.016Z">
+<meta property="og:updated_time" content="2018-03-13T14:19:09.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Raspberry Pi无法输出声音">
-<meta name="twitter:description" content="大家好，我是felixwee,今天从新安装了一个树莓派系统，安装了中文支持和输入法，但是接上音箱后，想来一个放松，放首音乐听听，结果，插上耳机去没有声音，经过度娘的帮助 ，找到了答案。在些做一记录。 实际上raspberry pi内置了两种音频输出模式，分别是:  HDMI 耳机接口。  耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。 这里有两种方式进行修改：">
+<meta name="twitter:description" content="大家好，我是felixwee,今天从新安装了一个树莓派系统，安装了中文支持和输入法，但是接上音箱后，想来一个放松，放首音乐听听，结果，插上耳机去没有声音，经过度娘的帮助 ，找到了答案。在些做一记录。 实际上raspberry pi内置了两种音频输出模式，分别是:  HDMI 耳机接口。  耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。">
 <meta name="twitter:image" content="http://www.felixwee.com/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/20180313220435569.jpg">
   
   
@@ -136,7 +136,7 @@
 <li>HDMI</li>
 <li>耳机接口。</li>
 </ul>
-<p>耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。</p>
+<p>耳机孔没有声音的原因是音频输出采用的是HDMI方式，所以只需要进行一个切换就OK了。<br><a id="more"></a></p>
 <p>这里有两种方式进行修改：</p>
 <h3 id="1-通过命令行修改"><a href="#1-通过命令行修改" class="headerlink" title="1.通过命令行修改"></a>1.通过命令行修改</h3><p>amixer，是alsamixer的文本模式,即命令行模式，需要用amixer命令的形式去配置你的声卡的各个选项。</p>
 <p>打开终端,输入下面命令将会切换到耳机孔输出模式<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">amixer cset numid=<span class="number">3</span> <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
