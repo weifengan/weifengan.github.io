@@ -175,6 +175,155 @@
 </article>
 
   
+    <article id="post-ugui/ugui_grey_ui/ugui_grey_ui" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/" class="article-date">
+  <time datetime="2018-03-20T03:01:00.000Z" itemprop="datePublished">2018-03-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/UGUI/">UGUI</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/">UGUI中实现图片的灰度显示效果</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <h2 id="UGUI灰度图实现法"><a href="#UGUI灰度图实现法" class="headerlink" title="UGUI灰度图实现法"></a>UGUI灰度图实现法</h2><p>UGUI的image组件上有材质球插槽，那么很显然可以从这里入手，然后编写shader，挂载上去效果就出来了。<br>原图：</p>
+<p><img src="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/002wvREMgy6RcYPUsv567690.png" alt=""></p>
+<p>灰色效果：</p>
+<p><img src="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/002wvREMgy6RcYQsGul61690.png" alt=""></p>
+<p>Blending的渲染顺序：</p>
+<p><img src="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/002wvREMgy6Rd06GM1zf1.png" alt=""></p>
+<p>新建一个shader，增加融合和变灰的代码即可。<br>通过这样的一个小例子，可以发现UGUI比NGUI在处理UI界面时，更容易通过shader去做一些效果。</p>
+<h2 id="shader代码："><a href="#shader代码：" class="headerlink" title="shader代码："></a>shader代码：</h2><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Shader <span class="string">"UI/Default Grey"</span>     </span><br><span class="line">&#123;     </span><br><span class="line">    Properties     </span><br><span class="line">    &#123;     </span><br><span class="line">        [<span class="meta">PerRendererData</span>] _MainTex (<span class="string">"Sprite Texture"</span>, <span class="number">2</span>D) = <span class="string">"white"</span> &#123;&#125;     </span><br><span class="line">        _Color (<span class="string">"Tint"</span>, Color) = (<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)  </span><br><span class="line">    &#125;     </span><br><span class="line"></span><br><span class="line">    SubShader     </span><br><span class="line">    &#123;     </span><br><span class="line">        Tags     </span><br><span class="line">        &#123;      </span><br><span class="line">            <span class="string">"Queue"</span>=<span class="string">"Transparent"</span>      </span><br><span class="line">            <span class="string">"IgnoreProjector"</span>=<span class="string">"True"</span>      </span><br><span class="line">            <span class="string">"RenderType"</span>=<span class="string">"Transparent"</span>      </span><br><span class="line">            <span class="string">"PreviewType"</span>=<span class="string">"Plane"</span>     </span><br><span class="line">            <span class="string">"CanUseSpriteAtlas"</span>=<span class="string">"True"</span>     </span><br><span class="line">        &#125;     </span><br><span class="line">        <span class="comment">// 源rgba*源a + 背景rgba*(1-源A值)   </span></span><br><span class="line">        Blend SrcAlpha OneMinusSrcAlpha  </span><br><span class="line"></span><br><span class="line">        Pass     </span><br><span class="line">        &#123;     </span><br><span class="line">            CGPROGRAM     </span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> vertex vert     </span></span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> fragment frag     </span></span><br><span class="line">            <span class="meta">#include "UnityCG.cginc"     </span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">struct</span> appdata_t     </span><br><span class="line">            &#123;     </span><br><span class="line">                float4 vertex   : POSITION;     </span><br><span class="line">                float4 color    : COLOR;     </span><br><span class="line">                float2 texcoord : TEXCOORD0;     </span><br><span class="line">            &#125;;     </span><br><span class="line"></span><br><span class="line">            <span class="keyword">struct</span> v2f     </span><br><span class="line">            &#123;     </span><br><span class="line">                float4 vertex   : SV_POSITION;     </span><br><span class="line">                fixed4 color    : COLOR;     </span><br><span class="line">                half2 texcoord  : TEXCOORD0;     </span><br><span class="line">            &#125;;     </span><br><span class="line"></span><br><span class="line">            sampler2D _MainTex;       </span><br><span class="line">            fixed4 _Color;     </span><br><span class="line"></span><br><span class="line">            <span class="function">v2f <span class="title">vert</span>(<span class="params">appdata_t IN</span>)     </span></span><br><span class="line"><span class="function">            </span>&#123;     </span><br><span class="line">                v2f OUT;     </span><br><span class="line">                OUT.vertex = mul(UNITY_MATRIX_MVP, IN.vertex);     </span><br><span class="line">                OUT.texcoord = IN.texcoord;     </span><br><span class="line">                <span class="meta">#ifdef UNITY_HALF_TEXEL_OFFSET     </span></span><br><span class="line">                     OUT.vertex.xy -= (_ScreenParams.zw<span class="number">-1.0</span>);     </span><br><span class="line">                <span class="meta">#<span class="meta-keyword">endif</span>     </span></span><br><span class="line">                OUT.color = IN.color * _Color;     </span><br><span class="line">                <span class="keyword">return</span> OUT;  </span><br><span class="line">            &#125;  </span><br><span class="line"></span><br><span class="line">            <span class="function">fixed4 <span class="title">frag</span>(<span class="params">v2f IN</span>) : SV_Target     </span></span><br><span class="line"><span class="function">            </span>&#123;     </span><br><span class="line">                <span class="comment">//获取贴图的颜色值</span></span><br><span class="line">                half4 color = tex2D(_MainTex, IN.texcoord) * IN.color;     </span><br><span class="line">                <span class="comment">//通过灰度计算公式，得到灰度值</span></span><br><span class="line">                <span class="keyword">float</span> grey = dot(color.rgb, fixed3(<span class="number">0.22</span>, <span class="number">0.707</span>, <span class="number">0.071</span>));   </span><br><span class="line">                <span class="comment">//返回将计算好的灰度值</span></span><br><span class="line">                <span class="keyword">return</span> half4(grey,grey,grey,color.a);     </span><br><span class="line">            &#125;     </span><br><span class="line">            ENDCG     </span><br><span class="line">        &#125;     </span><br><span class="line">    &#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+      
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UGUI/">UGUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/">Unity</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/灰度效果/">灰度效果</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/禁用效果/">禁用效果</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+
+	<!-- 首页不显示评论 -->
+	 
+
+  </div>
+
+</article>
+
+  
+    <article id="post-unity/gl_basic/gl_basic" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/19/unity/gl_basic/gl_basic/" class="article-date">
+  <time datetime="2018-03-19T14:01:00.000Z" itemprop="datePublished">2018-03-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Unity3D/">Unity3D</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/19/unity/gl_basic/gl_basic/">Unity中GL基础-直线，三角形，四边形</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-什么是GL"><a href="#1-什么是GL" class="headerlink" title="1.什么是GL"></a>1.什么是GL</h2><p>GL(Graphics Library)是底层图像库，主要是可以使用程序来绘制2D或者3D图形。绘制出来的2D或者3D图形都是以面的形式渲染。</p>
+<p>2D图形与3D图形的区别是2D图形在所有3D物体的上方，不会随摄像机的移动而改变，而3D图形会根据摄像机的移动而移动。绘制2D图形需要用到GL库 中的LoadOrtho方法，该方法的作用是做一个正交投影变换，将图形映射在屏幕中，而绘制3D图形与绘制2D唯一不同的是无需调用LoadOrtho方法。</p>
+<p>GL可以绘制线段、三角形、三角形带(前三个点组成一个简单三角形，第四个点和前面两个点组成三角形，依次类推)和四边形。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/03/19/unity/gl_basic/gl_basic/#more">阅读全文</a>
+          </p>
+        
+      
+      
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GL绘图/">GL绘图</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/">Unity</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+
+	<!-- 首页不显示评论 -->
+	 
+
+  </div>
+
+</article>
+
+  
     <article id="post-raspi/01_树莓派没有音频输出/raspi_no_sound" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/" class="article-date">
@@ -483,6 +632,79 @@
 </article>
 
   
+    <article id="post-ngui/00014_ngui_twhp/TextEmotion" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/" class="article-date">
+  <time datetime="2017-01-04T12:37:51.000Z" itemprop="datePublished">2017-01-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/NGUI/">NGUI</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/">NGUI图文聊天中的图文混排</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="图文混排介绍"><a href="#图文混排介绍" class="headerlink" title="图文混排介绍"></a>图文混排介绍</h2><p>图文混排通常用于聊天模块，在文字中夹杂表情图片。</p>
+<p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg" alt=""></p>
+<h2 id="位图字体制作"><a href="#位图字体制作" class="headerlink" title="位图字体制作"></a>位图字体制作</h2><p>1）图文混排的制作，首先要制作位图字体。<br>首先得下载一个位图制作工具Bitmap font generator,可以点击<a href="./assets/bmfont_1.13.exe">这里</a>下载<br>2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。</p>
+        
+          <p class="article-more-link">
+            <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/#more">阅读全文</a>
+          </p>
+        
+      
+      
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NGUI/">NGUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图文混排/">图文混排</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/聊天/">聊天</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/聊天表情/">聊天表情</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+
+	<!-- 首页不显示评论 -->
+	 
+
+  </div>
+
+</article>
+
+  
     <article id="post-ngui/ngui_dragdrop/ngui_dragdop" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/01/04/ngui/ngui_dragdrop/ngui_dragdop/" class="article-date">
@@ -568,79 +790,6 @@
 </article>
 
   
-    <article id="post-ngui/00014_ngui_twhp/TextEmotion" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/" class="article-date">
-  <time datetime="2017-01-04T12:37:51.000Z" itemprop="datePublished">2017-01-04</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/NGUI/">NGUI</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-		
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/">NGUI图文聊天中的图文混排</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="图文混排介绍"><a href="#图文混排介绍" class="headerlink" title="图文混排介绍"></a>图文混排介绍</h2><p>图文混排通常用于聊天模块，在文字中夹杂表情图片。</p>
-<p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg" alt=""></p>
-<h2 id="位图字体制作"><a href="#位图字体制作" class="headerlink" title="位图字体制作"></a>位图字体制作</h2><p>1）图文混排的制作，首先要制作位图字体。<br>首先得下载一个位图制作工具Bitmap font generator,可以点击<a href="./assets/bmfont_1.13.exe">这里</a>下载<br>2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。</p>
-        
-          <p class="article-more-link">
-            <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/#more">阅读全文</a>
-          </p>
-        
-      
-      
-
-    </div>
-
-    <footer class="article-footer">
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NGUI/">NGUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图文混排/">图文混排</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/聊天/">聊天</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/聊天表情/">聊天表情</a></li></ul>
-
-
-	  <!--bShare分享-->
-		<div class="right">
-		   <div class="bshare-custom">
-		   <a title="分享到微信" class="bshare-weixin"></a>
-		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
-		   </a><a title="分享到人人网" class="bshare-renren"></a>
-		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
-		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
-		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
-		   <span class="BSHARE_COUNT bshare-share-count">0</span>
-		</div>
-		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
-
-
-    </footer>
-    <div>
-	</div>
-
-  <!--上下篇文章连接-->
-  
-
-	<!-- 首页不显示评论 -->
-	 
-
-  </div>
-
-</article>
-
-  
     <article id="post-vr/00011_vr_ui_ugui/htc_vive_ui" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/11/03/vr/00011_vr_ui_ugui/htc_vive_ui/" class="article-date">
@@ -683,160 +832,6 @@
     <footer class="article-footer">
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NGUI/">NGUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UGUI/">UGUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VR/">VR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VR-UI/">VR UI</a></li></ul>
-
-
-	  <!--bShare分享-->
-		<div class="right">
-		   <div class="bshare-custom">
-		   <a title="分享到微信" class="bshare-weixin"></a>
-		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
-		   </a><a title="分享到人人网" class="bshare-renren"></a>
-		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
-		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
-		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
-		   <span class="BSHARE_COUNT bshare-share-count">0</span>
-		</div>
-		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
-
-
-    </footer>
-    <div>
-	</div>
-
-  <!--上下篇文章连接-->
-  
-
-	<!-- 首页不显示评论 -->
-	 
-
-  </div>
-
-</article>
-
-  
-    <article id="post-vr/00011_vr_device_intro/vrdevice_intro" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/03/vr/00011_vr_device_intro/vrdevice_intro/" class="article-date">
-  <time datetime="2016-11-02T16:00:00.000Z" itemprop="datePublished">2016-11-03</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/VR/">VR</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-		
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/vr/00011_vr_device_intro/vrdevice_intro/">虚拟现实设备介绍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>随着虚拟现实在其他行业越来越深入的应用与推广，虚拟现实VR必将受到大众亲睐。那么，如果针对那些专业人士或者搞机党，现实里的三大VR巨头，到底谁的产品更值呢？</p>
-<p>接下来我们主要来聊聊三大桌面虚拟现实平台的差异及竞争力，分别是Oculus Rift、HTC Vive以及索尼PlayStation VR。这三款产品不论是硬件性能、平台规模还是资源，都拥有极高的水准。当然，它们各自的使用条件、未来发展前景也不完全相同，如果你想在第一时间体验虚拟现实的魅力，不妨先了解一下哪一款才是最适合你的。</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/11/03/vr/00011_vr_device_intro/vrdevice_intro/#more">阅读全文</a>
-          </p>
-        
-      
-      
-
-    </div>
-
-    <footer class="article-footer">
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Oculus/">Oculus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a></li></ul>
-
-
-	  <!--bShare分享-->
-		<div class="right">
-		   <div class="bshare-custom">
-		   <a title="分享到微信" class="bshare-weixin"></a>
-		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
-		   </a><a title="分享到人人网" class="bshare-renren"></a>
-		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
-		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
-		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
-		   <span class="BSHARE_COUNT bshare-share-count">0</span>
-		</div>
-		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
-
-
-    </footer>
-    <div>
-	</div>
-
-  <!--上下篇文章连接-->
-  
-
-	<!-- 首页不显示评论 -->
-	 
-
-  </div>
-
-</article>
-
-  
-    <article id="post-vr/00013_htcvive_controller_dev/htcvive_controller_dev" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/" class="article-date">
-  <time datetime="2016-11-01T10:20:00.000Z" itemprop="datePublished">2016-11-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/VR/">VR</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-		
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/">HTC Vive虚拟现实设备手柄交互教程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><p>在使用Unity中针对HTC Vive设备进行开发，需要使用到Steam平台为我们提供的插件包 <a href="https://www.assetstore.unity3d.com/cn/#!/content/32647" target="_blank" rel="noopener">SteamVR Plugin.unitypackage</a>.</p>
-<p>这个插件中已经封装了与HTC Vive硬件进行通信的相关类，也是我们在做HTC Vive开发过程中经常使用的类，下面讲带领大家一起来了解一下。</p>
-<ul>
-<li><p>SteamVR_TrackedObject<br>此类用于根据硬件设备，并为硬件设备分配相应的索引</p>
-</li>
-<li><p>SteamVR_Controller.Device<br>最重要的类，封装了跟踪设备的全部信息,例如手柄的各种交互相应勾动扳机等。</p>
-</li>
-<li><p>SteamVR_Controller.ButtonMask<br>手柄各按键的名称</p>
-</li>
-<li><p>SteamVR_Controller<br>此类通常使用静态方法Input根据设备索引值获取对应的设备(Device)对象</p>
-</li>
-</ul>
-        
-          <p class="article-more-link">
-            <a href="/2016/11/01/vr/00013_htcvive_controller_dev/htcvive_controller_dev/#more">阅读全文</a>
-          </p>
-        
-      
-      
-
-    </div>
-
-    <footer class="article-footer">
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VR/">VR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/交互/">交互</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/控制器/">控制器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/虚拟现实/">虚拟现实</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/触摸盘/">触摸盘</a></li></ul>
 
 
 	  <!--bShare分享-->
@@ -950,7 +945,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AR/">AR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/BAT/">BAT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NGUI/">NGUI</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Raspberry-PI/">Raspberry PI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity3D/">Unity3D</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VR/">VR</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AR/">AR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/BAT/">BAT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NGUI/">NGUI</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Raspberry-PI/">Raspberry PI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/UGUI/">UGUI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity3D/">Unity3D</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VR/">VR</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -959,7 +954,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AR/" style="font-size: 10px;">AR</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 10px;">Android Studio</a> <a href="/tags/BAT/" style="font-size: 10px;">BAT</a> <a href="/tags/CheckBox/" style="font-size: 10px;">CheckBox</a> <a href="/tags/Drag/" style="font-size: 10px;">Drag</a> <a href="/tags/Drop/" style="font-size: 10px;">Drop</a> <a href="/tags/HTC-Vive/" style="font-size: 12.5px;">HTC Vive</a> <a href="/tags/HTC-Vive-手柄/" style="font-size: 10px;">HTC Vive 手柄</a> <a href="/tags/Jar包/" style="font-size: 10px;">Jar包</a> <a href="/tags/Label/" style="font-size: 10px;">Label</a> <a href="/tags/LayerMask/" style="font-size: 10px;">LayerMask</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/NGUI/" style="font-size: 20px;">NGUI</a> <a href="/tags/Oculus/" style="font-size: 10px;">Oculus</a> <a href="/tags/PlayStation-VR/" style="font-size: 10px;">PlayStation VR</a> <a href="/tags/Raspberry/" style="font-size: 10px;">Raspberry</a> <a href="/tags/SDK接入/" style="font-size: 10px;">SDK接入</a> <a href="/tags/ScrollBar/" style="font-size: 10px;">ScrollBar</a> <a href="/tags/Slider/" style="font-size: 10px;">Slider</a> <a href="/tags/TabView/" style="font-size: 10px;">TabView</a> <a href="/tags/TextList/" style="font-size: 10px;">TextList</a> <a href="/tags/Toggle/" style="font-size: 10px;">Toggle</a> <a href="/tags/UGUI/" style="font-size: 10px;">UGUI</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIInput/" style="font-size: 12.5px;">UIInput</a> <a href="/tags/Unity/" style="font-size: 17.5px;">Unity</a> <a href="/tags/Unity层/" style="font-size: 10px;">Unity层</a> <a href="/tags/VR/" style="font-size: 15px;">VR</a> <a href="/tags/VR-UI/" style="font-size: 10px;">VR UI</a> <a href="/tags/Vive-Teleporter/" style="font-size: 10px;">Vive Teleporter</a> <a href="/tags/Vuforia/" style="font-size: 10px;">Vuforia</a> <a href="/tags/cmd/" style="font-size: 10px;">cmd</a> <a href="/tags/progressBar/" style="font-size: 10px;">progressBar</a> <a href="/tags/subst/" style="font-size: 10px;">subst</a> <a href="/tags/交互/" style="font-size: 10px;">交互</a> <a href="/tags/位图字体/" style="font-size: 10px;">位图字体</a> <a href="/tags/单选按钮/" style="font-size: 10px;">单选按钮</a> <a href="/tags/图文混排/" style="font-size: 12.5px;">图文混排</a> <a href="/tags/多选按钮/" style="font-size: 10px;">多选按钮</a> <a href="/tags/嵌入式/" style="font-size: 10px;">嵌入式</a> <a href="/tags/批处理/" style="font-size: 10px;">批处理</a> <a href="/tags/拖动/" style="font-size: 10px;">拖动</a> <a href="/tags/拖拽/" style="font-size: 10px;">拖拽</a> <a href="/tags/按钮/" style="font-size: 10px;">按钮</a> <a href="/tags/控制器/" style="font-size: 10px;">控制器</a> <a href="/tags/文本列表/" style="font-size: 10px;">文本列表</a> <a href="/tags/映射磁盘/" style="font-size: 10px;">映射磁盘</a> <a href="/tags/标签/" style="font-size: 10px;">标签</a> <a href="/tags/滑块/" style="font-size: 10px;">滑块</a> <a href="/tags/滚动文本/" style="font-size: 10px;">滚动文本</a> <a href="/tags/滚动条/" style="font-size: 10px;">滚动条</a> <a href="/tags/聊天/" style="font-size: 10px;">聊天</a> <a href="/tags/聊天内容/" style="font-size: 10px;">聊天内容</a> <a href="/tags/聊天表情/" style="font-size: 10px;">聊天表情</a> <a href="/tags/虚拟现实/" style="font-size: 10px;">虚拟现实</a> <a href="/tags/触摸盘/" style="font-size: 10px;">触摸盘</a> <a href="/tags/调用Jar/" style="font-size: 10px;">调用Jar</a> <a href="/tags/输入本文/" style="font-size: 12.5px;">输入本文</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/页签/" style="font-size: 10px;">页签</a> <a href="/tags/高通/" style="font-size: 10px;">高通</a>
+      <a href="/tags/AR/" style="font-size: 10px;">AR</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 10px;">Android Studio</a> <a href="/tags/BAT/" style="font-size: 10px;">BAT</a> <a href="/tags/CheckBox/" style="font-size: 10px;">CheckBox</a> <a href="/tags/Drag/" style="font-size: 10px;">Drag</a> <a href="/tags/Drop/" style="font-size: 10px;">Drop</a> <a href="/tags/GL绘图/" style="font-size: 10px;">GL绘图</a> <a href="/tags/HTC-Vive/" style="font-size: 12.5px;">HTC Vive</a> <a href="/tags/HTC-Vive-手柄/" style="font-size: 10px;">HTC Vive 手柄</a> <a href="/tags/Jar包/" style="font-size: 10px;">Jar包</a> <a href="/tags/Label/" style="font-size: 10px;">Label</a> <a href="/tags/LayerMask/" style="font-size: 10px;">LayerMask</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/NGUI/" style="font-size: 20px;">NGUI</a> <a href="/tags/Oculus/" style="font-size: 10px;">Oculus</a> <a href="/tags/PlayStation-VR/" style="font-size: 10px;">PlayStation VR</a> <a href="/tags/Raspberry/" style="font-size: 10px;">Raspberry</a> <a href="/tags/SDK接入/" style="font-size: 10px;">SDK接入</a> <a href="/tags/ScrollBar/" style="font-size: 10px;">ScrollBar</a> <a href="/tags/Slider/" style="font-size: 10px;">Slider</a> <a href="/tags/TabView/" style="font-size: 10px;">TabView</a> <a href="/tags/TextList/" style="font-size: 10px;">TextList</a> <a href="/tags/Toggle/" style="font-size: 10px;">Toggle</a> <a href="/tags/UGUI/" style="font-size: 12.5px;">UGUI</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIInput/" style="font-size: 12.5px;">UIInput</a> <a href="/tags/Unity/" style="font-size: 17.5px;">Unity</a> <a href="/tags/Unity层/" style="font-size: 10px;">Unity层</a> <a href="/tags/VR/" style="font-size: 15px;">VR</a> <a href="/tags/VR-UI/" style="font-size: 10px;">VR UI</a> <a href="/tags/Vive-Teleporter/" style="font-size: 10px;">Vive Teleporter</a> <a href="/tags/Vuforia/" style="font-size: 10px;">Vuforia</a> <a href="/tags/cmd/" style="font-size: 10px;">cmd</a> <a href="/tags/progressBar/" style="font-size: 10px;">progressBar</a> <a href="/tags/subst/" style="font-size: 10px;">subst</a> <a href="/tags/交互/" style="font-size: 10px;">交互</a> <a href="/tags/位图字体/" style="font-size: 10px;">位图字体</a> <a href="/tags/单选按钮/" style="font-size: 10px;">单选按钮</a> <a href="/tags/图文混排/" style="font-size: 12.5px;">图文混排</a> <a href="/tags/多选按钮/" style="font-size: 10px;">多选按钮</a> <a href="/tags/嵌入式/" style="font-size: 10px;">嵌入式</a> <a href="/tags/批处理/" style="font-size: 10px;">批处理</a> <a href="/tags/拖动/" style="font-size: 10px;">拖动</a> <a href="/tags/拖拽/" style="font-size: 10px;">拖拽</a> <a href="/tags/按钮/" style="font-size: 10px;">按钮</a> <a href="/tags/控制器/" style="font-size: 10px;">控制器</a> <a href="/tags/文本列表/" style="font-size: 10px;">文本列表</a> <a href="/tags/映射磁盘/" style="font-size: 10px;">映射磁盘</a> <a href="/tags/标签/" style="font-size: 10px;">标签</a> <a href="/tags/滑块/" style="font-size: 10px;">滑块</a> <a href="/tags/滚动文本/" style="font-size: 10px;">滚动文本</a> <a href="/tags/滚动条/" style="font-size: 10px;">滚动条</a> <a href="/tags/灰度效果/" style="font-size: 10px;">灰度效果</a> <a href="/tags/禁用效果/" style="font-size: 10px;">禁用效果</a> <a href="/tags/聊天/" style="font-size: 10px;">聊天</a> <a href="/tags/聊天内容/" style="font-size: 10px;">聊天内容</a> <a href="/tags/聊天表情/" style="font-size: 10px;">聊天表情</a> <a href="/tags/虚拟现实/" style="font-size: 10px;">虚拟现实</a> <a href="/tags/触摸盘/" style="font-size: 10px;">触摸盘</a> <a href="/tags/调用Jar/" style="font-size: 10px;">调用Jar</a> <a href="/tags/输入本文/" style="font-size: 12.5px;">输入本文</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/页签/" style="font-size: 10px;">页签</a> <a href="/tags/高通/" style="font-size: 10px;">高通</a>
     </div>
   </div>
 
@@ -968,7 +963,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">2018年 03月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">2017年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">12</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">2018年 03月</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">2017年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">12</span></li></ul>
     </div>
   </div>
 
@@ -1011,19 +1006,19 @@
           </li>
         
           <li>
+            <a href="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/">UGUI中实现图片的灰度显示效果</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/19/unity/gl_basic/gl_basic/">Unity中GL基础-直线，三角形，四边形</a>
+          </li>
+        
+          <li>
             <a href="/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/">Raspberry Pi无法输出声音</a>
           </li>
         
           <li>
             <a href="/2018/03/11/unity/AndroidStudio导出Jar包与Unity交互/AndroidStudio导出Jar包与Unity交互/">Unity调用AndroidStudio导出的Jar包</a>
-          </li>
-        
-          <li>
-            <a href="/2017/12/09/ar/vuforia-intro/vuforia_intro/">AR体验之Vuforia学习</a>
-          </li>
-        
-          <li>
-            <a href="/2017/01/17/database/00015_unity_mysql/unity_op_mysql/">Unity操作MySQL数据库（增删改查)</a>
           </li>
         
       </ul>
@@ -1035,7 +1030,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AR/">AR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BAT/">BAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CheckBox/">CheckBox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drag/">Drag</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drop/">Drop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jar包/">Jar包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Label/">Label</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayerMask/">LayerMask</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGUI/">NGUI</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oculus/">Oculus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Raspberry/">Raspberry</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK接入/">SDK接入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ScrollBar/">ScrollBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slider/">Slider</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TabView/">TabView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextList/">TextList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toggle/">Toggle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UGUI/">UGUI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/">UIButton</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIInput/">UIInput</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity层/">Unity层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR/">VR</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR-UI/">VR UI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vuforia/">Vuforia</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmd/">cmd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/progressBar/">progressBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/subst/">subst</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/交互/">交互</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/位图字体/">位图字体</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单选按钮/">单选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图文混排/">图文混排</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多选按钮/">多选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式/">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/批处理/">批处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖动/">拖动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖拽/">拖拽</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/按钮/">按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/控制器/">控制器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本列表/">文本列表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/映射磁盘/">映射磁盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标签/">标签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑块/">滑块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动文本/">滚动文本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动条/">滚动条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天/">聊天</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天内容/">聊天内容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天表情/">聊天表情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟现实/">虚拟现实</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/触摸盘/">触摸盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/调用Jar/">调用Jar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/输入本文/">输入本文</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进度条/">进度条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页签/">页签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高通/">高通</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AR/">AR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BAT/">BAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CheckBox/">CheckBox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drag/">Drag</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drop/">Drop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GL绘图/">GL绘图</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jar包/">Jar包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Label/">Label</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayerMask/">LayerMask</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGUI/">NGUI</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oculus/">Oculus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Raspberry/">Raspberry</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK接入/">SDK接入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ScrollBar/">ScrollBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slider/">Slider</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TabView/">TabView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextList/">TextList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toggle/">Toggle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UGUI/">UGUI</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/">UIButton</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIInput/">UIInput</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity层/">Unity层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR/">VR</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR-UI/">VR UI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vuforia/">Vuforia</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmd/">cmd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/progressBar/">progressBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/subst/">subst</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/交互/">交互</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/位图字体/">位图字体</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单选按钮/">单选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图文混排/">图文混排</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多选按钮/">多选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式/">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/批处理/">批处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖动/">拖动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖拽/">拖拽</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/按钮/">按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/控制器/">控制器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本列表/">文本列表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/映射磁盘/">映射磁盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标签/">标签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑块/">滑块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动文本/">滚动文本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动条/">滚动条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/灰度效果/">灰度效果</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/禁用效果/">禁用效果</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天/">聊天</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天内容/">聊天内容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天表情/">聊天表情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟现实/">虚拟现实</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/触摸盘/">触摸盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/调用Jar/">调用Jar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/输入本文/">输入本文</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进度条/">进度条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页签/">页签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高通/">高通</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
