@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>VMWare安装Ubuntu系统 | 吾爱CODE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta name="description" content="作为一直使用windows系统开发的程序员来说，Linux系统看起来比较神秘，本人也不例外，为了能够了解熟悉linux系统，专门下载了虚拟机软件VMWare 14,来安装ubuntu系统。下面是安装的整个过程记录，希望能给大家起到一直指导的作用。">
+<meta name="keywords" content="Linux,ubuntu,VMware">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VMWare安装Ubuntu系统">
+<meta property="og:url" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/index.html">
+<meta property="og:site_name" content="吾爱CODE">
+<meta property="og:description" content="作为一直使用windows系统开发的程序员来说，Linux系统看起来比较神秘，本人也不例外，为了能够了解熟悉linux系统，专门下载了虚拟机软件VMWare 14,来安装ubuntu系统。下面是安装的整个过程记录，希望能给大家起到一直指导的作用。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235308.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235410.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235614.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235913.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235957.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328000054.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328001546.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328000312.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328001731.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002110.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002223.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002301.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180116172102773.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20160116172208839.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20160116172249264.png">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002729.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002841.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328003009.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328004629.jpg">
+<meta property="og:updated_time" content="2018-03-27T16:50:27.240Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VMWare安装Ubuntu系统">
+<meta name="twitter:description" content="作为一直使用windows系统开发的程序员来说，Linux系统看起来比较神秘，本人也不例外，为了能够了解熟悉linux系统，专门下载了虚拟机软件VMWare 14,来安装ubuntu系统。下面是安装的整个过程记录，希望能给大家起到一直指导的作用。">
+<meta name="twitter:image" content="http://www.felixwee.com/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235308.jpg">
+  
+  
+    <link rel="icon" href="/img/logo.jpg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Chrome on Android -->
+    <link rel="icon" sizes="192x192" href="/img/logo.jpg">
+    <!-- Add to homescreen for Safari on iOS -->
+    <link rel="apple-touch-icon-precomposed" href="/img/logo.jpg">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/img/logo.jpg">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+
+  <script src="/js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="layout">
+     <div class="app_menu">
+          
+     </div>
+     <div class="content_overlay"></div>
+     <div class="main_wrapper">
+      <!--网页主体 -->
+      <div id="container">
+        <div id="wrap">
+          <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">吾爱CODE</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个执着的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <div class="app_menu_button"><span class="main-nav-link" href=""><i class="icon icon-menu"></i></span></div>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/categories/Unity3D/">Unity3D</a>
+        
+          <a class="main-nav-link" href="/categories/NGUI/">NGUI</a>
+        
+          <a class="main-nav-link" href="/categories/AR/">AR</a>
+        
+      </nav>
+
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="www.felixwee.com">
+        </form>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+          <div class="outer">
+            <section id="main"><article id="post-ubuntu/install_ubuntu/install_ubuntu" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/" class="article-date">
+  <time datetime="2018-03-27T03:01:00.000Z" itemprop="datePublished">2018-03-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ubuntu/">ubuntu</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 class="article-title" itemprop="name">
+      VMWare安装Ubuntu系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>作为一直使用windows系统开发的程序员来说，Linux系统看起来比较神秘，本人也不例外，为了能够了解熟悉linux系统，专门下载了虚拟机软件VMWare 14,来安装ubuntu系统。下面是安装的整个过程记录，希望能给大家起到一直指导的作用。</p>
+<a id="more"></a>
+<h2 id="工具下载"><a href="#工具下载" class="headerlink" title="工具下载"></a>工具下载</h2><ol>
+<li><p>VMware Workstation 14  <a href="http://sw.bos.baidu.com/sw-search-sp/software/39fba669e1b70/VMware-workstation-full-14.1.1.28517.exe" target="_blank" rel="noopener">【下载】</a></p>
+<p>序列号:<br>CG54H-D8D0H-H8DHY-C6X7X-N2KG6<br>ZC3WK-AFXEK-488JP-A7MQX-XL8YF<br>AC5XK-0ZD4H-088HP-9NQZV-ZG2R4<br>ZC5XK-A6E0M-080XQ-04ZZG-YF08D<br>ZY5H0-D3Y8K-M89EZ-AYPEG-MYUA8  </p>
+</li>
+<li><p>Ubuntu系统镜像文件 <a href="https://pan.baidu.com/s/1skXzcK1" target="_blank" rel="noopener">【下载】</a></p>
+</li>
+</ol>
+<h2 id="安装VMWare-Workstation-14"><a href="#安装VMWare-Workstation-14" class="headerlink" title="安装VMWare Workstation 14"></a>安装VMWare Workstation 14</h2><p>应该软件的安装基本是点击 下一步完成，所以在此就不在赘述。</p>
+<h2 id="在VMWare-Workstation中安装ubuntu系统"><a href="#在VMWare-Workstation中安装ubuntu系统" class="headerlink" title="在VMWare Workstation中安装ubuntu系统"></a>在VMWare Workstation中安装ubuntu系统</h2><p>1.创建新虚拟机</p>
+<p> <img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235308.jpg" alt=""></p>
+<p>2.在弹出的窗口中，选择典型（推荐），点击下一步</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235410.jpg" alt=""></p>
+<p>3.在弹窗中选择 选择稍后安装系统,点击下一步</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235614.jpg" alt=""></p>
+<p>4.在操作系统中选择Linux,下面选择ubuntu,点击下一步。</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235913.jpg" alt=""></p>
+<p>5.给虚拟机起名字，并选择存储路径，点击下一步</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180327235957.jpg" alt=""></p>
+<p>5.调整文件大小，默认20G就够了，为了以后移动方便，选择 单个文件类型。</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328000054.jpg" alt=""></p>
+<p>6.选择自定义硬件，进行配置,选择之间下载好的iso文件。</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328001546.jpg" alt=""></p>
+<p>7.设置完成后，点击完成。</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328000312.jpg" alt=""></p>
+<p>8.回到VMWare主界面，选择刚刚创建好的虚拟机，进行启动。</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328001731.jpg" alt=""></p>
+<p>9.然后进入到下面的界面，我们选择简体，并点击 安装Install</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002110.jpg" alt=""></p>
+<p>10.点击继续,</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002223.jpg" alt=""></p>
+<p>继续<br><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002301.jpg" alt=""></p>
+<p>11.点击继续</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180116172102773.png" alt=""></p>
+<p>12.双击或输入Shanghai 位置</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20160116172208839.png" alt=""></p>
+<p>13.选择键盘布局</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20160116172249264.png" alt=""></p>
+<p>14.设置账号和密码</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002729.jpg" alt=""></p>
+<p>15.正式进入安装.</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328002841.jpg" alt=""></p>
+<p>16.安装完成后，会提示重启。</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328003009.jpg" alt=""></p>
+<p>17.重启成功后，会进入到桌面。到此安装完成。</p>
+<p><img src="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/20180328004629.jpg" alt=""></p>
+
+      
+      
+  <div class="article-statement">
+    <hr>
+    
+              
+      
+    <hr>
+    1.如果本文帮到了您，不妨点一下右下角的 <a>分享到</a> 按钮。<br>
+    2.除非注明，本博文章均为原创，转载请以链接形式标明本文地址。<br>
+  </div>
+
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VMware/">VMware</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+    
+<nav>
+   <div class="navlink_article_wrap">
+      <div class="nav_previous left">
+
+           <span style="color:#999;display:block;">PREVIOUS</span>
+             
+              <span class="article-nav-title"><span style="color:#999">已经是最旧的文章了</span></span>
+            
+
+      </div>
+
+
+      <div class="nav_next right">
+        <span style="color:#999;display:block;">NEXT</span>
+          
+            <a href="/2018/03/22/android/01Android与Unity交互/android_unity_01/" class="article-nav-title">
+            Unity调用Android的jar包</a>
+          
+      </div>
+   </div>
+</nav>
+
+
+  
+
+	<!-- 首页不显示评论 -->
+	 
+	 <div>
+	   <!--PC和WAP自适应版-->
+		<div id="SOHUCS" sid="VMWare安装Ubuntu系统" ></div>
+		<script type="text/javascript">
+		(function(){
+		var appid = 'cytvbtj5E';
+		var conf = 'prod_de8c7b4109591c2c30018260c933fc91';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+	  </div>
+    
+
+  </div>
+
+</article>
+</section>
+            
+              <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">网站公告</h3>
+  <div class="widget">
+  
+      感谢各位博友的支持，如果觉得本博客帮到你，可以分享给你身边的朋友！ 
+       
+	   <span class="right">Felixwee</span>
+  
+      </br></br>
+	  
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">来关注我</h3>
+  <div class="widget">
+    <ul>
+	   <div style="text-align: center;">
+            <img src="/img/avatar.jpg" style="width: 100%; max-width: 160px;">
+       </div>
+	   <div style="text-align: center;">FELIXWEE(魏凤安)</div>
+
+      
+      
+        
+        
+        
+        <li>
+		  <span>QQ: 1327707237</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>E-mail: felixwee@163.com</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>GitHub: https://github.com/weifengan</span>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">推荐文章</h3>
+  <div class="widget">
+    <ul>
+      
+      
+        
+        <li>
+          <a href="/2016/10/24/00009_ngui_tuwenhunpai/TextEmotion/" target="_blank">1. 《NGUI实战之图文混排》</a>
+        </li>
+      
+        
+        <li>
+          <a href="/2015/09/02/dsoframer-introduction-resources/" target="_blank">2. DSOframer的简单介绍和资源整理</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AR/">AR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/BAT/">BAT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NGUI/">NGUI</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Raspberry-PI/">Raspberry PI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/UGUI/">UGUI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity3D/">Unity3D</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VR/">VR</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ubuntu/">ubuntu</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AR/" style="font-size: 10px;">AR</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 10px;">Android Studio</a> <a href="/tags/BAT/" style="font-size: 10px;">BAT</a> <a href="/tags/CheckBox/" style="font-size: 10px;">CheckBox</a> <a href="/tags/Drag/" style="font-size: 10px;">Drag</a> <a href="/tags/Drop/" style="font-size: 10px;">Drop</a> <a href="/tags/GL绘图/" style="font-size: 10px;">GL绘图</a> <a href="/tags/HTC-Vive/" style="font-size: 12.5px;">HTC Vive</a> <a href="/tags/HTC-Vive-手柄/" style="font-size: 10px;">HTC Vive 手柄</a> <a href="/tags/Jar包/" style="font-size: 10px;">Jar包</a> <a href="/tags/Label/" style="font-size: 10px;">Label</a> <a href="/tags/LayerMask/" style="font-size: 10px;">LayerMask</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/NGUI/" style="font-size: 20px;">NGUI</a> <a href="/tags/Oculus/" style="font-size: 10px;">Oculus</a> <a href="/tags/PlayStation-VR/" style="font-size: 10px;">PlayStation VR</a> <a href="/tags/Raspberry/" style="font-size: 10px;">Raspberry</a> <a href="/tags/SDK接入/" style="font-size: 10px;">SDK接入</a> <a href="/tags/ScrollBar/" style="font-size: 10px;">ScrollBar</a> <a href="/tags/Slider/" style="font-size: 10px;">Slider</a> <a href="/tags/TabView/" style="font-size: 10px;">TabView</a> <a href="/tags/TextList/" style="font-size: 10px;">TextList</a> <a href="/tags/Toggle/" style="font-size: 10px;">Toggle</a> <a href="/tags/UGUI/" style="font-size: 12.5px;">UGUI</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIInput/" style="font-size: 12.5px;">UIInput</a> <a href="/tags/Unity/" style="font-size: 17.5px;">Unity</a> <a href="/tags/Unity层/" style="font-size: 10px;">Unity层</a> <a href="/tags/VMware/" style="font-size: 10px;">VMware</a> <a href="/tags/VR/" style="font-size: 15px;">VR</a> <a href="/tags/VR-UI/" style="font-size: 10px;">VR UI</a> <a href="/tags/Vive-Teleporter/" style="font-size: 10px;">Vive Teleporter</a> <a href="/tags/Vuforia/" style="font-size: 10px;">Vuforia</a> <a href="/tags/cmd/" style="font-size: 10px;">cmd</a> <a href="/tags/progressBar/" style="font-size: 10px;">progressBar</a> <a href="/tags/subst/" style="font-size: 10px;">subst</a> <a href="/tags/ubuntu/" style="font-size: 10px;">ubuntu</a> <a href="/tags/交互/" style="font-size: 10px;">交互</a> <a href="/tags/位图字体/" style="font-size: 10px;">位图字体</a> <a href="/tags/单选按钮/" style="font-size: 10px;">单选按钮</a> <a href="/tags/图文混排/" style="font-size: 12.5px;">图文混排</a> <a href="/tags/多选按钮/" style="font-size: 10px;">多选按钮</a> <a href="/tags/嵌入式/" style="font-size: 10px;">嵌入式</a> <a href="/tags/批处理/" style="font-size: 10px;">批处理</a> <a href="/tags/拖动/" style="font-size: 10px;">拖动</a> <a href="/tags/拖拽/" style="font-size: 10px;">拖拽</a> <a href="/tags/按钮/" style="font-size: 10px;">按钮</a> <a href="/tags/控制器/" style="font-size: 10px;">控制器</a> <a href="/tags/文本列表/" style="font-size: 10px;">文本列表</a> <a href="/tags/映射磁盘/" style="font-size: 10px;">映射磁盘</a> <a href="/tags/标签/" style="font-size: 10px;">标签</a> <a href="/tags/滑块/" style="font-size: 10px;">滑块</a> <a href="/tags/滚动文本/" style="font-size: 10px;">滚动文本</a> <a href="/tags/滚动条/" style="font-size: 10px;">滚动条</a> <a href="/tags/灰度效果/" style="font-size: 10px;">灰度效果</a> <a href="/tags/禁用效果/" style="font-size: 10px;">禁用效果</a> <a href="/tags/聊天/" style="font-size: 10px;">聊天</a> <a href="/tags/聊天内容/" style="font-size: 10px;">聊天内容</a> <a href="/tags/聊天表情/" style="font-size: 10px;">聊天表情</a> <a href="/tags/虚拟现实/" style="font-size: 10px;">虚拟现实</a> <a href="/tags/触摸盘/" style="font-size: 10px;">触摸盘</a> <a href="/tags/调用Jar/" style="font-size: 10px;">调用Jar</a> <a href="/tags/输入本文/" style="font-size: 12.5px;">输入本文</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/页签/" style="font-size: 10px;">页签</a> <a href="/tags/高通/" style="font-size: 10px;">高通</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">2018年 03月</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">2017年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最近评论</h3>
+    <div class="widget">
+      
+	  
+	  
+	  
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://segmentfault.com/" target="_blank">SegmentFault</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/">VMWare安装Ubuntu系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/22/android/01Android与Unity交互/android_unity_01/">Unity调用Android的jar包</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/">UGUI中实现图片的灰度显示效果</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/19/unity/gl_basic/gl_basic/">Unity中GL基础-直线，三角形，四边形</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/13/raspi/01_树莓派没有音频输出/raspi_no_sound/">Raspberry Pi无法输出声音</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AR/">AR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BAT/">BAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CheckBox/">CheckBox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drag/">Drag</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drop/">Drop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GL绘图/">GL绘图</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jar包/">Jar包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Label/">Label</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayerMask/">LayerMask</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGUI/">NGUI</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oculus/">Oculus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Raspberry/">Raspberry</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK接入/">SDK接入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ScrollBar/">ScrollBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slider/">Slider</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TabView/">TabView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextList/">TextList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toggle/">Toggle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UGUI/">UGUI</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/">UIButton</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIInput/">UIInput</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity层/">Unity层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware/">VMware</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR/">VR</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR-UI/">VR UI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vuforia/">Vuforia</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmd/">cmd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/progressBar/">progressBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/subst/">subst</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/交互/">交互</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/位图字体/">位图字体</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单选按钮/">单选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图文混排/">图文混排</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多选按钮/">多选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式/">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/批处理/">批处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖动/">拖动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖拽/">拖拽</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/按钮/">按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/控制器/">控制器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本列表/">文本列表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/映射磁盘/">映射磁盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标签/">标签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑块/">滑块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动文本/">滚动文本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动条/">滚动条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/灰度效果/">灰度效果</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/禁用效果/">禁用效果</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天/">聊天</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天内容/">聊天内容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天表情/">聊天表情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟现实/">虚拟现实</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/触摸盘/">触摸盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/调用Jar/">调用Jar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/输入本文/">输入本文</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进度条/">进度条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页签/">页签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高通/">高通</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+          </div>
+          <footer id="footer">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      Copyright &copy; 2012 - 2018 <a href="/" target="_blank">felixwee</a>.
+      &nbsp;
+      <span id="busuanzi_container_site_pv">
+        总访问量 <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_pv"></span></a> 次
+      </span>
+      <span id="busuanzi_container_site_uv">
+        <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_uv"></span></a> 人.
+      </span>
+      
+    </div>
+  </div>
+</footer>
+
+        </div>
+        <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/categories/Unity3D/" class="mobile-nav-link">Unity3D</a>
+  
+    <a href="/categories/NGUI/" class="mobile-nav-link">NGUI</a>
+  
+    <a href="/categories/AR/" class="mobile-nav-link">AR</a>
+  
+</nav>
+        <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+
+<script src="/js/script.js"></script>
+
+      </div>
+  </div>
+</div>
+
+</body>
+</html>
