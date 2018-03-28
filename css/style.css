@@ -637,11 +637,16 @@ body {
   float: left;
   margin-left: 0px;
 }
-.layout .menu_list ul,
+.layout .app_menu .menu_list ul,
 li {
   style: none;
-  color: #eee;
   padding-top: 5px;
+}
+.layout .app_menu .menu_list a {
+  text-decoration: none;
+}
+.layout .app_menu .menu_list a:hover {
+  text-decoration: none;
 }
 @media screen and (max-width: 640px) {
   .layout .main_wrapper #main-nav {
