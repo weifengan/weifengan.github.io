@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.felixwee.com/"/>
-  <updated>2018-03-27T16:50:27.240Z</updated>
+  <updated>2018-04-05T03:18:12.503Z</updated>
   <id>http://www.felixwee.com/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Unity编辑器扩展之创建Lua,XML,Txt文件</title>
+    <link href="http://www.felixwee.com/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/"/>
+    <id>http://www.felixwee.com/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/</id>
+    <published>2018-04-03T02:21:00.000Z</published>
+    <updated>2018-04-05T03:18:12.503Z</updated>
+    
+    <content type="html"><![CDATA[<p>大家都知道，在Unity中创建Lua文件是很不方便的，大致的思路是自定义菜单项，然后点击菜单后，利用文件IO来创建lua文件，但感觉总是不理想，不能像创建C#代码那样，如果没有确认回车，代码就没有创建，后来经过搜索，总算找到一个自己觉得比较不错的方法，与大家分享一下。</p><p>这次的扩展，不仅可以创建lua文件，还可以创建xml,文件文件，并且我们可以完全自定义模板，简直是强爆了~！</p><a id="more"></a><p>好的，咱们进入正题吧。</p><h2 id="1-自定义菜单项"><a href="#1-自定义菜单项" class="headerlink" title="1.自定义菜单项"></a>1.自定义菜单项</h2><p>这是第一步，我们先来定义一个菜单项。<br>在Assets目录下创建一个Editor文件夹，然后新建DevExtEditor.cs，并删除继承关系。</p><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DevExtEditor</span>   &#123;</span><br><span class="line"><span class="comment">/* 创建常用文件类型扩展</span></span><br><span class="line"><span class="comment">   MenuItem("菜单路径"，是否验证，优先级（显示顺序)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">   [<span class="meta">MenuItem(<span class="meta-string">"Assets/Create/Lua Script"</span>,false,81)</span>]</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateLuaScript</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      Debug.log(<span class="string">"Create Lua Script"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>写好后，在Unity菜单里和Assets窗口右击，都可以看到自己定义的项。</p><p><img src="/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405103620.jpg" alt=""></p><h2 id="2-创建文件的模板"><a href="#2-创建文件的模板" class="headerlink" title="2.创建文件的模板"></a>2.创建文件的模板</h2><p>我创建了三种格式的模板，分别是Lua,Xml,Text，当然这个我们可以自己添加其它格式，放在Editor路径下。</p><p><img src="/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405103945.jpg" alt=""></p><p>因为Lua比较常用，所以lua文件的模板是下面这样的，#LuaClass# 是在创建文件时，需要替换成文件名,其它文件空白。</p><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--[  #LuaClass#  ]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--[定义lua类]</span></span><br><span class="line">#LuaClass#=&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">--[常用变量定义]</span></span><br><span class="line">this=#LuaClass#;</span><br><span class="line"><span class="keyword">local</span> transform;</span><br><span class="line"><span class="keyword">local</span> gameObject;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> #<span class="title">LuaClass</span>#.<span class="title">Awake</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> #<span class="title">LuaClass</span>#.<span class="title">Start</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure><h2 id="3-函数调用及文件创建"><a href="#3-函数调用及文件创建" class="headerlink" title="3.函数调用及文件创建"></a>3.函数调用及文件创建</h2><p>在这里，使用到的UnityEditor当中的ProjectWindowUtil这个类，它的StartNameEditingIfProjectWindowExists()函数用来将焦点定位到文件上，并进行重命名。</p><p>整体代码如下:</p><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DevExtEditor</span>   &#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* 创建常用文件类型扩展 */</span></span><br><span class="line">   [<span class="meta">MenuItem(<span class="meta-string">"Assets/Create/Lua Script"</span>,false,81)</span>]</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateLuaScript</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="comment">//获取创建代码时的文件路径下的所有对象</span></span><br><span class="line">       UnityEngine.Object[] arr = Selection.GetFiltered(<span class="keyword">typeof</span>(UnityEngine.Object), SelectionMode.TopLevel);</span><br><span class="line">       <span class="comment">//根据第一个文件获取不前文件夹路径</span></span><br><span class="line">       <span class="keyword">string</span> folder=AssetDatabase.GetAssetPath(arr[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">       <span class="comment">//将焦点定位到某个文件，并进行重命名</span></span><br><span class="line">       <span class="comment">//id,回调处理，新建文件url,图标，源始文件url    </span></span><br><span class="line">       ProjectWindowUtil.StartNameEditingIfProjectWindowExists(<span class="number">0</span>,ScriptableObject.CreateInstance&lt;CreateFileAction&gt;(),folder + <span class="string">"/NewLuaScript.lua"</span>, <span class="literal">null</span>, <span class="string">"Assets/Editor/FelixWeeTools/templates/lua_template.lua"</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>回调类处理:</p><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Text.RegularExpressions;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEditor.ProjectWindowCallback;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CreateFileAction</span> : <span class="title">EndNameEditAction</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Action</span>(<span class="params"><span class="keyword">int</span> instanceId, <span class="keyword">string</span> pathName, <span class="keyword">string</span> resourceFile</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        UnityEngine.Object obj = CreateScriptAssetFromTemplate(pathName, resourceFile);</span><br><span class="line">        ProjectWindowUtil.ShowCreatedAsset(obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UnityEngine.<span class="function">Object <span class="title">CreateScriptAssetFromTemplate</span>(<span class="params"><span class="keyword">string</span> fullPath, <span class="keyword">string</span> resourceFile</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//读取原文件内容</span></span><br><span class="line">        StreamReader streamReader = <span class="keyword">new</span> StreamReader(resourceFile);</span><br><span class="line">        <span class="keyword">string</span> text = streamReader.ReadToEnd();</span><br><span class="line">        streamReader.Close();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//只获取文件名不包括扩展名</span></span><br><span class="line">        <span class="keyword">string</span> fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fullPath);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果是Lua，对模板中变量进行替换</span></span><br><span class="line">        text =text.Replace(<span class="string">"#LuaClass#"</span>, fileNameWithoutExtension);</span><br><span class="line"></span><br><span class="line">         <span class="comment">//将替换好的内容写入文件</span></span><br><span class="line">        StreamWriter streamWriter = <span class="keyword">new</span> StreamWriter(fullPath);</span><br><span class="line">        streamWriter.Write(text);</span><br><span class="line">        streamWriter.Close();</span><br><span class="line">        <span class="comment">//导入指定路径下的资源  </span></span><br><span class="line">        AssetDatabase.ImportAsset(fullPath);</span><br><span class="line">        <span class="comment">//返回指定路径下的Object对象</span></span><br><span class="line">        <span class="keyword">return</span> AssetDatabase.LoadAssetAtPath(fullPath, <span class="keyword">typeof</span>(UnityEngine.Object));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="4-效果"><a href="#4-效果" class="headerlink" title="4.效果"></a>4.效果</h2><p>当点击菜单后，即可以像创建C#代码一样进行重命名。</p><p><img src="/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405110847.jpg" alt=""></p><h2 id="5-最后，大家可以把其它的格式也添加进来，下面的的导出的一个资源包，大家可以直接-下载使用。"><a href="#5-最后，大家可以把其它的格式也添加进来，下面的的导出的一个资源包，大家可以直接-下载使用。" class="headerlink" title="5.最后，大家可以把其它的格式也添加进来，下面的的导出的一个资源包，大家可以直接 下载使用。"></a>5.最后，大家可以把其它的格式也添加进来，下面的的导出的一个资源包，大家可以直接 下载使用。</h2><p><a href="./FelixWeeTool.unitypackage">下载扩展包</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;大家都知道，在Unity中创建Lua文件是很不方便的，大致的思路是自定义菜单项，然后点击菜单后，利用文件IO来创建lua文件，但感觉总是不理想，不能像创建C#代码那样，如果没有确认回车，代码就没有创建，后来经过搜索，总算找到一个自己觉得比较不错的方法，与大家分享一下。&lt;/p&gt;
+&lt;p&gt;这次的扩展，不仅可以创建lua文件，还可以创建xml,文件文件，并且我们可以完全自定义模板，简直是强爆了~！&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="lua" scheme="http://www.felixwee.com/categories/lua/"/>
+    
+    
+      <category term="Lua" scheme="http://www.felixwee.com/tags/Lua/"/>
+    
+      <category term="Editor" scheme="http://www.felixwee.com/tags/Editor/"/>
+    
+      <category term="扩展" scheme="http://www.felixwee.com/tags/%E6%89%A9%E5%B1%95/"/>
+    
+      <category term="XML" scheme="http://www.felixwee.com/tags/XML/"/>
+    
+      <category term="Txt" scheme="http://www.felixwee.com/tags/Txt/"/>
+    
+  </entry>
   
   <entry>
     <title>VMWare安装Ubuntu系统</title>
@@ -510,9 +541,9 @@
     
       <category term="NGUI" scheme="http://www.felixwee.com/tags/NGUI/"/>
     
-      <category term="位图字体" scheme="http://www.felixwee.com/tags/%E4%BD%8D%E5%9B%BE%E5%AD%97%E4%BD%93/"/>
-    
       <category term="图文混排" scheme="http://www.felixwee.com/tags/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/"/>
+    
+      <category term="位图字体" scheme="http://www.felixwee.com/tags/%E4%BD%8D%E5%9B%BE%E5%AD%97%E4%BD%93/"/>
     
   </entry>
   
@@ -594,41 +625,6 @@
       <category term="多选按钮" scheme="http://www.felixwee.com/tags/%E5%A4%9A%E9%80%89%E6%8C%89%E9%92%AE/"/>
     
       <category term="Toggle" scheme="http://www.felixwee.com/tags/Toggle/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>NGUI组件之滑动组件(Slider/ScrollBar/ProgressBar)</title>
-    <link href="http://www.felixwee.com/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/"/>
-    <id>http://www.felixwee.com/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/</id>
-    <published>2016-10-16T12:37:51.000Z</published>
-    <updated>2018-02-05T18:48:58.702Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h2><p>Slider组件</p><p><img src="/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/20160920101745.jpg" alt=""><br><a id="more"></a><br>ScrollBar组件</p><p><img src="/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/20160920101856.jpg" alt=""></p><p>ProgressBar组件</p><p><img src="/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/20160920102018.jpg" alt=""></p><p>通过观察这三个组件的参数面板，看起来都比较相似。</p><h2 id="具体参数介绍"><a href="#具体参数介绍" class="headerlink" title="具体参数介绍"></a>具体参数介绍</h2><p>Value 滑块，滚动条，进度条的进度值（0-1）之间.</p><p>Size: 主要用于设置滚动条的长度大小</p><p>Alpha:整个组件的透明度值</p><p>Steps: 整个可变值得不仅数量  如果Steps设置为10，既将0-1分为10等份，Value的变化会以0.1进行增加或减小。</p><p>Appearance 外观设置</p><p>Foreground 前景元素<br>Background 背景图<br>Thumb 滑块<br>Direction :方向  分为垂直和水平两个大方向</p><h2 id="制作方法"><a href="#制作方法" class="headerlink" title="制作方法"></a>制作方法</h2><p>Slider组件</p><p><img src="/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/20160920103620.jpg" alt=""></p><p>ScrollBar组件</p><p><img src="/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/20160920103736.jpg" alt=""></p><p>ProgressBar组件</p><p><img src="/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/20160920103848.jpg" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;组件介绍&quot;&gt;&lt;a href=&quot;#组件介绍&quot; class=&quot;headerlink&quot; title=&quot;组件介绍&quot;&gt;&lt;/a&gt;组件介绍&lt;/h2&gt;&lt;p&gt;Slider组件&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2016/10/16/ngui/00004_ngui_scrollbar/ScrollBarSliderProgressBar/20160920101745.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="NGUI" scheme="http://www.felixwee.com/categories/NGUI/"/>
-    
-    
-      <category term="NGUI" scheme="http://www.felixwee.com/tags/NGUI/"/>
-    
-      <category term="Slider" scheme="http://www.felixwee.com/tags/Slider/"/>
-    
-      <category term="滑块" scheme="http://www.felixwee.com/tags/%E6%BB%91%E5%9D%97/"/>
-    
-      <category term="ScrollBar" scheme="http://www.felixwee.com/tags/ScrollBar/"/>
-    
-      <category term="滚动条" scheme="http://www.felixwee.com/tags/%E6%BB%9A%E5%8A%A8%E6%9D%A1/"/>
-    
-      <category term="进度条" scheme="http://www.felixwee.com/tags/%E8%BF%9B%E5%BA%A6%E6%9D%A1/"/>
-    
-      <category term="progressBar" scheme="http://www.felixwee.com/tags/progressBar/"/>
     
   </entry>
   

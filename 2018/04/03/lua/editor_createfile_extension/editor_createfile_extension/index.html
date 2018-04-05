@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Unity编辑器扩展之创建Lua,XML,Txt文件 | 吾爱CODE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta name="description" content="大家都知道，在Unity中创建Lua文件是很不方便的，大致的思路是自定义菜单项，然后点击菜单后，利用文件IO来创建lua文件，但感觉总是不理想，不能像创建C#代码那样，如果没有确认回车，代码就没有创建，后来经过搜索，总算找到一个自己觉得比较不错的方法，与大家分享一下。 这次的扩展，不仅可以创建lua文件，还可以创建xml,文件文件，并且我们可以完全自定义模板，简直是强爆了~！">
+<meta name="keywords" content="Lua,Editor,扩展,XML,Txt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity编辑器扩展之创建Lua,XML,Txt文件">
+<meta property="og:url" content="http://www.felixwee.com/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/index.html">
+<meta property="og:site_name" content="吾爱CODE">
+<meta property="og:description" content="大家都知道，在Unity中创建Lua文件是很不方便的，大致的思路是自定义菜单项，然后点击菜单后，利用文件IO来创建lua文件，但感觉总是不理想，不能像创建C#代码那样，如果没有确认回车，代码就没有创建，后来经过搜索，总算找到一个自己觉得比较不错的方法，与大家分享一下。 这次的扩展，不仅可以创建lua文件，还可以创建xml,文件文件，并且我们可以完全自定义模板，简直是强爆了~！">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.felixwee.com/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405103620.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405103945.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405110847.jpg">
+<meta property="og:updated_time" content="2018-04-05T03:18:12.503Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity编辑器扩展之创建Lua,XML,Txt文件">
+<meta name="twitter:description" content="大家都知道，在Unity中创建Lua文件是很不方便的，大致的思路是自定义菜单项，然后点击菜单后，利用文件IO来创建lua文件，但感觉总是不理想，不能像创建C#代码那样，如果没有确认回车，代码就没有创建，后来经过搜索，总算找到一个自己觉得比较不错的方法，与大家分享一下。 这次的扩展，不仅可以创建lua文件，还可以创建xml,文件文件，并且我们可以完全自定义模板，简直是强爆了~！">
+<meta name="twitter:image" content="http://www.felixwee.com/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405103620.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="吾爱CODE" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/logo.jpg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Chrome on Android -->
+    <link rel="icon" sizes="192x192" href="/img/logo.jpg">
+    <!-- Add to homescreen for Safari on iOS -->
+    <link rel="apple-touch-icon-precomposed" href="/img/logo.jpg">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/img/logo.jpg">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+
+  <script src="/js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="layout">
+     <div class="app_menu">
+          <div class="menu_list">
+          <ul>
+            
+             <a style="color:#fff;" href="/"><li>首页</li></a>
+            
+             <a style="color:#fff;" href="/categories/Unity3D/"><li>Unity3D</li></a>
+            
+             <a style="color:#fff;" href="/categories/NGUI/"><li>NGUI</li></a>
+            
+             <a style="color:#fff;" href="/categories/AR/"><li>AR</li></a>
+            
+             <a style="color:#fff;" href="/"><li>H5</li></a>
+            
+          </ul>
+         </div>
+     </div>
+     <div class="content_overlay"></div>
+     <div class="main_wrapper">
+      <!--网页主体 -->
+      <div id="container">
+        <div id="wrap">
+          <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">吾爱CODE</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个执着的程序员</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+
+      <div class="app_menu_button"><span class="main-nav-link" href=""><i class="icon icon-menu"></i></span></div>
+      <nav id="main-nav">
+
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/categories/Unity3D/">Unity3D</a>
+        
+          <a class="main-nav-link" href="/categories/NGUI/">NGUI</a>
+        
+          <a class="main-nav-link" href="/categories/AR/">AR</a>
+        
+          <a class="main-nav-link" href="/">H5</a>
+        
+      </nav>
+
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="www.felixwee.com">
+        </form>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+          <div class="outer">
+            <section id="main"><article id="post-lua/editor_createfile_extension/editor_createfile_extension" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/" class="article-date">
+  <time datetime="2018-04-03T02:21:00.000Z" itemprop="datePublished">2018-04-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/lua/">lua</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 class="article-title" itemprop="name">
+      Unity编辑器扩展之创建Lua,XML,Txt文件
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>大家都知道，在Unity中创建Lua文件是很不方便的，大致的思路是自定义菜单项，然后点击菜单后，利用文件IO来创建lua文件，但感觉总是不理想，不能像创建C#代码那样，如果没有确认回车，代码就没有创建，后来经过搜索，总算找到一个自己觉得比较不错的方法，与大家分享一下。</p>
+<p>这次的扩展，不仅可以创建lua文件，还可以创建xml,文件文件，并且我们可以完全自定义模板，简直是强爆了~！</p>
+<a id="more"></a>
+<p>好的，咱们进入正题吧。</p>
+<h2 id="1-自定义菜单项"><a href="#1-自定义菜单项" class="headerlink" title="1.自定义菜单项"></a>1.自定义菜单项</h2><p>这是第一步，我们先来定义一个菜单项。<br>在Assets目录下创建一个Editor文件夹，然后新建DevExtEditor.cs，并删除继承关系。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DevExtEditor</span>   &#123;</span><br><span class="line"><span class="comment">/* 创建常用文件类型扩展</span></span><br><span class="line"><span class="comment">   MenuItem("菜单路径"，是否验证，优先级（显示顺序)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">   [<span class="meta">MenuItem(<span class="meta-string">"Assets/Create/Lua Script"</span>,false,81)</span>]</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateLuaScript</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      Debug.log(<span class="string">"Create Lua Script"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写好后，在Unity菜单里和Assets窗口右击，都可以看到自己定义的项。</p>
+<p><img src="/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405103620.jpg" alt=""></p>
+<h2 id="2-创建文件的模板"><a href="#2-创建文件的模板" class="headerlink" title="2.创建文件的模板"></a>2.创建文件的模板</h2><p>我创建了三种格式的模板，分别是Lua,Xml,Text，当然这个我们可以自己添加其它格式，放在Editor路径下。</p>
+<p><img src="/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405103945.jpg" alt=""></p>
+<p>因为Lua比较常用，所以lua文件的模板是下面这样的，#LuaClass# 是在创建文件时，需要替换成文件名,其它文件空白。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--[  #LuaClass#  ]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--[定义lua类]</span></span><br><span class="line">#LuaClass#=&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">--[常用变量定义]</span></span><br><span class="line">this=#LuaClass#;</span><br><span class="line"><span class="keyword">local</span> transform;</span><br><span class="line"><span class="keyword">local</span> gameObject;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> #<span class="title">LuaClass</span>#.<span class="title">Awake</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> #<span class="title">LuaClass</span>#.<span class="title">Start</span><span class="params">()</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-函数调用及文件创建"><a href="#3-函数调用及文件创建" class="headerlink" title="3.函数调用及文件创建"></a>3.函数调用及文件创建</h2><p>在这里，使用到的UnityEditor当中的ProjectWindowUtil这个类，它的StartNameEditingIfProjectWindowExists()函数用来将焦点定位到文件上，并进行重命名。</p>
+<p>整体代码如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DevExtEditor</span>   &#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* 创建常用文件类型扩展 */</span></span><br><span class="line">   [<span class="meta">MenuItem(<span class="meta-string">"Assets/Create/Lua Script"</span>,false,81)</span>]</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateLuaScript</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="comment">//获取创建代码时的文件路径下的所有对象</span></span><br><span class="line">       UnityEngine.Object[] arr = Selection.GetFiltered(<span class="keyword">typeof</span>(UnityEngine.Object), SelectionMode.TopLevel);</span><br><span class="line">       <span class="comment">//根据第一个文件获取不前文件夹路径</span></span><br><span class="line">       <span class="keyword">string</span> folder=AssetDatabase.GetAssetPath(arr[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">       <span class="comment">//将焦点定位到某个文件，并进行重命名</span></span><br><span class="line">       <span class="comment">//id,回调处理，新建文件url,图标，源始文件url    </span></span><br><span class="line">       ProjectWindowUtil.StartNameEditingIfProjectWindowExists(<span class="number">0</span>,ScriptableObject.CreateInstance&lt;CreateFileAction&gt;(),folder + <span class="string">"/NewLuaScript.lua"</span>, <span class="literal">null</span>, <span class="string">"Assets/Editor/FelixWeeTools/templates/lua_template.lua"</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>回调类处理:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Text.RegularExpressions;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEditor.ProjectWindowCallback;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CreateFileAction</span> : <span class="title">EndNameEditAction</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Action</span>(<span class="params"><span class="keyword">int</span> instanceId, <span class="keyword">string</span> pathName, <span class="keyword">string</span> resourceFile</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        UnityEngine.Object obj = CreateScriptAssetFromTemplate(pathName, resourceFile);</span><br><span class="line">        ProjectWindowUtil.ShowCreatedAsset(obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UnityEngine.<span class="function">Object <span class="title">CreateScriptAssetFromTemplate</span>(<span class="params"><span class="keyword">string</span> fullPath, <span class="keyword">string</span> resourceFile</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//读取原文件内容</span></span><br><span class="line">        StreamReader streamReader = <span class="keyword">new</span> StreamReader(resourceFile);</span><br><span class="line">        <span class="keyword">string</span> text = streamReader.ReadToEnd();</span><br><span class="line">        streamReader.Close();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//只获取文件名不包括扩展名</span></span><br><span class="line">        <span class="keyword">string</span> fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fullPath);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果是Lua，对模板中变量进行替换</span></span><br><span class="line">        text =text.Replace(<span class="string">"#LuaClass#"</span>, fileNameWithoutExtension);</span><br><span class="line"></span><br><span class="line">         <span class="comment">//将替换好的内容写入文件</span></span><br><span class="line">        StreamWriter streamWriter = <span class="keyword">new</span> StreamWriter(fullPath);</span><br><span class="line">        streamWriter.Write(text);</span><br><span class="line">        streamWriter.Close();</span><br><span class="line">        <span class="comment">//导入指定路径下的资源  </span></span><br><span class="line">        AssetDatabase.ImportAsset(fullPath);</span><br><span class="line">        <span class="comment">//返回指定路径下的Object对象</span></span><br><span class="line">        <span class="keyword">return</span> AssetDatabase.LoadAssetAtPath(fullPath, <span class="keyword">typeof</span>(UnityEngine.Object));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-效果"><a href="#4-效果" class="headerlink" title="4.效果"></a>4.效果</h2><p>当点击菜单后，即可以像创建C#代码一样进行重命名。</p>
+<p><img src="/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/20180405110847.jpg" alt=""></p>
+<h2 id="5-最后，大家可以把其它的格式也添加进来，下面的的导出的一个资源包，大家可以直接-下载使用。"><a href="#5-最后，大家可以把其它的格式也添加进来，下面的的导出的一个资源包，大家可以直接-下载使用。" class="headerlink" title="5.最后，大家可以把其它的格式也添加进来，下面的的导出的一个资源包，大家可以直接 下载使用。"></a>5.最后，大家可以把其它的格式也添加进来，下面的的导出的一个资源包，大家可以直接 下载使用。</h2><p><a href="./FelixWeeTool.unitypackage">下载扩展包</a></p>
+
+      
+      
+  <div class="article-statement">
+    <hr>
+    
+              
+      
+    <hr>
+    1.如果本文帮到了您，不妨点一下右下角的 <a>分享到</a> 按钮。<br>
+    2.除非注明，本博文章均为原创，转载请以链接形式标明本文地址。<br>
+  </div>
+
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Editor/">Editor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lua/">Lua</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Txt/">Txt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/XML/">XML</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/扩展/">扩展</a></li></ul>
+
+
+	  <!--bShare分享-->
+		<div class="right">
+		   <div class="bshare-custom">
+		   <a title="分享到微信" class="bshare-weixin"></a>
+		   <a title="分享到新浪微博" class="bshare-sinaminiblog">
+		   </a><a title="分享到人人网" class="bshare-renren"></a>
+		   <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+		   <a title="分享到网易微博" class="bshare-neteasemb"></a>
+		   <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+		   <span class="BSHARE_COUNT bshare-share-count">0</span>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+
+    </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+    
+<nav>
+   <div class="navlink_article_wrap">
+      <div class="nav_previous left">
+
+           <span style="color:#999;display:block;">PREVIOUS</span>
+             
+              <span class="article-nav-title"><span style="color:#999">已经是最旧的文章了</span></span>
+            
+
+      </div>
+
+
+      <div class="nav_next right">
+        <span style="color:#999;display:block;">NEXT</span>
+          
+            <a href="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/" class="article-nav-title">
+            VMWare安装Ubuntu系统</a>
+          
+      </div>
+   </div>
+</nav>
+
+
+  
+
+	<!-- 首页不显示评论 -->
+	 
+	 <div>
+	   <!--PC和WAP自适应版-->
+		<div id="SOHUCS" sid="Unity编辑器扩展之创建Lua,XML,Txt文件" ></div>
+		<script type="text/javascript">
+		(function(){
+		var appid = 'cytvbtj5E';
+		var conf = 'prod_de8c7b4109591c2c30018260c933fc91';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+	  </div>
+    
+
+  </div>
+
+</article>
+</section>
+            
+              <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">网站公告</h3>
+  <div class="widget">
+  
+      感谢各位博友的支持，如果觉得本博客帮到你，可以分享给你身边的朋友！ 
+       
+	   <span class="right">Felixwee</span>
+  
+      </br></br>
+	  
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">来关注我</h3>
+  <div class="widget">
+    <ul>
+	   <div style="text-align: center;">
+            <img src="/img/avatar.jpg" style="width: 100%; max-width: 160px;">
+       </div>
+	   <div style="text-align: center;">FELIXWEE(魏凤安)</div>
+
+      
+      
+        
+        
+        
+        <li>
+		  <span>QQ: 1327707237</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>E-mail: felixwee@163.com</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>GitHub: https://github.com/weifengan</span>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">推荐文章</h3>
+  <div class="widget">
+    <ul>
+      
+      
+        
+        <li>
+          <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/" target="_blank">1. NGUI实战之图文混排</a>
+        </li>
+      
+        
+        <li>
+          <a href="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/" target="_blank">2. UGUI中实现图片的灰度显示效果</a>
+        </li>
+      
+        
+        <li>
+          <a href="/2018/03/19/unity/gl_basic/gl_basic/" target="_blank">3. Unity中GL基础-直线，三角形，四边形</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AR/">AR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/BAT/">BAT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NGUI/">NGUI</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Raspberry-PI/">Raspberry PI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/UGUI/">UGUI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity3D/">Unity3D</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VR/">VR</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ubuntu/">ubuntu</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AR/" style="font-size: 10px;">AR</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 10px;">Android Studio</a> <a href="/tags/BAT/" style="font-size: 10px;">BAT</a> <a href="/tags/CheckBox/" style="font-size: 10px;">CheckBox</a> <a href="/tags/Drag/" style="font-size: 10px;">Drag</a> <a href="/tags/Drop/" style="font-size: 10px;">Drop</a> <a href="/tags/Editor/" style="font-size: 10px;">Editor</a> <a href="/tags/GL绘图/" style="font-size: 10px;">GL绘图</a> <a href="/tags/HTC-Vive/" style="font-size: 12.5px;">HTC Vive</a> <a href="/tags/HTC-Vive-手柄/" style="font-size: 10px;">HTC Vive 手柄</a> <a href="/tags/Jar包/" style="font-size: 10px;">Jar包</a> <a href="/tags/Label/" style="font-size: 10px;">Label</a> <a href="/tags/LayerMask/" style="font-size: 10px;">LayerMask</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/NGUI/" style="font-size: 20px;">NGUI</a> <a href="/tags/Oculus/" style="font-size: 10px;">Oculus</a> <a href="/tags/PlayStation-VR/" style="font-size: 10px;">PlayStation VR</a> <a href="/tags/Raspberry/" style="font-size: 10px;">Raspberry</a> <a href="/tags/SDK接入/" style="font-size: 10px;">SDK接入</a> <a href="/tags/ScrollBar/" style="font-size: 10px;">ScrollBar</a> <a href="/tags/Slider/" style="font-size: 10px;">Slider</a> <a href="/tags/TabView/" style="font-size: 10px;">TabView</a> <a href="/tags/TextList/" style="font-size: 10px;">TextList</a> <a href="/tags/Toggle/" style="font-size: 10px;">Toggle</a> <a href="/tags/Txt/" style="font-size: 10px;">Txt</a> <a href="/tags/UGUI/" style="font-size: 12.5px;">UGUI</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIInput/" style="font-size: 12.5px;">UIInput</a> <a href="/tags/Unity/" style="font-size: 17.5px;">Unity</a> <a href="/tags/Unity层/" style="font-size: 10px;">Unity层</a> <a href="/tags/VMware/" style="font-size: 10px;">VMware</a> <a href="/tags/VR/" style="font-size: 15px;">VR</a> <a href="/tags/VR-UI/" style="font-size: 10px;">VR UI</a> <a href="/tags/Vive-Teleporter/" style="font-size: 10px;">Vive Teleporter</a> <a href="/tags/Vuforia/" style="font-size: 10px;">Vuforia</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/cmd/" style="font-size: 10px;">cmd</a> <a href="/tags/progressBar/" style="font-size: 10px;">progressBar</a> <a href="/tags/subst/" style="font-size: 10px;">subst</a> <a href="/tags/ubuntu/" style="font-size: 10px;">ubuntu</a> <a href="/tags/交互/" style="font-size: 10px;">交互</a> <a href="/tags/位图字体/" style="font-size: 10px;">位图字体</a> <a href="/tags/单选按钮/" style="font-size: 10px;">单选按钮</a> <a href="/tags/图文混排/" style="font-size: 12.5px;">图文混排</a> <a href="/tags/多选按钮/" style="font-size: 10px;">多选按钮</a> <a href="/tags/嵌入式/" style="font-size: 10px;">嵌入式</a> <a href="/tags/扩展/" style="font-size: 10px;">扩展</a> <a href="/tags/批处理/" style="font-size: 10px;">批处理</a> <a href="/tags/拖动/" style="font-size: 10px;">拖动</a> <a href="/tags/拖拽/" style="font-size: 10px;">拖拽</a> <a href="/tags/按钮/" style="font-size: 10px;">按钮</a> <a href="/tags/控制器/" style="font-size: 10px;">控制器</a> <a href="/tags/文本列表/" style="font-size: 10px;">文本列表</a> <a href="/tags/映射磁盘/" style="font-size: 10px;">映射磁盘</a> <a href="/tags/标签/" style="font-size: 10px;">标签</a> <a href="/tags/滑块/" style="font-size: 10px;">滑块</a> <a href="/tags/滚动文本/" style="font-size: 10px;">滚动文本</a> <a href="/tags/滚动条/" style="font-size: 10px;">滚动条</a> <a href="/tags/灰度效果/" style="font-size: 10px;">灰度效果</a> <a href="/tags/禁用效果/" style="font-size: 10px;">禁用效果</a> <a href="/tags/聊天/" style="font-size: 10px;">聊天</a> <a href="/tags/聊天内容/" style="font-size: 10px;">聊天内容</a> <a href="/tags/聊天表情/" style="font-size: 10px;">聊天表情</a> <a href="/tags/虚拟现实/" style="font-size: 10px;">虚拟现实</a> <a href="/tags/触摸盘/" style="font-size: 10px;">触摸盘</a> <a href="/tags/调用Jar/" style="font-size: 10px;">调用Jar</a> <a href="/tags/输入本文/" style="font-size: 12.5px;">输入本文</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/页签/" style="font-size: 10px;">页签</a> <a href="/tags/高通/" style="font-size: 10px;">高通</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">2018年 04月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">2018年 03月</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">2017年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最近评论</h3>
+    <div class="widget">
+      
+	  
+	  
+	  
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://leix.wang/" target="_blank">www.leix.wang</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/03/lua/editor_createfile_extension/editor_createfile_extension/">Unity编辑器扩展之创建Lua,XML,Txt文件</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/27/ubuntu/install_ubuntu/install_ubuntu/">VMWare安装Ubuntu系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/22/android/01Android与Unity交互/android_unity_01/">Unity调用Android的jar包</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/">UGUI中实现图片的灰度显示效果</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/19/unity/gl_basic/gl_basic/">Unity中GL基础-直线，三角形，四边形</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AR/">AR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BAT/">BAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CheckBox/">CheckBox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drag/">Drag</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drop/">Drop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Editor/">Editor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GL绘图/">GL绘图</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jar包/">Jar包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Label/">Label</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayerMask/">LayerMask</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/">Lua</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGUI/">NGUI</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oculus/">Oculus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Raspberry/">Raspberry</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK接入/">SDK接入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ScrollBar/">ScrollBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slider/">Slider</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TabView/">TabView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextList/">TextList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toggle/">Toggle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Txt/">Txt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UGUI/">UGUI</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/">UIButton</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIInput/">UIInput</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity层/">Unity层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware/">VMware</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR/">VR</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR-UI/">VR UI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vuforia/">Vuforia</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmd/">cmd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/progressBar/">progressBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/subst/">subst</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/交互/">交互</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/位图字体/">位图字体</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单选按钮/">单选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图文混排/">图文混排</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多选按钮/">多选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式/">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/扩展/">扩展</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/批处理/">批处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖动/">拖动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖拽/">拖拽</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/按钮/">按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/控制器/">控制器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本列表/">文本列表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/映射磁盘/">映射磁盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标签/">标签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑块/">滑块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动文本/">滚动文本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动条/">滚动条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/灰度效果/">灰度效果</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/禁用效果/">禁用效果</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天/">聊天</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天内容/">聊天内容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天表情/">聊天表情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟现实/">虚拟现实</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/触摸盘/">触摸盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/调用Jar/">调用Jar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/输入本文/">输入本文</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进度条/">进度条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页签/">页签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高通/">高通</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+          </div>
+          <footer id="footer">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      Copyright &copy; 2012 - 2018 &nbsp;<a href="/" target="_blank">吾爱CODE</a> 
+      &nbsp;
+      <span id="busuanzi_container_site_pv">
+        总访问量 <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_pv"></span></a> 次
+      </span>
+      <span id="busuanzi_container_site_uv">
+        <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_uv"></span></a> 人 
+      </span>
+      
+        &nbsp; 
+        <span>
+          <a href="http://www.miibeian.gov.cn" >京ICP备11027483号-1</a>
+        </span>
+      
+    </div>
+  </div>
+</footer>
+
+        </div>
+        <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/categories/Unity3D/" class="mobile-nav-link">Unity3D</a>
+  
+    <a href="/categories/NGUI/" class="mobile-nav-link">NGUI</a>
+  
+    <a href="/categories/AR/" class="mobile-nav-link">AR</a>
+  
+    <a href="/" class="mobile-nav-link">H5</a>
+  
+</nav>
+        <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+
+<script src="/js/script.js"></script>
+
+      </div>
+  </div>
+</div>
+
+</body>
+</html>
