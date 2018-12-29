@@ -1497,19 +1497,19 @@ a.article-tag-list-link:hover {
 }
 .article-entry pre,
 .article-entry .highlight {
-  background: #272822;
+  background: #fff;
   margin: 0 -10px;
   padding: 15px 10px;
   border-style: solid;
   border-color: #ddd;
   border-width: 1px 0;
   overflow: auto;
-  color: #f8f8f2;
+  color: #000;
   line-height: 22.400000000000002px;
 }
 .article-entry .highlight .gutter pre,
 .article-entry .gist .gist-file .gist-data .line-numbers {
-  color: #666;
+  color: #333;
   font-size: 0.85em;
 }
 .article-entry pre,
@@ -1573,7 +1573,7 @@ a.article-tag-list-link:hover {
   border-style: solid;
   border-color: #ddd;
   border-width: 1px 0;
-  background: #272822;
+  background: #fff;
   padding: 15px 10px 15px 0;
 }
 .article-entry .gist .gist-file {
@@ -1599,7 +1599,7 @@ a.article-tag-list-link:hover {
   border: none;
 }
 .article-entry .gist .gist-file .gist-meta {
-  background: #272822;
+  background: #fff;
   color: #75715e;
   font: 0.85em "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-shadow: 0 0;
@@ -1619,7 +1619,7 @@ pre .preprocessor {
   color: #75715e;
 }
 pre .tag {
-  color: #f8f8f2;
+  color: #000;
 }
 pre .title,
 pre .variable,
@@ -1632,7 +1632,7 @@ pre .html .doctype,
 pre .css .id,
 pre .css .class,
 pre .css .pseudo {
-  color: #f92672;
+  color: #2e912e;
 }
 pre .number,
 pre .built_in,
@@ -1641,13 +1641,13 @@ pre .constant {
   color: #ae81ff;
 }
 pre .params {
-  color: #fd971f;
+  color: #000;
 }
 pre .class,
 pre .ruby .class .title,
 pre .css .rules .attribute,
 pre .attribute {
-  color: #a6e22e;
+  color: #2e912e;
 }
 pre .string,
 pre .value,
@@ -1655,7 +1655,7 @@ pre .inheritance,
 pre .header,
 pre .ruby .symbol,
 pre .xml .cdata {
-  color: #e6db74;
+  color: #a21917;
 }
 pre .css .hexcolor {
   color: #a1efe4;
@@ -1668,11 +1668,11 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #66d9ef;
+  color: #00f;
 }
 pre .keyword,
 pre .javascript .function {
-  color: #66d9ef;
+  color: #00f;
 }
 @media screen and (max-width: 479px) {
   #mobile-nav {
