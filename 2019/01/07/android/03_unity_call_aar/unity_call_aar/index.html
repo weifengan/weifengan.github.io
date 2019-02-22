@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Unity借助AAR实现与Android的交互 | 吾爱CODE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta name="360-site-verification" content="91eab2a170424b1b0a49d8806cda256b" />
+  <meta name="baidu-site-verification" content="mZyqS6EDYo" />
+  <meta name="description" content="对于Unity与Andorid之间的交互，觉得是比较重要的，很早之前写了一篇基于Eclipse生成jar包与Unity交互的文章，但android Studio的功能比较强大，刚开始搞得是一头雾水，不知道工程怎么处理，也就没使用Android Studio编译arr包来与unity交互，今天终于弄明白了，也把这过程记录下，分享给大家，让大家少走点弯路。">
+<meta name="keywords" content="Unity,Android,AAR,Unity与Android交互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity借助AAR实现与Android的交互">
+<meta property="og:url" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/index.html">
+<meta property="og:site_name" content="吾爱CODE">
+<meta property="og:description" content="对于Unity与Andorid之间的交互，觉得是比较重要的，很早之前写了一篇基于Eclipse生成jar包与Unity交互的文章，但android Studio的功能比较强大，刚开始搞得是一头雾水，不知道工程怎么处理，也就没使用Android Studio编译arr包来与unity交互，今天终于弄明白了，也把这过程记录下，分享给大家，让大家少走点弯路。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172347.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172532.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172611.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172633.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108101631.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108101753.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108101830.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108103900.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108104338.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108110125.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108111948.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108112634.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108112730.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108112934.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108113246.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108115151.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108121800.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108122204.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108122308.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108131858.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108134012.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108135504.jpg">
+<meta property="og:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108144919.jpg">
+<meta property="og:updated_time" content="2019-01-08T07:31:09.114Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity借助AAR实现与Android的交互">
+<meta name="twitter:description" content="对于Unity与Andorid之间的交互，觉得是比较重要的，很早之前写了一篇基于Eclipse生成jar包与Unity交互的文章，但android Studio的功能比较强大，刚开始搞得是一头雾水，不知道工程怎么处理，也就没使用Android Studio编译arr包来与unity交互，今天终于弄明白了，也把这过程记录下，分享给大家，让大家少走点弯路。">
+<meta name="twitter:image" content="http://www.felixwee.com/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172347.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="吾爱CODE" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/logo.jpg">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Chrome on Android -->
+    <link rel="icon" sizes="192x192" href="/img/logo.jpg">
+    <!-- Add to homescreen for Safari on iOS -->
+    <link rel="apple-touch-icon-precomposed" href="/img/logo.jpg">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/img/logo.jpg">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+
+  <script src="/js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="layout">
+     <div class="app_menu">
+          <div class="menu_list">
+          <ul>
+            
+             <a style="color:#fff;" href="/"><li>首页</li></a>
+            
+             <a style="color:#fff;" href="/categories/Unity3D/"><li>Unity3D</li></a>
+            
+             <a style="color:#fff;" href="/categories/NGUI/"><li>NGUI</li></a>
+            
+             <a style="color:#fff;" href="/categories/Android/"><li>Android</li></a>
+            
+             <a style="color:#fff;" href="/categories/VR/"><li>VR</li></a>
+            
+             <a style="color:#fff;" href="/categories/AR/"><li>AR</li></a>
+            
+          </ul>
+         </div>
+     </div>
+     <div class="content_overlay"></div>
+     <div class="main_wrapper">
+      <!--网页主体 -->
+      <div id="container">
+        <div id="wrap">
+          <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">吾爱CODE</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个记录自己进步的博客</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+
+      <div class="app_menu_button"><span class="main-nav-link" href=""><i class="icon icon-menu"></i></span></div>
+      <nav id="main-nav">
+
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/categories/Unity3D/">Unity3D</a>
+        
+          <a class="main-nav-link" href="/categories/NGUI/">NGUI</a>
+        
+          <a class="main-nav-link" href="/categories/Android/">Android</a>
+        
+          <a class="main-nav-link" href="/categories/VR/">VR</a>
+        
+          <a class="main-nav-link" href="/categories/AR/">AR</a>
+        
+      </nav>
+
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="www.felixwee.com">
+        </form>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+          <div class="outer">
+            <section id="main"><article id="post-android/03_unity_call_aar/unity_call_aar" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/07/android/03_unity_call_aar/unity_call_aar/" class="article-date">
+  <time datetime="2019-01-07T08:01:00.000Z" itemprop="datePublished">2019-01-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Unity/">Unity</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+		
+  
+    <h1 class="article-title" itemprop="name">
+      Unity借助AAR实现与Android的交互
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>对于Unity与Andorid之间的交互，觉得是比较重要的，很早之前写了一篇基于Eclipse生成jar包与Unity交互的文章，但android Studio的功能比较强大，刚开始搞得是一头雾水，不知道工程怎么处理，也就没使用Android Studio编译arr包来与unity交互，今天终于弄明白了，也把这过程记录下，分享给大家，让大家少走点弯路。</p>
+<a id="more"></a>
+<h2 id="一、开发工具"><a href="#一、开发工具" class="headerlink" title="一、开发工具"></a>一、开发工具</h2><ul>
+<li>Android Studio 3.2</li>
+<li>Unity 2017.3.1f1</li>
+</ul>
+<h2 id="二、Android-Studio创建AAR"><a href="#二、Android-Studio创建AAR" class="headerlink" title="二、Android Studio创建AAR"></a>二、Android Studio创建AAR</h2><h3 id="1-新建Android工程，所有参数默认即可。"><a href="#1-新建Android工程，所有参数默认即可。" class="headerlink" title="1.新建Android工程，所有参数默认即可。"></a>1.新建Android工程，所有参数默认即可。</h3><p> <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172347.jpg" alt=""></p>
+<p> <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172532.jpg" alt=""></p>
+<p> <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172611.jpg" alt=""></p>
+<p> <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190107172633.jpg" alt=""></p>
+<p> 点击Finish按钮，等待项目初始化完成。</p>
+<h3 id="2-创建Moudle"><a href="#2-创建Moudle" class="headerlink" title="2.创建Moudle"></a>2.创建Moudle</h3><p>  在AndroidStudio中，我们创建一个Moudle专门用来与Unity进行通讯。将项目的视图切换到Projects。</p>
+<p>  <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108101631.jpg" alt="">  </p>
+<p>  将项目的视图切换到Projects后，在MyApplication上右键，选择新建Module</p>
+<p>  <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108101753.jpg" alt=""></p>
+<p>  这里，我们需要选择的项是Anroid Libarary，然后点击下一步</p>
+<p>  <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108101830.jpg" alt=""></p>
+<p>  然后将Application/Libarary name输入框中输入 AndroidNativePlugin，同时packageName也会随着输入变化,确认没有问题，点击Finish按钮完成创建。</p>
+<p>  <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108103900.jpg" alt=""></p>
+<p>  实际上我们创建的Module可以理解为MyApplication的一个功能模块，创建好后文件如下:</p>
+<p>  <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108104338.jpg" alt=""></p>
+<h3 id="3-导入Unity的classes-jar到AndroidStudio"><a href="#3-导入Unity的classes-jar到AndroidStudio" class="headerlink" title="3.导入Unity的classes.jar到AndroidStudio"></a>3.导入Unity的classes.jar到AndroidStudio</h3><p> Unity的库文件classes.jar需要到Unity安装目录中找，一般有两种方式,在Player Settings里Configuration-&gt;Scripting Backend 找到</p>
+<ul>
+<li>Mono</li>
+<li>IL2CPP</li>
+</ul>
+<p>根据Unity发布设置进行选择导入,我们这次使用的是Mono方式。<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Mono</span></span><br><span class="line">Unity安装目录\Editor\Data\PlaybackEngines\AndroidPlayer\Variations\mono\Release\Classes</span><br><span class="line"></span><br><span class="line"><span class="comment">//IL2CPP</span></span><br><span class="line">Unity安装目录\Editor\Data\PlaybackEngines\AndroidPlayer\Variations\il2cpp\Release\Classes</span><br></pre></td></tr></table></figure></p>
+<p> 找到classes.jar文件后，右键复制。然后粘贴到AndroidStudio中,在上一步新建的androidnavtiveplugin的结构中发现有一个libs文件夹，我们直播在libs目录上右键，选择paste，弹窗点击 ok。</p>
+<p> <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108110125.jpg" alt=""></p>
+<p> 到这里并没有真正导入，我们只是把文件导入到工程时，是没有办法使用库里面的内容。接着，我们在classes.jar上右键，选择【Add As Libarary】,弹出窗点击【OK】</p>
+<p> <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108111948.jpg" alt=""></p>
+<p> <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108112634.jpg" alt=""></p>
+<p>  添加正确后，classes.jar前面会有箭头，可以展开查看库里内容，说明已经添加成功了。</p>
+<p>  <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108112730.jpg" alt=""></p>
+<h3 id="4-编写Android逻辑代码"><a href="#4-编写Android逻辑代码" class="headerlink" title="4.编写Android逻辑代码"></a>4.编写Android逻辑代码</h3><p>  找到Module的src目录里的包com.felixwee.androidnativeplugin，右键，选择New-&gt;Java Class.</p>
+<p>  <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108112934.jpg" alt=""></p>
+<p>  填写类信息,Name可以自己起名字，我这里起名MainActivity，点击确定.</p>
+<p>   <img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108113246.jpg" alt=""></p>
+<p>  接下来，我们可以在MainActivity.java里写功能代码了,我们简单的添几个方法，用于演示Unity与Android之间的调用。代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.felixwee.androidnativeplugin;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.unity3d.player.UnityPlayer;</span><br><span class="line"><span class="keyword">import</span> com.unity3d.player.UnityPlayerActivity;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">UnityPlayerActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 显示Android Toast</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> str</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">ShowToast</span><span class="params">(String str)</span></span>&#123;</span><br><span class="line">        Toast.makeText(<span class="keyword">this</span>,str,Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 旋转Cube对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RotateCube</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//调用CubeController对象上所挂脚本的RotateCube,参数为0.5</span></span><br><span class="line">        UnityPlayer.UnitySendMessage(<span class="string">"CubeController"</span>,<span class="string">"Rotate"</span>,<span class="string">"0.5"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-修改AndroidManifest文件"><a href="#5-修改AndroidManifest文件" class="headerlink" title="5.修改AndroidManifest文件"></a>5.修改AndroidManifest文件</h3><p>打开androidnativeplugin下的AndroidManifest.xml文件，我们发现这里面配置除了一个包名，没有其它内容了，这是不行的。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">"com.felixwee.androidnativeplugin"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们需要动刀做大手术来修改它，我们找到app里的AndroidManifest.xml文件.</p>
+<p><img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108115151.jpg" alt=""></p>
+<p>里面的内容如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">"com.felixwee.myapplication"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:allowBackup</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:icon</span>=<span class="string">"@mipmap/ic_launcher"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:roundIcon</span>=<span class="string">"@mipmap/ic_launcher_round"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:supportsRtl</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:theme</span>=<span class="string">"@style/AppTheme"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".MainActivity"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们复制一下application标签，然后粘贴到androidnativeplugin模块的AndroidManifest.xml里，并做下修改，修改后内容如下:</p>
+<p><img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108121800.jpg" alt=""></p>
+<p>文本格式代码:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">"com.felixwee.androidnativeplugin"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:allowBackup</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:icon</span>=<span class="string">"@drawable/app_icon"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:supportsRtl</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:theme</span>=<span class="string">"@android:style/Theme.NoTitleBar"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".MainActivity"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:name</span>=<span class="string">"unityplayer.UnityActivity"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-生成AAR文件"><a href="#6-生成AAR文件" class="headerlink" title="6.生成AAR文件"></a>6.生成AAR文件</h3><p>在左侧窗口中选中androidnativeplugin模块，点击工具栏的小锤子图标进行编译，如果没有出问题，一般都会编译成功。</p>
+<p><img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108122204.jpg" alt=""></p>
+<p>编译完成后，我们找到生成的arr文件。</p>
+<p><img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108122308.jpg" alt=""></p>
+<h3 id="7-删除AAR包中的classes-jar"><a href="#7-删除AAR包中的classes-jar" class="headerlink" title="7.删除AAR包中的classes.jar"></a>7.删除AAR包中的classes.jar</h3><p>在这里，因为在Unity中，他会自己加载我们之前复制到lib目录下的classes.jar包，所以在放到Unity工程之前还需要删除我们放在libs的classes.jar。<br>使用压缩软件，打开outputs里的arr文件androidnativeplugin-debug.arr，会看到包里面的内容:</p>
+<p><img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108131858.jpg" alt=""></p>
+<p>进入libs把里面的classes.jar删除掉。</p>
+<p>到这里，AndroidStudio端的操作就算都搞定了，接下来，我们来搞一下Unity端。</p>
+<h2 id="三、Unity工程"><a href="#三、Unity工程" class="headerlink" title="三、Unity工程"></a>三、Unity工程</h2><h3 id="1-创建Unity新工程"><a href="#1-创建Unity新工程" class="headerlink" title="1.创建Unity新工程"></a>1.创建Unity新工程</h3><p>新建Unity工程，切换到Android平台,创建UI,再UI上新建一个Button,按钮文字修改Show Toast，用来调用Android里的ShowToast函数。<br>同时新建一个Cube对象，调整好位置和大小，效果如下:</p>
+<p><img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108134012.jpg" alt=""></p>
+<h3 id="2-编写控制脚本"><a href="#2-编写控制脚本" class="headerlink" title="2.编写控制脚本"></a>2.编写控制脚本</h3><p>在Cube对象上新建C#代码 CubeController.cs,并把按钮拖拽到btn变量上,代码如下:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">		CubeController</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   @desction:</span></span><br><span class="line"><span class="comment">   @author:felixwee</span></span><br><span class="line"><span class="comment">   @email:felixwee@163.com</span></span><br><span class="line"><span class="comment">   @website:www.felixwee.com</span></span><br><span class="line"><span class="comment">   @github:http://www.github.com/weifengan</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">***************************************/</span></span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CubeController</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//把场景</span></span><br><span class="line">    <span class="keyword">public</span> Button btnCallAndroid;</span><br><span class="line">	<span class="comment">// Use this for initialization</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        btnCallAndroid.onClick.AddListener(<span class="keyword">delegate</span> ()</span><br><span class="line">        &#123;</span><br><span class="line">            AndroidJavaClass jc = <span class="keyword">new</span> AndroidJavaClass(<span class="string">"com.unity3d.player.UnityPlayer"</span>);</span><br><span class="line">            AndroidJavaObject jo = jc.GetStatic&lt;AndroidJavaObject&gt;(<span class="string">"currentActivity"</span>);</span><br><span class="line">            <span class="comment">//调用Android里的RotateCube函数，此函数在Android中调用了CubeController和人里的Rotate函数</span></span><br><span class="line">            jo.Call(<span class="string">"ShowToast"</span>,<span class="string">"Unity调用了ShowToast显示的消息"</span>);</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Update is called once per frame</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        AndroidJavaClass jc = <span class="keyword">new</span> AndroidJavaClass(<span class="string">"com.unity3d.player.UnityPlayer"</span>);</span><br><span class="line">        AndroidJavaObject jo = jc.GetStatic&lt;AndroidJavaObject&gt;(<span class="string">"currentActivity"</span>);</span><br><span class="line">        <span class="comment">//调用Android里的RotateCube函数，此函数在Android中调用了CubeController和人里的Rotate函数</span></span><br><span class="line">        jo.Call(<span class="string">"RotateCube"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Rotate</span>(<span class="params"><span class="keyword">string</span> <span class="keyword">value</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.transform.Rotate(Vector3.up * <span class="keyword">float</span>.Parse(<span class="keyword">value</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-导入AAR与AndroidManifest-xml"><a href="#3-导入AAR与AndroidManifest-xml" class="headerlink" title="3.导入AAR与AndroidManifest.xml"></a>3.导入AAR与AndroidManifest.xml</h3><p>在UnityAsset目录，新建文件夹Plugins,在里面创建Android文件夹，然后把AndroidStudio里 Module的AndroidManifest.xml文件和刚刚修改过的aar包，复制到Android文件。</p>
+<p><img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108135504.jpg" alt=""></p>
+<h3 id="4-发布测试"><a href="#4-发布测试" class="headerlink" title="4.发布测试"></a>4.发布测试</h3><p>将场景添加到Build Settings里，并修改Identification中的packageName，包名可以随便起，只要不和创建的AS里使用的包名一样就行，然后导出测试即可。</p>
+<p><img src="/2019/01/07/android/03_unity_call_aar/unity_call_aar/20190108144919.jpg" alt=""></p>
+<h2 id="四、源码下载"><a href="#四、源码下载" class="headerlink" title="四、源码下载"></a>四、源码下载</h2><p>源码下载  <a href="https://github.com/weifengan/AndroidAndUnityInteraction.git" target="_blank" rel="noopener">https://github.com/weifengan/AndroidAndUnityInteraction.git</a></p>
+
+      
+      
+  <div class="article-statement">
+    <hr>
+    
+              
+      
+    <hr>
+    1.如果本文帮到了您，不妨点一下右下角的 <a>分享到</a> 按钮。<br>
+    2.除非注明，本博文章均为原创，转载请以链接形式标明本文地址。<br>
+  </div>
+
+
+    </div>
+
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AAR/">AAR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity/">Unity</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Unity与Android交互/">Unity与Android交互</a></li></ul>
+
+ 	  <a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=78540b81-ce14-43e6-a242-c6ddbfa5566b&style=2&textcolor=#000000&bp=qqmb,bsharesync,sinaminiblog,qzone,189share,sohuminiblog,renren,xinhuamb,tianya,shouji&text=分享"></script>
+     </footer>
+    <div>
+	</div>
+
+  <!--上下篇文章连接-->
+  
+    
+<nav>
+   <div class="navlink_article_wrap">
+      <div class="nav_previous left">
+
+           <span style="color:#999;display:block;">PREVIOUS</span>
+             
+              <span class="article-nav-title"><span style="color:#999">已经是最旧的文章了</span></span>
+            
+
+      </div>
+
+
+      <div class="nav_next right">
+        <span style="color:#999;display:block;">NEXT</span>
+          
+            <a href="/2019/01/07/unity/unity_call_aar/unity_call_aar/" class="article-nav-title">
+            Unity借助AAR实现与Android的交互</a>
+          
+      </div>
+   </div>
+</nav>
+
+
+  
+
+	<!-- 首页不显示评论 -->
+	 
+	 <div>
+	   <!--PC和WAP自适应版-->
+		<div id="SOHUCS" sid="Unity借助AAR实现与Android的交互" ></div>
+		<script type="text/javascript">
+		(function(){
+		var appid = 'cytvbtj5E';
+		var conf = 'prod_de8c7b4109591c2c30018260c933fc91';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+	  </div>
+    
+
+  </div>
+
+</article>
+</section>
+            
+              <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">网站公告</h3>
+  <div class="widget">
+  
+      感谢各位博友的支持，如果觉得本博客帮到你，可以分享给你身边的朋友！ 
+       
+	   <span class="right">Felixwee</span>
+  
+      </br></br>
+	  
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">来关注我</h3>
+  <div class="widget">
+    <ul>
+	   <div style="text-align: center;">
+            <img src="/img/avatar.jpg" style="width: 100%; max-width: 160px;">
+       </div>
+	   <div style="text-align: center;">FELIXWEE(魏凤安)</div>
+
+      
+      
+        
+        
+        
+        <li>
+		  <span>QQ: 1327707237</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>E-mail: felixwee@163.com</span>
+        </li>
+      
+        
+        
+        <li>
+		  <span>GitHub: https://github.com/weifengan</span>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">推荐文章</h3>
+  <div class="widget">
+    <ul>
+      
+      
+        
+        <li>
+          <a href="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/" target="_blank">1. NGUI实战之图文混排</a>
+        </li>
+      
+        
+        <li>
+          <a href="/2018/03/20/ugui/ugui_grey_ui/ugui_grey_ui/" target="_blank">2. UGUI中实现图片的灰度显示效果</a>
+        </li>
+      
+        
+        <li>
+          <a href="/2018/03/19/unity/gl_basic/gl_basic/" target="_blank">3. Unity中GL基础-直线，三角形，四边形</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AR/">AR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/BAT/">BAT</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NGUI/">NGUI</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Raspberry-PI/">Raspberry PI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/UGUI/">UGUI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity/">Unity</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Unity3D/">Unity3D</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/VR/">VR</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/lua/">lua</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ubuntu/">ubuntu</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AAR/" style="font-size: 12px;">AAR</a> <a href="/tags/ADB/" style="font-size: 10px;">ADB</a> <a href="/tags/AR/" style="font-size: 10px;">AR</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Android-Studio/" style="font-size: 10px;">Android Studio</a> <a href="/tags/BAT/" style="font-size: 10px;">BAT</a> <a href="/tags/CheckBox/" style="font-size: 10px;">CheckBox</a> <a href="/tags/Drag/" style="font-size: 10px;">Drag</a> <a href="/tags/Drop/" style="font-size: 10px;">Drop</a> <a href="/tags/Editor/" style="font-size: 10px;">Editor</a> <a href="/tags/G2/" style="font-size: 10px;">G2</a> <a href="/tags/GL绘图/" style="font-size: 10px;">GL绘图</a> <a href="/tags/HTC-Vive/" style="font-size: 12px;">HTC Vive</a> <a href="/tags/HTC-Vive-手柄/" style="font-size: 10px;">HTC Vive 手柄</a> <a href="/tags/Jar包/" style="font-size: 10px;">Jar包</a> <a href="/tags/Label/" style="font-size: 10px;">Label</a> <a href="/tags/LayerMask/" style="font-size: 10px;">LayerMask</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/NGUI/" style="font-size: 20px;">NGUI</a> <a href="/tags/Oculus/" style="font-size: 10px;">Oculus</a> <a href="/tags/Pico/" style="font-size: 10px;">Pico</a> <a href="/tags/PlayStation-VR/" style="font-size: 10px;">PlayStation VR</a> <a href="/tags/Raspberry/" style="font-size: 10px;">Raspberry</a> <a href="/tags/SDK接入/" style="font-size: 10px;">SDK接入</a> <a href="/tags/ScrollBar/" style="font-size: 10px;">ScrollBar</a> <a href="/tags/Slider/" style="font-size: 10px;">Slider</a> <a href="/tags/TabView/" style="font-size: 10px;">TabView</a> <a href="/tags/TextList/" style="font-size: 10px;">TextList</a> <a href="/tags/Toggle/" style="font-size: 10px;">Toggle</a> <a href="/tags/Txt/" style="font-size: 10px;">Txt</a> <a href="/tags/UGUI/" style="font-size: 12px;">UGUI</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIInput/" style="font-size: 12px;">UIInput</a> <a href="/tags/Unity/" style="font-size: 18px;">Unity</a> <a href="/tags/Unity与Android交互/" style="font-size: 12px;">Unity与Android交互</a> <a href="/tags/Unity层/" style="font-size: 10px;">Unity层</a> <a href="/tags/VMware/" style="font-size: 10px;">VMware</a> <a href="/tags/VR/" style="font-size: 14px;">VR</a> <a href="/tags/VR-UI/" style="font-size: 10px;">VR UI</a> <a href="/tags/VR一体机/" style="font-size: 10px;">VR一体机</a> <a href="/tags/Vive-Teleporter/" style="font-size: 10px;">Vive Teleporter</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Vuforia/" style="font-size: 10px;">Vuforia</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/cmd/" style="font-size: 10px;">cmd</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/progressBar/" style="font-size: 10px;">progressBar</a> <a href="/tags/subst/" style="font-size: 10px;">subst</a> <a href="/tags/ubuntu/" style="font-size: 10px;">ubuntu</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/交互/" style="font-size: 10px;">交互</a> <a href="/tags/位图字体/" style="font-size: 10px;">位图字体</a> <a href="/tags/单选按钮/" style="font-size: 10px;">单选按钮</a> <a href="/tags/图文混排/" style="font-size: 12px;">图文混排</a> <a href="/tags/多选按钮/" style="font-size: 10px;">多选按钮</a> <a href="/tags/嵌入式/" style="font-size: 10px;">嵌入式</a> <a href="/tags/扩展/" style="font-size: 10px;">扩展</a> <a href="/tags/批处理/" style="font-size: 10px;">批处理</a> <a href="/tags/拖动/" style="font-size: 10px;">拖动</a> <a href="/tags/拖拽/" style="font-size: 10px;">拖拽</a> <a href="/tags/按钮/" style="font-size: 10px;">按钮</a> <a href="/tags/控制器/" style="font-size: 10px;">控制器</a> <a href="/tags/播放3D格式视频/" style="font-size: 10px;">播放3D格式视频</a> <a href="/tags/文本列表/" style="font-size: 10px;">文本列表</a> <a href="/tags/映射磁盘/" style="font-size: 10px;">映射磁盘</a> <a href="/tags/标签/" style="font-size: 10px;">标签</a> <a href="/tags/滑块/" style="font-size: 10px;">滑块</a> <a href="/tags/滚动文本/" style="font-size: 10px;">滚动文本</a> <a href="/tags/滚动条/" style="font-size: 10px;">滚动条</a> <a href="/tags/灰度效果/" style="font-size: 10px;">灰度效果</a> <a href="/tags/禁用效果/" style="font-size: 10px;">禁用效果</a> <a href="/tags/聊天/" style="font-size: 10px;">聊天</a> <a href="/tags/聊天内容/" style="font-size: 10px;">聊天内容</a> <a href="/tags/聊天表情/" style="font-size: 10px;">聊天表情</a> <a href="/tags/虚拟现实/" style="font-size: 10px;">虚拟现实</a> <a href="/tags/触摸盘/" style="font-size: 10px;">触摸盘</a> <a href="/tags/调用Jar/" style="font-size: 10px;">调用Jar</a> <a href="/tags/输入本文/" style="font-size: 12px;">输入本文</a> <a href="/tags/进度条/" style="font-size: 10px;">进度条</a> <a href="/tags/页签/" style="font-size: 10px;">页签</a> <a href="/tags/高通/" style="font-size: 10px;">高通</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">2019年 01月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">2018年 12月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">2018年 06月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">2018年 04月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">2018年 03月</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">2017年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最近评论</h3>
+    <div class="widget">
+      
+	  
+	  
+	  
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://leix.wang/" target="_blank">www.leix.wang</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/01/07/android/03_unity_call_aar/unity_call_aar/">Unity借助AAR实现与Android的交互</a>
+          </li>
+        
+          <li>
+            <a href="/2019/01/07/unity/unity_call_aar/unity_call_aar/">Unity借助AAR实现与Android的交互</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/29/android/02_adb_basic/adb_basic/">Android ADB常用指令备忘录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/29/vr/pico_g2_play_3dlr_format_video/pico_g2_play_3dlr_format_video/">如何借助Unity引擎使3D视频在Pico G2一体机上播放出影院般的3D效果</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/24/vue/1_vue_env_install/vue_env_install/">Vue.js开发环境搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AAR/">AAR</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ADB/">ADB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AR/">AR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/BAT/">BAT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CheckBox/">CheckBox</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drag/">Drag</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Drop/">Drop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Editor/">Editor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/G2/">G2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GL绘图/">GL绘图</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive/">HTC Vive</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTC-Vive-手柄/">HTC Vive 手柄</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jar包/">Jar包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Label/">Label</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LayerMask/">LayerMask</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua/">Lua</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGUI/">NGUI</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oculus/">Oculus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pico/">Pico</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PlayStation-VR/">PlayStation VR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Raspberry/">Raspberry</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK接入/">SDK接入</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ScrollBar/">ScrollBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Slider/">Slider</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TabView/">TabView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextList/">TextList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toggle/">Toggle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Txt/">Txt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UGUI/">UGUI</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIButton/">UIButton</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIInput/">UIInput</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity/">Unity</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity与Android交互/">Unity与Android交互</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Unity层/">Unity层</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VMware/">VMware</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR/">VR</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR-UI/">VR UI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VR一体机/">VR一体机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vive-Teleporter/">Vive Teleporter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vuforia/">Vuforia</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmd/">cmd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/progressBar/">progressBar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/subst/">subst</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/交互/">交互</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/位图字体/">位图字体</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单选按钮/">单选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图文混排/">图文混排</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多选按钮/">多选按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式/">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/扩展/">扩展</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/批处理/">批处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖动/">拖动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/拖拽/">拖拽</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/按钮/">按钮</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/控制器/">控制器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/播放3D格式视频/">播放3D格式视频</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文本列表/">文本列表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/映射磁盘/">映射磁盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标签/">标签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑块/">滑块</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动文本/">滚动文本</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动条/">滚动条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/灰度效果/">灰度效果</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/禁用效果/">禁用效果</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天/">聊天</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天内容/">聊天内容</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/聊天表情/">聊天表情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/虚拟现实/">虚拟现实</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/触摸盘/">触摸盘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/调用Jar/">调用Jar</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/输入本文/">输入本文</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进度条/">进度条</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页签/">页签</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/高通/">高通</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+          </div>
+          <footer id="footer">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      Copyright &copy; 2012 - 2019 &nbsp;<a href="/" target="_blank">吾爱CODE</a> 
+      &nbsp;
+      <span id="busuanzi_container_site_pv">
+        总访问量 <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_pv"></span></a> 次
+      </span>
+      <span id="busuanzi_container_site_uv">
+        <a href="http://service.ibruce.info/" target="_blank"><span id="busuanzi_value_site_uv"></span></a> 人 
+      </span>
+      
+        &nbsp; 
+        <span>
+          <a href="http://www.miibeian.gov.cn" >京ICP备11027483号-1</a>
+        </span>
+      
+    </div>
+  </div>
+</footer>
+
+        </div>
+        <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/categories/Unity3D/" class="mobile-nav-link">Unity3D</a>
+  
+    <a href="/categories/NGUI/" class="mobile-nav-link">NGUI</a>
+  
+    <a href="/categories/Android/" class="mobile-nav-link">Android</a>
+  
+    <a href="/categories/VR/" class="mobile-nav-link">VR</a>
+  
+    <a href="/categories/AR/" class="mobile-nav-link">AR</a>
+  
+</nav>
+        <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+
+<script src="/js/script.js"></script>
+
+      </div>
+  </div>
+</div>
+
+</body>
+</html>
