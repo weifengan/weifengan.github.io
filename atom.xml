@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.felixwee.com/"/>
-  <updated>2019-01-08T07:31:09.114Z</updated>
+  <updated>2019-02-26T08:51:33.687Z</updated>
   <id>http://www.felixwee.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android开发-通过包名运行apk</title>
+    <link href="http://www.felixwee.com/2019/02/26/android/04_launcherapk/04_launcherapk/"/>
+    <id>http://www.felixwee.com/2019/02/26/android/04_launcherapk/04_launcherapk/</id>
+    <published>2019-02-26T08:01:00.000Z</published>
+    <updated>2019-02-26T08:51:33.687Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>这个功能实际是用于在Unity中调用android接口，我已经把这个功能封装到了NativePlugin_AndroidInterface库中.</p><p><a href="https://github.com/weifengan/NativePlugin_AndroidInterface" target="_blank" rel="noopener">https://github.com/weifengan/NativePlugin_AndroidInterface</a></p><a id="more"></a><h3 id="实际代码"><a href="#实际代码" class="headerlink" title="实际代码"></a>实际代码</h3><p>在实际过程中使用的是Android的PackageManager来实现.具体代码如下:</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过APk包名启动apk</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> packageName  包名</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startApp</span><span class="params">(String packageName)</span></span>&#123;</span><br><span class="line">    Log.e(<span class="string">"Unity"</span>,<span class="string">"startactivity="</span>+packageName);</span><br><span class="line">    PackageManager packageManager = context.getPackageManager();</span><br><span class="line">    Intent intent=<span class="keyword">new</span> Intent();</span><br><span class="line">    intent =packageManager.getLaunchIntentForPackage(packageName);</span><br><span class="line">    <span class="keyword">if</span>(intent==<span class="keyword">null</span>)&#123;</span><br><span class="line">        Toast.makeText(<span class="keyword">this</span>.getApplicationContext(), <span class="string">"未安装APK:"</span>+packageName+<span class="string">""</span>, Toast.LENGTH_LONG).show();</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        context.startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>除了拉起apk的功能外，仓库中还有一些其它方法，例如，获取程序列表，调用系统卸载apk等。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h3&gt;&lt;p&gt;这个功能实际是用于在Unity中调用android接口，我已经把这个功能封装到了NativePlugin_AndroidInterface库中.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/weifengan/NativePlugin_AndroidInterface&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/weifengan/NativePlugin_AndroidInterface&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="http://www.felixwee.com/categories/Android/"/>
+    
+    
+      <category term="Android开发" scheme="http://www.felixwee.com/tags/Android%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="android" scheme="http://www.felixwee.com/tags/android/"/>
+    
+  </entry>
   
   <entry>
     <title>Unity借助AAR实现与Android的交互</title>
@@ -432,6 +457,36 @@
   </entry>
   
   <entry>
+    <title>NGUI图文聊天中的图文混排</title>
+    <link href="http://www.felixwee.com/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/"/>
+    <id>http://www.felixwee.com/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/</id>
+    <published>2017-01-04T12:37:51.000Z</published>
+    <updated>2018-02-05T18:48:59.530Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="图文混排介绍"><a href="#图文混排介绍" class="headerlink" title="图文混排介绍"></a>图文混排介绍</h2><p>图文混排通常用于聊天模块，在文字中夹杂表情图片。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg" alt=""></p><h2 id="位图字体制作"><a href="#位图字体制作" class="headerlink" title="位图字体制作"></a>位图字体制作</h2><p>1）图文混排的制作，首先要制作位图字体。<br>首先得下载一个位图制作工具Bitmap font generator,可以点击<a href="./assets/bmfont_1.13.exe">这里</a>下载<br>2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。</p><a id="more"></a><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090001.jpg" alt=""></p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090153.jpg" alt=""></p><p>亮色的字是制作位图的文字。</p><p>3）通过Edit菜单，选择Select Chars form File选中之前创建好的文本文件，软件会自动将文本中要制作位图字体的字符选中。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090349.jpg" alt=""></p><p>4）通过Options菜单中的【Font Settings】选中要使用的字体文件,点击OK即可。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090644.jpg" alt=""></p><p>5）导出设置</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921091036.jpg" alt=""></p><p>通过Texture 中的Width和Height用于设置最终生成图片的宽和高，如果设定的大小无法容纳所有字体，则会创建多个文件,可以通过快捷键[V]对最终生成的位图字体进行预览。</p><p>File Format 中的Texture和Comporession可以设置导出的位图使用什么格式和压缩算法。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921094916.jpg" alt=""></p><p>6) 通过Options菜单中的【Save Bitmap For Font as…】<br>在弹出的弹窗中填入文件名称MyFont,保存成功后会看到下面的文件.</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921095309.jpg" alt=""></p><p>7)将制作好的字体导入到Unity中，使用Font Maker制作位图字体。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921105526.jpg" alt=""></p><p><b>注意: Output 中的Atlas 保证为None</b></p><p>点击 Create the font 保存制作好的字体.</p><h2 id="制作表情"><a href="#制作表情" class="headerlink" title="制作表情"></a>制作表情</h2><p>1.将准备好的表情图只作为图集emoji，表情图点击<a href="./assets/emoji.zip">这里</a>下载.</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921110109.jpg" alt=""></p><p>2.重新打开Font Maker 在 Output下的图集中，选择制作好的表情图集emoji,再次点击Create the font 按钮，保存最终的字体为MyEmojiFont。</p><p>3.选中MyEmojiFont预制体，在UI Font下的【Symbols and Emotiicons】添加表情。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921110424.jpg" alt=""></p><p>左侧输入对应字符，中间选择对应的图片，填写完成后，点击Add进行表情添加。</p><h2 id="位图字体使用及图文混排"><a href="#位图字体使用及图文混排" class="headerlink" title="位图字体使用及图文混排"></a>位图字体使用及图文混排</h2><p>1)新建UILabel,并将字体选择为刚刚制作好的MyEmojiFont字体。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921111353.jpg" alt=""></p><p>具体展现的效果如下</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921111427.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;图文混排介绍&quot;&gt;&lt;a href=&quot;#图文混排介绍&quot; class=&quot;headerlink&quot; title=&quot;图文混排介绍&quot;&gt;&lt;/a&gt;图文混排介绍&lt;/h2&gt;&lt;p&gt;图文混排通常用于聊天模块，在文字中夹杂表情图片。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;位图字体制作&quot;&gt;&lt;a href=&quot;#位图字体制作&quot; class=&quot;headerlink&quot; title=&quot;位图字体制作&quot;&gt;&lt;/a&gt;位图字体制作&lt;/h2&gt;&lt;p&gt;1）图文混排的制作，首先要制作位图字体。&lt;br&gt;首先得下载一个位图制作工具Bitmap font generator,可以点击&lt;a href=&quot;./assets/bmfont_1.13.exe&quot;&gt;这里&lt;/a&gt;下载&lt;br&gt;2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="NGUI" scheme="http://www.felixwee.com/categories/NGUI/"/>
+    
+    
+      <category term="NGUI" scheme="http://www.felixwee.com/tags/NGUI/"/>
+    
+      <category term="图文混排" scheme="http://www.felixwee.com/tags/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/"/>
+    
+      <category term="聊天表情" scheme="http://www.felixwee.com/tags/%E8%81%8A%E5%A4%A9%E8%A1%A8%E6%83%85/"/>
+    
+      <category term="聊天" scheme="http://www.felixwee.com/tags/%E8%81%8A%E5%A4%A9/"/>
+    
+  </entry>
+  
+  <entry>
     <title>NGUI中实现简单拖放</title>
     <link href="http://www.felixwee.com/2017/01/04/ngui/ngui_dragdrop/ngui_dragdop/"/>
     <id>http://www.felixwee.com/2017/01/04/ngui/ngui_dragdrop/ngui_dragdop/</id>
@@ -472,36 +527,6 @@
       <category term="Drag" scheme="http://www.felixwee.com/tags/Drag/"/>
     
       <category term="Drop" scheme="http://www.felixwee.com/tags/Drop/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>NGUI图文聊天中的图文混排</title>
-    <link href="http://www.felixwee.com/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/"/>
-    <id>http://www.felixwee.com/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/</id>
-    <published>2017-01-04T12:37:51.000Z</published>
-    <updated>2018-02-05T18:48:59.530Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="图文混排介绍"><a href="#图文混排介绍" class="headerlink" title="图文混排介绍"></a>图文混排介绍</h2><p>图文混排通常用于聊天模块，在文字中夹杂表情图片。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg" alt=""></p><h2 id="位图字体制作"><a href="#位图字体制作" class="headerlink" title="位图字体制作"></a>位图字体制作</h2><p>1）图文混排的制作，首先要制作位图字体。<br>首先得下载一个位图制作工具Bitmap font generator,可以点击<a href="./assets/bmfont_1.13.exe">这里</a>下载<br>2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。</p><a id="more"></a><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090001.jpg" alt=""></p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090153.jpg" alt=""></p><p>亮色的字是制作位图的文字。</p><p>3）通过Edit菜单，选择Select Chars form File选中之前创建好的文本文件，软件会自动将文本中要制作位图字体的字符选中。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090349.jpg" alt=""></p><p>4）通过Options菜单中的【Font Settings】选中要使用的字体文件,点击OK即可。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090644.jpg" alt=""></p><p>5）导出设置</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921091036.jpg" alt=""></p><p>通过Texture 中的Width和Height用于设置最终生成图片的宽和高，如果设定的大小无法容纳所有字体，则会创建多个文件,可以通过快捷键[V]对最终生成的位图字体进行预览。</p><p>File Format 中的Texture和Comporession可以设置导出的位图使用什么格式和压缩算法。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921094916.jpg" alt=""></p><p>6) 通过Options菜单中的【Save Bitmap For Font as…】<br>在弹出的弹窗中填入文件名称MyFont,保存成功后会看到下面的文件.</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921095309.jpg" alt=""></p><p>7)将制作好的字体导入到Unity中，使用Font Maker制作位图字体。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921105526.jpg" alt=""></p><p><b>注意: Output 中的Atlas 保证为None</b></p><p>点击 Create the font 保存制作好的字体.</p><h2 id="制作表情"><a href="#制作表情" class="headerlink" title="制作表情"></a>制作表情</h2><p>1.将准备好的表情图只作为图集emoji，表情图点击<a href="./assets/emoji.zip">这里</a>下载.</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921110109.jpg" alt=""></p><p>2.重新打开Font Maker 在 Output下的图集中，选择制作好的表情图集emoji,再次点击Create the font 按钮，保存最终的字体为MyEmojiFont。</p><p>3.选中MyEmojiFont预制体，在UI Font下的【Symbols and Emotiicons】添加表情。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921110424.jpg" alt=""></p><p>左侧输入对应字符，中间选择对应的图片，填写完成后，点击Add进行表情添加。</p><h2 id="位图字体使用及图文混排"><a href="#位图字体使用及图文混排" class="headerlink" title="位图字体使用及图文混排"></a>位图字体使用及图文混排</h2><p>1)新建UILabel,并将字体选择为刚刚制作好的MyEmojiFont字体。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921111353.jpg" alt=""></p><p>具体展现的效果如下</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921111427.jpg" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;图文混排介绍&quot;&gt;&lt;a href=&quot;#图文混排介绍&quot; class=&quot;headerlink&quot; title=&quot;图文混排介绍&quot;&gt;&lt;/a&gt;图文混排介绍&lt;/h2&gt;&lt;p&gt;图文混排通常用于聊天模块，在文字中夹杂表情图片。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;位图字体制作&quot;&gt;&lt;a href=&quot;#位图字体制作&quot; class=&quot;headerlink&quot; title=&quot;位图字体制作&quot;&gt;&lt;/a&gt;位图字体制作&lt;/h2&gt;&lt;p&gt;1）图文混排的制作，首先要制作位图字体。&lt;br&gt;首先得下载一个位图制作工具Bitmap font generator,可以点击&lt;a href=&quot;./assets/bmfont_1.13.exe&quot;&gt;这里&lt;/a&gt;下载&lt;br&gt;2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="NGUI" scheme="http://www.felixwee.com/categories/NGUI/"/>
-    
-    
-      <category term="NGUI" scheme="http://www.felixwee.com/tags/NGUI/"/>
-    
-      <category term="图文混排" scheme="http://www.felixwee.com/tags/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/"/>
-    
-      <category term="聊天表情" scheme="http://www.felixwee.com/tags/%E8%81%8A%E5%A4%A9%E8%A1%A8%E6%83%85/"/>
-    
-      <category term="聊天" scheme="http://www.felixwee.com/tags/%E8%81%8A%E5%A4%A9/"/>
     
   </entry>
   
@@ -604,33 +629,6 @@
       <category term="触摸盘" scheme="http://www.felixwee.com/tags/%E8%A7%A6%E6%91%B8%E7%9B%98/"/>
     
       <category term="交互" scheme="http://www.felixwee.com/tags/%E4%BA%A4%E4%BA%92/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Unity3D中Layers和LayerMask解析</title>
-    <link href="http://www.felixwee.com/2016/10/26/unity/00012_unity_layermask/unity_layermask/"/>
-    <id>http://www.felixwee.com/2016/10/26/unity/00012_unity_layermask/unity_layermask/</id>
-    <published>2016-10-26T14:01:00.000Z</published>
-    <updated>2018-02-05T18:48:59.394Z</updated>
-    
-    <content type="html"><![CDATA[<p>在Unity中每个GameObject都有Layer属性，默认的Layer都是Default。在Unity中可编辑的Layer共有24个（8—31层），官方已使用的是0—7层，默认不可编辑！</p><p>LayerMask实际上是一个位码操作，在Unity3D中一共有32个Layer层，并且不可增加。</p><a id="more"></a><p>Unity中是用int32来表示32个Layer层。int32表示二进制一共有32位（0—31）。<br>在Unity中可编辑的Layer如下图所示：</p><p><img src="/2016/10/26/unity/00012_unity_layermask/unity_layermask/a9b41e14jw1esshija7ddj20830k8jsl.jpg" alt=""></p><h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><p>按位运算符：~、|、&amp;、^。位运算符主要用来对二进制位进行操作。</p><p>逻辑运算符：&amp;&amp;、||、！。逻辑运算符把语句连接成更复杂的复杂语句。</p><p>按位运算符：左移运算符&lt;&lt;，左移表示乘以2，左移多少位表示乘以2的几次幂。</p><p>举个栗子：</p><p>var temp = 14 &lt;&lt; 2; 表示十进制数14转化为二进制后向左移动2位。</p><p>temp最后计算的值为 14乘以2的平方，temp = 56；<br>同理，右移运算符&gt;&gt;，移动多少位表示除以2的几次幂。<br>具体可以转到博客：按位运算符.<br>上面是个基础知识的补充。</p><h2 id="在Unity中是用LayerMask"><a href="#在Unity中是用LayerMask" class="headerlink" title="在Unity中是用LayerMask"></a>在Unity中是用LayerMask</h2><p>Layers</p><p>官方给出的描述是：Layers通常被摄像机用来渲染部分场景，和灯光照射部分场景使用。但是它们也可以用来做射线检测时忽略一些collder或Collision使用。</p><p>如何编辑Layers.</p><p>在代码中使用时如何开启某个Layers？</p><p>LayerMask mask = 1 &lt;&lt; 你需要开启的Layers层。<br>LayerMask mask = 0 &lt;&lt; 你需要关闭的Layers层。</p><p>举几个个栗子：</p><p>LayerMask mask = 1 &lt;&lt; 2; 表示开启Layer2。<br>LayerMask mask = 0 &lt;&lt; 5;表示关闭Layer5。<br>LayerMask mask = 1&lt;&lt;2|1&lt;&lt;8;表示开启Layer2和Layer8。<br>LayerMask mask = 0&lt;&lt;3|0&lt;&lt;7;表示关闭Layer3和Layer7。<br>上面也可以写成：</p><p>LayerMask mask = ~（1&lt;&lt;3|1&lt;&lt;7）;表示关闭Layer3和Layer7。<br>LayerMask mask = 1&lt;&lt;2|0&lt;&lt;4;表示开启Layer2并且同时关闭Layer4.</p><p>代码：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">example</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">    LayerMask mask =  ~（<span class="number">1</span>&lt;&lt;<span class="number">3</span>|<span class="number">1</span>&lt;&lt;<span class="number">7</span>）;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(transform.position, transform.forward, <span class="number">100</span>, mask.<span class="keyword">value</span>))</span><br><span class="line">            Debug.Log(<span class="string">"Hit something"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在Unity中每个GameObject都有Layer属性，默认的Layer都是Default。在Unity中可编辑的Layer共有24个（8—31层），官方已使用的是0—7层，默认不可编辑！&lt;/p&gt;
-&lt;p&gt;LayerMask实际上是一个位码操作，在Unity3D中一共有32个Layer层，并且不可增加。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Unity3D" scheme="http://www.felixwee.com/categories/Unity3D/"/>
-    
-    
-      <category term="Unity" scheme="http://www.felixwee.com/tags/Unity/"/>
-    
-      <category term="LayerMask" scheme="http://www.felixwee.com/tags/LayerMask/"/>
-    
-      <category term="Unity层" scheme="http://www.felixwee.com/tags/Unity%E5%B1%82/"/>
     
   </entry>
   
