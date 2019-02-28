@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.felixwee.com/"/>
-  <updated>2019-02-26T08:51:33.687Z</updated>
+  <updated>2019-02-27T01:39:41.339Z</updated>
   <id>http://www.felixwee.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Shader笔记1--Shader的基本结构</title>
+    <link href="http://www.felixwee.com/2019/02/27/shader/01_shader_property/01_shader_property/"/>
+    <id>http://www.felixwee.com/2019/02/27/shader/01_shader_property/01_shader_property/</id>
+    <published>2019-02-27T02:01:00.000Z</published>
+    <updated>2019-02-27T01:39:41.339Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Shader的分类"><a href="#Shader的分类" class="headerlink" title="Shader的分类"></a>Shader的分类</h2><h3 id="1-表面着色器（Surface-Shader）"><a href="#1-表面着色器（Surface-Shader）" class="headerlink" title="1.表面着色器（Surface Shader）"></a>1.表面着色器（Surface Shader）</h3><p>为你做了大部分的工作，只需要简单的技巧即可实现很多不错的效果。类比卡片机，上手以后不太需要很多努力就能拍出不错的效果。</p><h3 id="2-片段着色器（Fragment-Shader）"><a href="#2-片段着色器（Fragment-Shader）" class="headerlink" title="2.片段着色器（Fragment Shader）"></a>2.片段着色器（Fragment Shader）</h3><p>可以做的事情更多，但是也比较难写。使用片段着色器的主要目的是可以在比较低的层级上进行更复杂（或者针对目标设备更高效）的开发。</p><a id="more"></a><h2 id="Shader基本结构图"><a href="#Shader基本结构图" class="headerlink" title="Shader基本结构图"></a>Shader基本结构图</h2><p><img src="/2019/02/27/shader/01_shader_property/01_shader_property/20190113143550441-1783686817.png" alt=""></p><h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">/指定shader名字</span><br><span class="line">Shader <span class="string">"Custom/Diffuse Texture"</span> &#123;</span><br><span class="line">    <span class="comment">//属性定义</span></span><br><span class="line">    Properties &#123;</span><br><span class="line">        _MainTex (<span class="string">"Base (RGB)"</span>, <span class="number">2</span>D) = <span class="string">"white"</span> &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//子着色器</span></span><br><span class="line">    SubShader &#123;</span><br><span class="line">    Tags &#123; <span class="string">"RenderType"</span>=<span class="string">"Opaque"</span> &#125;</span><br><span class="line">    LOD <span class="number">200</span></span><br><span class="line"></span><br><span class="line">    CGPROGRAM</span><br><span class="line">    #pragma surface surf Lambert</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    sampler2D _MainTex;</span><br><span class="line"></span><br><span class="line">    struct Input &#123;</span><br><span class="line">        float2 uv_MainTex : POSITION(语义，参数当做POSITION类型参数);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">surf</span> <span class="params">(Input IN, inout SurfaceOutput o)</span> ：<span class="title">COLOR0</span><span class="params">(语义：返回值当做颜色处理)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        half4 c = tex2D (_MainTex, IN.uv_MainTex);</span><br><span class="line">        o.Albedo = c.rgb;</span><br><span class="line">        o.Alpha = c.a;</span><br><span class="line">    &#125;</span><br><span class="line">    ENDCG</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//回滚</span></span><br><span class="line">    FallBack <span class="string">"Diffuse"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="属性说明"><a href="#属性说明" class="headerlink" title="属性说明"></a>属性说明</h2><p>在Properties{}中定义着色器属性，在这里定义的属性将被作为输入提供给所有的子着色器。每一条属性的定义的语法是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_Name(&quot;Display Name&quot;, type) = defaultValue[&#123;options&#125;]</span><br></pre></td></tr></table></figure></p><ul><li>_Name - 属性的名字，简单说就是变量名，在之后整个Shader代码中将使用这个名字来获取该属性的内容</li><li>Display Name - 这个字符串将显示在Unity的材质编辑器中作为Shader的使用者可读的内容</li><li>type - 这个属性的类型，</li></ul><h4 id="常用类型"><a href="#常用类型" class="headerlink" title="常用类型:"></a>常用类型:</h4><ul><li>Color - 一种颜色，由RGBA（红绿蓝和透明度）四个量来定义；</li><li>2D - 一张2的阶数大小（256，512之类）的贴图。这张贴图将在采样后被转为对应基于模型UV的每个像素的颜色，最终被显示出来；</li><li>Rect - 一个非2阶数大小的贴图；</li><li>Cube - 即Cube map texture（立方体纹理），简单说就是6张有联系的2D贴图的组合，主要用来做反射效果（比如天空盒和动态反射），也会被转换为对应点的采样；</li><li>Range(min, max) - 一个介于最小值和最大值之间的浮点数，一般用来当作调整Shader某些特性的参数（比如透明度渲染的截止值可以是从0至1的值等）；</li><li>Float - 任意一个浮点数；</li><li>Vector - 一个四维数；</li></ul><h4 id="defaultValue"><a href="#defaultValue" class="headerlink" title="defaultValue"></a>defaultValue</h4><p>定义了这个属性的默认值，通过输入一个符合格式的默认值来指定对应属性的初始值（某些效果可能需要某些特定的参数值来达到需要的效果，虽然这些值可以在之后在进行调整，但是如果默认就指定为想要的值的话就省去了一个个调整的时间，方便很多）。  </p><ul><li>Color - 以0～1定义的rgba颜色，比如(1,1,1,1)；</li><li>2D/Rect/Cube - 对于贴图来说，默认值可以为一个代表默认tint颜色的字符串，可以是空字符串或者”white”,”black”,”gray”,”bump”中的一个</li><li>Float，Range - 某个指定的浮点数</li><li>Vector - 一个4维数，写为 (x,y,z,w)</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Shader的分类&quot;&gt;&lt;a href=&quot;#Shader的分类&quot; class=&quot;headerlink&quot; title=&quot;Shader的分类&quot;&gt;&lt;/a&gt;Shader的分类&lt;/h2&gt;&lt;h3 id=&quot;1-表面着色器（Surface-Shader）&quot;&gt;&lt;a href=&quot;#1-表面着色器（Surface-Shader）&quot; class=&quot;headerlink&quot; title=&quot;1.表面着色器（Surface Shader）&quot;&gt;&lt;/a&gt;1.表面着色器（Surface Shader）&lt;/h3&gt;&lt;p&gt;为你做了大部分的工作，只需要简单的技巧即可实现很多不错的效果。类比卡片机，上手以后不太需要很多努力就能拍出不错的效果。&lt;/p&gt;
+&lt;h3 id=&quot;2-片段着色器（Fragment-Shader）&quot;&gt;&lt;a href=&quot;#2-片段着色器（Fragment-Shader）&quot; class=&quot;headerlink&quot; title=&quot;2.片段着色器（Fragment Shader）&quot;&gt;&lt;/a&gt;2.片段着色器（Fragment Shader）&lt;/h3&gt;&lt;p&gt;可以做的事情更多，但是也比较难写。使用片段着色器的主要目的是可以在比较低的层级上进行更复杂（或者针对目标设备更高效）的开发。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="ShaderLab" scheme="http://www.felixwee.com/categories/ShaderLab/"/>
+    
+    
+      <category term="ShaderLab" scheme="http://www.felixwee.com/tags/ShaderLab/"/>
+    
+      <category term="Shader" scheme="http://www.felixwee.com/tags/Shader/"/>
+    
+      <category term="Property定义" scheme="http://www.felixwee.com/tags/Property%E5%AE%9A%E4%B9%89/"/>
+    
+  </entry>
   
   <entry>
     <title>Android开发-通过包名运行apk</title>
@@ -429,6 +456,36 @@
   </entry>
   
   <entry>
+    <title>NGUI图文聊天中的图文混排</title>
+    <link href="http://www.felixwee.com/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/"/>
+    <id>http://www.felixwee.com/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/</id>
+    <published>2017-01-04T12:37:51.000Z</published>
+    <updated>2018-02-05T18:48:59.530Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="图文混排介绍"><a href="#图文混排介绍" class="headerlink" title="图文混排介绍"></a>图文混排介绍</h2><p>图文混排通常用于聊天模块，在文字中夹杂表情图片。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg" alt=""></p><h2 id="位图字体制作"><a href="#位图字体制作" class="headerlink" title="位图字体制作"></a>位图字体制作</h2><p>1）图文混排的制作，首先要制作位图字体。<br>首先得下载一个位图制作工具Bitmap font generator,可以点击<a href="./assets/bmfont_1.13.exe">这里</a>下载<br>2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。</p><a id="more"></a><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090001.jpg" alt=""></p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090153.jpg" alt=""></p><p>亮色的字是制作位图的文字。</p><p>3）通过Edit菜单，选择Select Chars form File选中之前创建好的文本文件，软件会自动将文本中要制作位图字体的字符选中。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090349.jpg" alt=""></p><p>4）通过Options菜单中的【Font Settings】选中要使用的字体文件,点击OK即可。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090644.jpg" alt=""></p><p>5）导出设置</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921091036.jpg" alt=""></p><p>通过Texture 中的Width和Height用于设置最终生成图片的宽和高，如果设定的大小无法容纳所有字体，则会创建多个文件,可以通过快捷键[V]对最终生成的位图字体进行预览。</p><p>File Format 中的Texture和Comporession可以设置导出的位图使用什么格式和压缩算法。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921094916.jpg" alt=""></p><p>6) 通过Options菜单中的【Save Bitmap For Font as…】<br>在弹出的弹窗中填入文件名称MyFont,保存成功后会看到下面的文件.</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921095309.jpg" alt=""></p><p>7)将制作好的字体导入到Unity中，使用Font Maker制作位图字体。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921105526.jpg" alt=""></p><p><b>注意: Output 中的Atlas 保证为None</b></p><p>点击 Create the font 保存制作好的字体.</p><h2 id="制作表情"><a href="#制作表情" class="headerlink" title="制作表情"></a>制作表情</h2><p>1.将准备好的表情图只作为图集emoji，表情图点击<a href="./assets/emoji.zip">这里</a>下载.</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921110109.jpg" alt=""></p><p>2.重新打开Font Maker 在 Output下的图集中，选择制作好的表情图集emoji,再次点击Create the font 按钮，保存最终的字体为MyEmojiFont。</p><p>3.选中MyEmojiFont预制体，在UI Font下的【Symbols and Emotiicons】添加表情。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921110424.jpg" alt=""></p><p>左侧输入对应字符，中间选择对应的图片，填写完成后，点击Add进行表情添加。</p><h2 id="位图字体使用及图文混排"><a href="#位图字体使用及图文混排" class="headerlink" title="位图字体使用及图文混排"></a>位图字体使用及图文混排</h2><p>1)新建UILabel,并将字体选择为刚刚制作好的MyEmojiFont字体。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921111353.jpg" alt=""></p><p>具体展现的效果如下</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921111427.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;图文混排介绍&quot;&gt;&lt;a href=&quot;#图文混排介绍&quot; class=&quot;headerlink&quot; title=&quot;图文混排介绍&quot;&gt;&lt;/a&gt;图文混排介绍&lt;/h2&gt;&lt;p&gt;图文混排通常用于聊天模块，在文字中夹杂表情图片。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;位图字体制作&quot;&gt;&lt;a href=&quot;#位图字体制作&quot; class=&quot;headerlink&quot; title=&quot;位图字体制作&quot;&gt;&lt;/a&gt;位图字体制作&lt;/h2&gt;&lt;p&gt;1）图文混排的制作，首先要制作位图字体。&lt;br&gt;首先得下载一个位图制作工具Bitmap font generator,可以点击&lt;a href=&quot;./assets/bmfont_1.13.exe&quot;&gt;这里&lt;/a&gt;下载&lt;br&gt;2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="NGUI" scheme="http://www.felixwee.com/categories/NGUI/"/>
+    
+    
+      <category term="NGUI" scheme="http://www.felixwee.com/tags/NGUI/"/>
+    
+      <category term="图文混排" scheme="http://www.felixwee.com/tags/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/"/>
+    
+      <category term="聊天表情" scheme="http://www.felixwee.com/tags/%E8%81%8A%E5%A4%A9%E8%A1%A8%E6%83%85/"/>
+    
+      <category term="聊天" scheme="http://www.felixwee.com/tags/%E8%81%8A%E5%A4%A9/"/>
+    
+  </entry>
+  
+  <entry>
     <title>NGUI中实现简单拖放</title>
     <link href="http://www.felixwee.com/2017/01/04/ngui/ngui_dragdrop/ngui_dragdop/"/>
     <id>http://www.felixwee.com/2017/01/04/ngui/ngui_dragdrop/ngui_dragdop/</id>
@@ -469,36 +526,6 @@
       <category term="Drag" scheme="http://www.felixwee.com/tags/Drag/"/>
     
       <category term="Drop" scheme="http://www.felixwee.com/tags/Drop/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>NGUI图文聊天中的图文混排</title>
-    <link href="http://www.felixwee.com/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/"/>
-    <id>http://www.felixwee.com/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/</id>
-    <published>2017-01-04T12:37:51.000Z</published>
-    <updated>2018-02-05T18:48:59.530Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="图文混排介绍"><a href="#图文混排介绍" class="headerlink" title="图文混排介绍"></a>图文混排介绍</h2><p>图文混排通常用于聊天模块，在文字中夹杂表情图片。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg" alt=""></p><h2 id="位图字体制作"><a href="#位图字体制作" class="headerlink" title="位图字体制作"></a>位图字体制作</h2><p>1）图文混排的制作，首先要制作位图字体。<br>首先得下载一个位图制作工具Bitmap font generator,可以点击<a href="./assets/bmfont_1.13.exe">这里</a>下载<br>2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。</p><a id="more"></a><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090001.jpg" alt=""></p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090153.jpg" alt=""></p><p>亮色的字是制作位图的文字。</p><p>3）通过Edit菜单，选择Select Chars form File选中之前创建好的文本文件，软件会自动将文本中要制作位图字体的字符选中。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090349.jpg" alt=""></p><p>4）通过Options菜单中的【Font Settings】选中要使用的字体文件,点击OK即可。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921090644.jpg" alt=""></p><p>5）导出设置</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921091036.jpg" alt=""></p><p>通过Texture 中的Width和Height用于设置最终生成图片的宽和高，如果设定的大小无法容纳所有字体，则会创建多个文件,可以通过快捷键[V]对最终生成的位图字体进行预览。</p><p>File Format 中的Texture和Comporession可以设置导出的位图使用什么格式和压缩算法。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921094916.jpg" alt=""></p><p>6) 通过Options菜单中的【Save Bitmap For Font as…】<br>在弹出的弹窗中填入文件名称MyFont,保存成功后会看到下面的文件.</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921095309.jpg" alt=""></p><p>7)将制作好的字体导入到Unity中，使用Font Maker制作位图字体。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921105526.jpg" alt=""></p><p><b>注意: Output 中的Atlas 保证为None</b></p><p>点击 Create the font 保存制作好的字体.</p><h2 id="制作表情"><a href="#制作表情" class="headerlink" title="制作表情"></a>制作表情</h2><p>1.将准备好的表情图只作为图集emoji，表情图点击<a href="./assets/emoji.zip">这里</a>下载.</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921110109.jpg" alt=""></p><p>2.重新打开Font Maker 在 Output下的图集中，选择制作好的表情图集emoji,再次点击Create the font 按钮，保存最终的字体为MyEmojiFont。</p><p>3.选中MyEmojiFont预制体，在UI Font下的【Symbols and Emotiicons】添加表情。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921110424.jpg" alt=""></p><p>左侧输入对应字符，中间选择对应的图片，填写完成后，点击Add进行表情添加。</p><h2 id="位图字体使用及图文混排"><a href="#位图字体使用及图文混排" class="headerlink" title="位图字体使用及图文混排"></a>位图字体使用及图文混排</h2><p>1)新建UILabel,并将字体选择为刚刚制作好的MyEmojiFont字体。</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921111353.jpg" alt=""></p><p>具体展现的效果如下</p><p><img src="/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921111427.jpg" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;图文混排介绍&quot;&gt;&lt;a href=&quot;#图文混排介绍&quot; class=&quot;headerlink&quot; title=&quot;图文混排介绍&quot;&gt;&lt;/a&gt;图文混排介绍&lt;/h2&gt;&lt;p&gt;图文混排通常用于聊天模块，在文字中夹杂表情图片。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2017/01/04/ngui/00014_ngui_twhp/TextEmotion/20160921085229.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;位图字体制作&quot;&gt;&lt;a href=&quot;#位图字体制作&quot; class=&quot;headerlink&quot; title=&quot;位图字体制作&quot;&gt;&lt;/a&gt;位图字体制作&lt;/h2&gt;&lt;p&gt;1）图文混排的制作，首先要制作位图字体。&lt;br&gt;首先得下载一个位图制作工具Bitmap font generator,可以点击&lt;a href=&quot;./assets/bmfont_1.13.exe&quot;&gt;这里&lt;/a&gt;下载&lt;br&gt;2) 将要作为位图的文字写入到一个文本文件中，以UTF-8编码格式保存或在BMFont中进行选择。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="NGUI" scheme="http://www.felixwee.com/categories/NGUI/"/>
-    
-    
-      <category term="NGUI" scheme="http://www.felixwee.com/tags/NGUI/"/>
-    
-      <category term="图文混排" scheme="http://www.felixwee.com/tags/%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92/"/>
-    
-      <category term="聊天表情" scheme="http://www.felixwee.com/tags/%E8%81%8A%E5%A4%A9%E8%A1%A8%E6%83%85/"/>
-    
-      <category term="聊天" scheme="http://www.felixwee.com/tags/%E8%81%8A%E5%A4%A9/"/>
     
   </entry>
   
@@ -601,33 +628,6 @@
       <category term="触摸盘" scheme="http://www.felixwee.com/tags/%E8%A7%A6%E6%91%B8%E7%9B%98/"/>
     
       <category term="交互" scheme="http://www.felixwee.com/tags/%E4%BA%A4%E4%BA%92/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Unity3D中Layers和LayerMask解析</title>
-    <link href="http://www.felixwee.com/2016/10/26/unity/00012_unity_layermask/unity_layermask/"/>
-    <id>http://www.felixwee.com/2016/10/26/unity/00012_unity_layermask/unity_layermask/</id>
-    <published>2016-10-26T14:01:00.000Z</published>
-    <updated>2018-02-05T18:48:59.394Z</updated>
-    
-    <content type="html"><![CDATA[<p>在Unity中每个GameObject都有Layer属性，默认的Layer都是Default。在Unity中可编辑的Layer共有24个（8—31层），官方已使用的是0—7层，默认不可编辑！</p><p>LayerMask实际上是一个位码操作，在Unity3D中一共有32个Layer层，并且不可增加。</p><a id="more"></a><p>Unity中是用int32来表示32个Layer层。int32表示二进制一共有32位（0—31）。<br>在Unity中可编辑的Layer如下图所示：</p><p><img src="/2016/10/26/unity/00012_unity_layermask/unity_layermask/a9b41e14jw1esshija7ddj20830k8jsl.jpg" alt=""></p><h2 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h2><p>按位运算符：~、|、&amp;、^。位运算符主要用来对二进制位进行操作。</p><p>逻辑运算符：&amp;&amp;、||、！。逻辑运算符把语句连接成更复杂的复杂语句。</p><p>按位运算符：左移运算符&lt;&lt;，左移表示乘以2，左移多少位表示乘以2的几次幂。</p><p>举个栗子：</p><p>var temp = 14 &lt;&lt; 2; 表示十进制数14转化为二进制后向左移动2位。</p><p>temp最后计算的值为 14乘以2的平方，temp = 56；<br>同理，右移运算符&gt;&gt;，移动多少位表示除以2的几次幂。<br>具体可以转到博客：按位运算符.<br>上面是个基础知识的补充。</p><h2 id="在Unity中是用LayerMask"><a href="#在Unity中是用LayerMask" class="headerlink" title="在Unity中是用LayerMask"></a>在Unity中是用LayerMask</h2><p>Layers</p><p>官方给出的描述是：Layers通常被摄像机用来渲染部分场景，和灯光照射部分场景使用。但是它们也可以用来做射线检测时忽略一些collder或Collision使用。</p><p>如何编辑Layers.</p><p>在代码中使用时如何开启某个Layers？</p><p>LayerMask mask = 1 &lt;&lt; 你需要开启的Layers层。<br>LayerMask mask = 0 &lt;&lt; 你需要关闭的Layers层。</p><p>举几个个栗子：</p><p>LayerMask mask = 1 &lt;&lt; 2; 表示开启Layer2。<br>LayerMask mask = 0 &lt;&lt; 5;表示关闭Layer5。<br>LayerMask mask = 1&lt;&lt;2|1&lt;&lt;8;表示开启Layer2和Layer8。<br>LayerMask mask = 0&lt;&lt;3|0&lt;&lt;7;表示关闭Layer3和Layer7。<br>上面也可以写成：</p><p>LayerMask mask = ~（1&lt;&lt;3|1&lt;&lt;7）;表示关闭Layer3和Layer7。<br>LayerMask mask = 1&lt;&lt;2|0&lt;&lt;4;表示开启Layer2并且同时关闭Layer4.</p><p>代码：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">example</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">    LayerMask mask =  ~（<span class="number">1</span>&lt;&lt;<span class="number">3</span>|<span class="number">1</span>&lt;&lt;<span class="number">7</span>）;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(transform.position, transform.forward, <span class="number">100</span>, mask.<span class="keyword">value</span>))</span><br><span class="line">            Debug.Log(<span class="string">"Hit something"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在Unity中每个GameObject都有Layer属性，默认的Layer都是Default。在Unity中可编辑的Layer共有24个（8—31层），官方已使用的是0—7层，默认不可编辑！&lt;/p&gt;
-&lt;p&gt;LayerMask实际上是一个位码操作，在Unity3D中一共有32个Layer层，并且不可增加。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Unity3D" scheme="http://www.felixwee.com/categories/Unity3D/"/>
-    
-    
-      <category term="Unity" scheme="http://www.felixwee.com/tags/Unity/"/>
-    
-      <category term="LayerMask" scheme="http://www.felixwee.com/tags/LayerMask/"/>
-    
-      <category term="Unity层" scheme="http://www.felixwee.com/tags/Unity%E5%B1%82/"/>
     
   </entry>
   
